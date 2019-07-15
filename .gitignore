@@ -42,6 +42,9 @@ typings/
 # Optional npm cache directory
 .npm
 
+# Optional Nextjs cache directory
+.next
+
 # Optional eslint cache
 .eslintcache
 
