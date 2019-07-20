@@ -4,12 +4,12 @@ import fetch from 'isomorphic-unfetch';
 
 const Index = props => (
     <Layout>
-        <h1>Sholawat</h1>
+        <h1>List</h1>
         <ul>
             {props.posts.map(posts => (
-                <li key={posts.ID}>
-                    <Link href="/p/[id]" as={`/p/${posts.ID}`}>
-                        <a>{posts.title}</a>
+                <li key={posts.slug}>
+                    <Link href="/[slug]" as={`/${posts.slug}`}>
+                        <a>{posts.title.rendered}</a>
                     </Link>
                 </li>
             ))}
@@ -42,13 +42,13 @@ const Index = props => (
 );
 
 Index.getInitialProps = async function() {
-    const res = await fetch('https://public-api.wordpress.com/rest/v1.1/sites/riobahtiar.wordpress.com/posts');
+    const res = await fetch('http://blog.test/wp-json/wp/v2/posts?per_page=33');
     const data = await res.json();
 
-    console.log(`Post data fetched. Count: ${data.posts.length}`);
+    console.log(`Post data fetched. Count: ${data.length}`);
 
     return {
-        posts: data.posts
+        posts: data
     };
 }
 
