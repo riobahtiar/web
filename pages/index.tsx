@@ -72,7 +72,7 @@ const Home: NextPage = (latestPosts) => {
                 </main>
 
                 <footer className="footer mt-10 text-sm">
-                    Developer with ♥️ in 🇮🇩<br/>
+                    Developed with ♥️ in 🇮🇩<br/>
                     Created using Next.js & TailwindCSS
                 </footer>
             </div>
