@@ -1,29 +1,15 @@
 import type {NextPage} from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import Seo from '@/components/Seo'
 import Link from 'next/link'
-import Lottie from 'lottie-react'
-import nyanCat from '../public/nyan-cat.json'
-import { getLatestPosts } from '../lib/wp.api'
+import { getLatestPosts } from '@/lib/wp.api'
 import { GetStaticProps } from 'next'
 
-const Home: NextPage = (latestPosts) => {
+const Home: NextPage = (latestPosts: String) => {
     return (
         <>
-            <div style={{maxWidth: '300px', marginBottom: '-60px', left: 0}}>
-                <div>
-                    <Lottie animationData={nyanCat}/>
-                </div>
-            </div>
             <div className="container mx-auto">
-                <Head>
-                    <title>Rio Bahtiar - Bio & Profile</title>
-                    <meta name="description" content="Web Developer based in Yogyakarta, Indonesia. Specialized in React.js, NextJS, WordPress Development & all things web"/>
-                    <link rel="icon" href="/favicon.ico"/>
-                </Head>
-
+                <Seo title='Halo'/>
                 <main className="pt-10">
-
 
                     <h1 className="font-heading uppercase text-6xl font-bold mb-5">
                         Rio Bahtiar
