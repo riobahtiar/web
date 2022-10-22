@@ -50,7 +50,7 @@ jobs:
           DENO_DEPLOY_PROJECT: ${{ secrets.DENO_DEPLOY_PROJECT }}
         working-directory: ./apps/astro-blog/ 
         run: ls
-      - working-directory: ./apps/astro-blog/
+      - working-directory: apps/astro-blog/
         run: ls
       - run: ls
       #  run: ls && DENO_DEPLOY_TOKEN="$DENO_DEPLOY_TOKEN" deployctl deploy --project="$DENO_DEPLOY_PROJECT" --no-static --include=./dist ./dist/server/entry.mjs
