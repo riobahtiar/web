@@ -41,4 +41,4 @@ jobs:
         with:
           project: rio
           entrypoint: server/entry.mjs
-          root: dist
+          root: apps/astro-blog/dist

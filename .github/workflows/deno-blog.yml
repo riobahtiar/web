@@ -40,10 +40,10 @@ jobs:
           deno-version: v1.x
 
       - name: Verify formatting
-        run: deno fmt --check
+        run: deno fmt --check apps/astro-blog/
 
       - name: Run linter
-        run: deno lint
+        run: deno lint apps/astro-blog/
 
       # - name: Run tests
       #   run: deno test -A --unstable
