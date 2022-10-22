@@ -1,6 +1,3 @@
-# Created by https://www.toptal.com/developers/gitignore/api/node,rust,macos,windows,git,linux,nextjs,nuxtjs,sublimetext,visualstudiocode,webstorm+all,android,vim,vuejs
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,rust,macos,windows,git,linux,nextjs,nuxtjs,sublimetext,visualstudiocode,webstorm+all,android,vim,vuejs
-
 ### Android ###
 # Gradle files
 .gradle/
@@ -107,8 +104,8 @@ Temporary Items
 
 ### NextJS ###
 # Dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # Testing
@@ -223,6 +220,7 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
+.output
 
 # Gatsby files
 .cache/
@@ -483,5 +481,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
-# End of https://www.toptal.com/developers/gitignore/api/node,rust,macos,windows,git,linux,nextjs,nuxtjs,sublimetext,visualstudiocode,webstorm+all,android,vim,vuejs
+.turbo
