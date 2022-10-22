@@ -34,9 +34,9 @@ importers:
       postcss: ^8.4.18
       react: ^18.0.0
       react-dom: ^18.0.0
+      react-ui: workspace:*
       rollup: ^3.2.1
       tailwindcss: ^3.0.24
-      ui: workspace:*
     dependencies:
       '@astrojs/deno': 1.2.0
       '@astrojs/mdx': 0.11.4_rollup@3.2.3
@@ -54,9 +54,9 @@ importers:
       postcss: 8.4.18
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-ui: link:../../packages/react-ui
       rollup: 3.2.3
       tailwindcss: 3.2.1_postcss@8.4.18
-      ui: link:../../packages/ui
     devDependencies:
       '@tailwindcss/aspect-ratio': 0.4.2_tailwindcss@3.2.1
       '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.1
@@ -74,14 +74,14 @@ importers:
       next-transpile-modules: 9.0.0
       react: 18.2.0
       react-dom: 18.2.0
+      react-ui: workspace:*
       tsconfig: workspace:*
       typescript: ^4.5.3
-      ui: workspace:*
     dependencies:
       next: 12.3.1_qtpcxnaaarbm4ws7ughq6oxfve
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      ui: link:../../packages/ui
+      react-ui: link:../../packages/react-ui
     devDependencies:
       '@babel/core': 7.19.6
       '@types/node': 17.0.45
@@ -115,10 +115,7 @@ importers:
     devDependencies:
       typescript: 4.8.4
 
-  packages/tsconfig:
-    specifiers: {}
-
-  packages/ui:
+  packages/react-ui:
     specifiers:
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
@@ -135,6 +132,9 @@ importers:
       react: 18.2.0
       tsconfig: link:../tsconfig
       typescript: 4.8.4
+
+  packages/tsconfig:
+    specifiers: {}
 
 packages:
 

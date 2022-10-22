@@ -1,4 +1,4 @@
-import { Button } from "ui";
+import { Button } from "react-ui";
 
 export default function Web() {
   return (
