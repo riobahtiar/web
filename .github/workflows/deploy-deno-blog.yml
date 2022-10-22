@@ -44,8 +44,13 @@ jobs:
       - name: Install Deployctl
         run: deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts
 
+      - name: Setup ENV
+        env:
+          DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
+          DENO_DEPLOY_PROJECT: ${{ secrets.DENO_DEPLOY_PROJECT }}
+
       - name: Deploy Deno Deployctl
-        run: ls && pnpm run deno-deploy
+        run: pnpm run build && cd apps/astro-blog/ && DENO_DEPLOY_TOKEN="$env:DENO_DEPLOY_TOKEN" deployctl deploy --project=$env:DENO_DEPLOY_PROJECT" --no-static --include=./dist ./dist/server/entry.mjs
 
       # - name: Upload to Deno Deploy
       #   uses: denoland/deployctl@v1
