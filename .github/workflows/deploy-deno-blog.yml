@@ -42,14 +42,14 @@ jobs:
           deno-version: v1.x
 
       - name: Install Deployctl
-        run: deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts && cat turbo.json
-
+        run: deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts
       - name: Deploy Deno Deployctl
         shell: bash
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
           DENO_DEPLOY_PROJECT: ${{ secrets.DENO_DEPLOY_PROJECT }}
-        run: DENO_DEPLOY_TOKEN="$DENO_DEPLOY_TOKEN" deployctl deploy --project="$DENO_DEPLOY_PROJECT" --no-static --include=./apps/astro-blog/dist ./apps/astro-blog/dist/server/entry.mjs
+        working-directory: ./apps/astro-blog/ 
+        run: ls && DENO_DEPLOY_TOKEN="$DENO_DEPLOY_TOKEN" deployctl deploy --project="$DENO_DEPLOY_PROJECT" --no-static --include=./dist ./dist/server/entry.mjs
 
       # - name: Upload to Deno Deploy
       #   uses: denoland/deployctl@v1
