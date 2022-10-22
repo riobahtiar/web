@@ -12,11 +12,11 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "apps/astro-blog"
+      - "apps/astro-blog/**/*"
   pull_request:
     branches: ["main"]
     paths:
-      - "apps/astro-blog"
+      - "apps/astro-blog/**/*"
 
 permissions:
   contents: read
