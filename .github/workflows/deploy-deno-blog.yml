@@ -31,10 +31,10 @@ jobs:
           version: 7.x
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm i --filter=astro-blog
 
       - name: Build Astro
-        run: pnpm run build
+        run: pnpm run build --filter=astro-blog
 
       - name: Setup Deno
         uses: denoland/setup-deno@v1
@@ -49,7 +49,7 @@ jobs:
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
           DENO_DEPLOY_PROJECT: ${{ secrets.DENO_DEPLOY_PROJECT }}
-        run: pnpm run build && cd apps/astro-blog/ && DENO_DEPLOY_TOKEN="$DENO_DEPLOY_TOKEN" deployctl deploy --project="$DENO_DEPLOY_PROJECT" --no-static --include=./dist ./dist/server/entry.mjs
+        run: cd apps/astro-blog/ && ls && DENO_DEPLOY_TOKEN="$DENO_DEPLOY_TOKEN" deployctl deploy --project="$DENO_DEPLOY_PROJECT" --no-static --include=./dist ./dist/server/entry.mjs
 
       # - name: Upload to Deno Deploy
       #   uses: denoland/deployctl@v1
