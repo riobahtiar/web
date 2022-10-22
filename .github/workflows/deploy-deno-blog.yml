@@ -49,7 +49,8 @@ jobs:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
           DENO_DEPLOY_PROJECT: ${{ secrets.DENO_DEPLOY_PROJECT }}
         working-directory: ./apps/astro-blog/ 
-        run: ls && DENO_DEPLOY_TOKEN="$DENO_DEPLOY_TOKEN" deployctl deploy --project="$DENO_DEPLOY_PROJECT" --no-static --include=./dist ./dist/server/entry.mjs
+        run: ls && echo "$DENO_DEPLOY_TOKEN"
+      #  run: ls && DENO_DEPLOY_TOKEN="$DENO_DEPLOY_TOKEN" deployctl deploy --project="$DENO_DEPLOY_PROJECT" --no-static --include=./dist ./dist/server/entry.mjs
 
       # - name: Upload to Deno Deploy
       #   uses: denoland/deployctl@v1
