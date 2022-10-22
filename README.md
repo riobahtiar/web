@@ -4,7 +4,7 @@ Public repos for my sites. This project uses [TURBOREPO](https://turborepo.org) 
 
 ### Apps and Packages
 
-- `@apps/astro-blog`: My Personal Blog build using [Astro.js](https://astro.build/)
+- `@apps/astro-blog`: My Personal Blog build using [Astro.js](https://astro.build/) with [Deno Deploy](https://deno.com/deploy) support
 - `@apps/nuxt3-links`: My Personal Links(Linktree Style Web Apps) using [Nuxt.js 3](https://v3.nuxtjs.org/)
 - `@apps/next-explore`: Just another [Next.js](https://nextjs.org) app to explore
 - `@packages/react/ui`: a stub React component library shared by both `@apps/astro-blog` and `@apps/next-explore` applications
@@ -26,7 +26,7 @@ This repo has some additional tools already setup for you:
 
 To install all depedency, run the following command:
 ```
-pnpm install --shamefully-hoist
+pnpm install
 ```
 
 ### Build

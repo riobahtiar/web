@@ -6,17 +6,17 @@
 # This workflow will install Deno then run Deno lint and test.
 # For more information see: https://github.com/denoland/setup-deno
 
-name: Deno
+name: Deno Test @apps/astro-blog
 
 on:
   push:
     branches: ["main"]
     paths:
-      - "apps/blog"
+      - "apps/astro-blog"
   pull_request:
     branches: ["main"]
     paths:
-      - "apps/blog"
+      - "apps/astro-blog"
 
 permissions:
   contents: read

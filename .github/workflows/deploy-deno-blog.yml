@@ -1,13 +1,13 @@
-name: Deploy
+name: Deploy @apps/astro-blog
 on:
   push:
     branches: ["main"]
     paths:
-      - "apps/blog"
+      - "apps/astro-blog"
   pull_request:
     branches: ["main"]
     paths:
-      - "apps/blog"
+      - "apps/astro-blog"
 
 jobs:
   deploy:
