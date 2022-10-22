@@ -34,14 +34,22 @@ jobs:
         run: pnpm i
 
       - name: Build Astro
-        run: pnpm run build && cd apps/astro-blog/
+        run: pnpm run build
 
-      - name: Debug Dir Location
-        run: ls
-
-      - name: Upload to Deno Deploy
-        uses: denoland/deployctl@v1
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
         with:
-          project: rio
-          entrypoint: server/entry.mjs
-          root: dist
+          deno-version: v1.x
+
+      - name: Install Deployctl
+        run: deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts
+
+      - name: Deploy Deno Deployctl
+        run: pnpm run deploy-deno
+
+      # - name: Upload to Deno Deploy
+      #   uses: denoland/deployctl@v1
+      #   with:
+      #     project: rio
+      #     entrypoint: server/entry.mjs
+      #     root: dist
