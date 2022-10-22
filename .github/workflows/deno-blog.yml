@@ -10,13 +10,18 @@ name: Deno Test @apps/astro-blog
 
 on:
   push:
-    branches: ["main"]
+    branches: 
+      - main
     paths:
-      - "apps/astro-blog/**/*"
+      - "apps/astro-blog/**"
+      - ".github/workflows/deno-astro-blog.yml"
+
   pull_request:
-    branches: ["main"]
+    branches: 
+      - main
     paths:
-      - "apps/astro-blog/**/*"
+      - "apps/astro-blog/**"
+      - ".github/workflows/deno-astro-blog.yml"
 
 permissions:
   contents: read
