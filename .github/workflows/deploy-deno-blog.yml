@@ -34,7 +34,7 @@ jobs:
         run: pnpm i
 
       - name: Build Astro
-        run: pnpm run build
+        run: pnpm run build && ls
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
