@@ -4,9 +4,9 @@ Public repos for my sites. This project uses [TURBOREPO](https://turborepo.org) 
 
 ### Apps and Packages
 
-- `@apps/astro-blog`: My Personal Blog build using [Astro.js](https://astro.build/) with [Deno Deploy](https://deno.com/deploy) support
-- `@apps/nuxt3-links`: My Personal Links(Linktree Style Web Apps) using [Nuxt.js 3](https://v3.nuxtjs.org/)
-- `@apps/next-explore`: Just another [Next.js](https://nextjs.org) app to explore
+- `@apps/astro-riomyid`: My Personal Blog build using [Astro.js](https://astro.build/)
+- `@apps/nuxt3-links`: LinkTree Style Web Apps using [Nuxt.js 3](https://v3.nuxtjs.org/)
+- `@apps/next-pesantren`: Web Directory for Pesantren In Indonesia using [Next.js](https://nextjs.org)
 - `@packages/react/ui`: a stub React component library shared by both `@apps/astro-blog` and `@apps/next-explore` applications
 - `@packages/vue@3/ui`: a stub Vue 3 component library shared to `@apps/next3-links` applications
 - `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
