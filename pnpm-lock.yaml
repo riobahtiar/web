@@ -30,7 +30,7 @@ importers:
 
   apps/next-pesantren:
     specifiers:
-      '@types/node': 18.11.3
+      '@types/node': 18.11.18
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
       autoprefixer: ^10.4.12
@@ -45,7 +45,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
-      '@types/node': 18.11.3
+      '@types/node': 18.11.18
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
       autoprefixer: 10.4.13_postcss@8.4.20
@@ -1284,10 +1284,6 @@ packages:
 
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
-    dev: true
-
-  /@types/node/18.11.3:
-    resolution: {integrity: sha512-fNjDQzzOsZeKZu5NATgXUPsaFaTxeRgFXoosrHivTl8RGeV733OLawXsGfEk9a8/tySyZUyiZ6E8LcjPFZ2y1A==}
     dev: true
 
   /@types/parse5/6.0.3:
