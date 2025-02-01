@@ -15,14 +15,14 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "next",
+    "@tailwindcss/postcss": "4.0.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "postcss": "^8",
-    "tailwindcss": "next",
+    "tailwindcss": "4.0.3",
     "typescript": "^5"
   }
 }
