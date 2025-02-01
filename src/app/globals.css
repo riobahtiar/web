@@ -1,4 +1,9 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: winter --default, night --prefersdark;
+}
+
+@variant dark (&:where([data-theme=night], [data-theme=night] *));
 
 @theme {
   --color-background: var(--background);
