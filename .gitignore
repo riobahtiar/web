@@ -1,4 +1,5 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Created by https://www.toptal.com/developers/gitignore/api/nextjs,sublimetext,visualstudiocode,react,node,windows,macos,linux,webstorm+all
+# Edit at https://www.toptal.com/developers/gitignore?templates=nextjs,sublimetext,visualstudiocode,react,node,windows,macos,linux,webstorm+all
 
 ### Linux ###
 *~
@@ -396,3 +397,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# End of https://www.toptal.com/developers/gitignore/api/nextjs,sublimetext,visualstudiocode,react,node,windows,macos,linux,webstorm+all
