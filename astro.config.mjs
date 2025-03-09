@@ -8,6 +8,10 @@ import partytown from "@astrojs/partytown";
 
 import sitemap from "@astrojs/sitemap";
 
+import markdoc from "@astrojs/markdoc";
+
+import mdx from "@astrojs/mdx";
+
 export default defineConfig({
   vite: {
       plugins: [tailwindcss()],
@@ -25,7 +29,7 @@ export default defineConfig({
       }
   },
 
-  integrations: [icon(), partytown(), sitemap()],
+  integrations: [icon(), partytown(), sitemap(), markdoc(), mdx()],
   experimental: {
     svg: true,
   },
