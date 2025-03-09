@@ -1,0 +1,183 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+    lang: string;
+    i18n: {
+        nav: {
+            home: string;
+            about: string;
+            projects: string;
+            contact: string;
+            work: string;
+        };
+        footer: {
+            darkMode: string;
+        };
+    };
+}
+
+const { lang, i18n } = Astro.props;
+
+// Language switcher
+const currentPath = new URL(Astro.request.url).pathname;
+const pagePath = currentPath.replace(/^\/id\/?/, '/');
+const alternateLanguageUrl = lang === 'en' ? `/id${pagePath}` : pagePath;
+const languageLabel = lang === 'en' ? 'Language' : 'Bahasa';
+const alternateLanguage = lang === 'en' ? 'Bahasa Indonesia' : 'English';
+---
+
+<header id="main-header" class="fixed top-0 left-0 right-0 z-40 bg-base-100/80 backdrop-blur-sm border-b border-base-200 transition-all duration-300">
+    <div class="navbar container mx-auto px-4">
+        <div class="navbar-start">
+            <a href="/" class="text-xl font-bold">Rio</a>
+        </div>
+        
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 gap-2">
+                <li><a href={`/${lang === 'en' ? '' : 'id/'}about`}>{i18n.nav.about}</a></li>
+                <li><a href="#projects">{i18n.nav.projects}</a></li>
+                <li><a href="#contact">{i18n.nav.contact}</a></li>
+                <li><a href={lang === 'en' ? '/work' : '/id/work'} class="text-primary font-medium">{i18n.nav.work}</a></li>
+            </ul>
+        </div>
+        
+        <div class="navbar-end">
+            <div class="flex items-center gap-4">
+                <!-- Social Media Icons -->
+                <div class="hidden sm:flex items-center gap-3">
+                    <a href="https://go.rio.my.id/g" class="btn btn-ghost btn-sm btn-circle" aria-label="GitHub">
+                        <Icon name="tabler:brand-github" class="w-5 h-5" />
+                    </a>
+                    <a href="https://go.rio.my.id/l" class="btn btn-ghost btn-sm btn-circle" aria-label="LinkedIn">
+                        <Icon name="tabler:brand-linkedin" class="w-5 h-5" />
+                    </a>
+                    <a href="https://go.rio.my.id/x" class="btn btn-ghost btn-sm btn-circle" aria-label="Twitter">
+                        <Icon name="tabler:brand-x" class="w-5 h-5" />
+                    </a>
+                </div>
+
+                <!-- Language Switcher -->
+                <div class="dropdown dropdown-end">
+                    <button class="btn btn-ghost btn-sm gap-1" aria-label={languageLabel}>
+                        <Icon name="tabler:language" class="w-5 h-5" />
+                        <span class="hidden sm:inline">{lang === 'en' ? 'EN' : 'ID'}</span>
+                    </button>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box">
+                        <li>
+                            <a href={alternateLanguageUrl} class="whitespace-nowrap">
+                                {alternateLanguage}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Theme Toggle -->
+                <label class="swap swap-rotate btn btn-ghost btn-sm btn-circle">
+                    <input 
+                        type="checkbox" 
+                        class="theme-controller" 
+                        aria-label={i18n.footer.darkMode}
+                    />
+                    <Icon name="tabler:sun" class="swap-on w-5 h-5" />
+                    <Icon name="tabler:moon" class="swap-off w-5 h-5" />
+                </label>
+
+                <!-- Mobile Menu -->
+                <div class="dropdown dropdown-end lg:hidden">
+                    <button class="btn btn-ghost btn-sm btn-circle" aria-label="Menu">
+                        <Icon name="tabler:menu" class="w-5 h-5" />
+                    </button>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52">
+                        <li><a href={`/${lang === 'en' ? '' : 'id/'}about`}>{i18n.nav.about}</a></li>
+                        <li><a href="#projects">{i18n.nav.projects}</a></li>
+                        <li><a href="#contact">{i18n.nav.contact}</a></li>
+                        <li><a href={lang === 'en' ? '/work' : '/id/work'} class="text-primary font-medium">{i18n.nav.work}</a></li>
+                        <div class="divider my-1"></div>
+                        <li class="sm:hidden">
+                            <a href="https://go.rio.my.id/g">
+                                <Icon name="tabler:brand-github" class="w-5 h-5" />
+                                GitHub
+                            </a>
+                        </li>
+                        <li class="sm:hidden">
+                            <a href="https://go.rio.my.id/l">
+                                <Icon name="tabler:brand-linkedin" class="w-5 h-5" />
+                                LinkedIn
+                            </a>
+                        </li>
+                        <li class="sm:hidden">
+                            <a href="https://go.rio.my.id/x">
+                                <Icon name="tabler:brand-x" class="w-5 h-5" />
+                                Twitter
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Spacer to prevent content from hiding under fixed header -->
+<div id="header-spacer" class="h-16 transition-all duration-300"></div>
+
+<script is:inline>
+    // Adjust header position based on banner visibility
+    function adjustHeaderPosition() {
+        const banner = document.getElementById('announcement-banner');
+        const header = document.getElementById('main-header');
+        const spacer = document.getElementById('header-spacer');
+        
+        if (banner && header && spacer) {
+            const bannerHeight = banner.offsetHeight;
+            header.style.top = banner.style.display === 'none' ? '0' : `${bannerHeight}px`;
+        }
+    }
+
+    // Direct theme toggle handler
+    function setupThemeToggle() {
+        const themeToggle = document.querySelector('.theme-controller');
+        if (!themeToggle) return;
+        
+        // Set initial state based on current theme
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        themeToggle.checked = currentTheme === 'dracula';
+        
+        // Add click event listener
+        themeToggle.addEventListener('change', function(e) {
+            if (e.target && 'checked' in e.target) {
+                const newTheme = e.target.checked ? 'dracula' : 'acid';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                console.log('Theme changed to:', newTheme); // Debug log
+            }
+        });
+    }
+
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        adjustHeaderPosition();
+        setupThemeToggle();
+    });
+
+    // Also run when Astro page loads (for client-side navigation)
+    document.addEventListener('astro:page-load', function() {
+        adjustHeaderPosition();
+        setupThemeToggle();
+    });
+
+    // Run when banner visibility changes
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                adjustHeaderPosition();
+            }
+        });
+    });
+
+    const banner = document.getElementById('announcement-banner');
+    if (banner) {
+        observer.observe(banner, { attributes: true });
+    }
+</script>

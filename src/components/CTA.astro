@@ -1,0 +1,40 @@
+---
+interface Props {
+    lang: string;
+    i18n: {
+        work: {
+            title: string;
+            subtitle: string;
+            description: string;
+            cta: {
+                contact: string;
+                consultation: string;
+            };
+        };
+    };
+}
+
+const { lang, i18n } = Astro.props;
+---
+
+<section class="bg-base-200 py-16">
+    <div class="container mx-auto px-4">
+        <div class="card bg-primary text-primary-content shadow-xl">
+            <div class="card-body text-center py-12">
+                <h2 class="card-title text-3xl font-bold justify-center mb-3">{i18n.work.title}</h2>
+                <p class="text-xl opacity-90 max-w-2xl mx-auto mb-8">{i18n.work.description}</p>
+                <div class="card-actions justify-center gap-4">
+                    <a href={`/${lang === 'en' ? '' : 'id/'}work`} class="btn btn-secondary btn-lg">
+                        {i18n.work.cta.contact}
+                    </a>
+                    <a 
+                        href={`/${lang === 'en' ? '' : 'id/'}contact?type=consultation`} 
+                        class="btn btn-outline btn-secondary btn-lg"
+                    >
+                        {i18n.work.cta.consultation}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 

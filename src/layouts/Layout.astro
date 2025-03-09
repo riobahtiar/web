@@ -1,22 +1,133 @@
+---
+import "../assets/global.css";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Banner from "../components/Banner.astro";
+import CTA from "../components/CTA.astro";
+import { en } from '../i18n/en';
+import { id } from '../i18n/id';
+
+// Get current language from URL or default to English
+const pathname = Astro.url.pathname;
+const lang = pathname.startsWith('/id/') ? 'id' : 'en';
+const i18n = lang === 'id' ? id : en;
+
+// Ensure translations are loaded
+if (!i18n) {
+    throw new Error(`Missing translations for language: ${lang}`);
+}
+
+// Default SEO values that can be overridden by individual pages
+const {
+    title = i18n.welcome.title ? `Rio Bahtiar | ${i18n.welcome.title}` : "Rio Bahtiar | Full-stack Developer",
+    description = i18n.welcome.description || "Full-stack developer with expertise in modern web technologies. Building responsive, user-friendly applications.",
+    image = "/smc.jpg",
+    canonicalURL = Astro.url.pathname && Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : '',
+    showCTA = true, // Control CTA visibility
+    showTopBanner = false // Control Banner visibility
+} = Astro.props;
+
+// Generate alternate language URLs
+const alternateEN = canonicalURL ? canonicalURL.replace('/id/', '/') : '/';
+const alternateID = canonicalURL ? (canonicalURL === '/' ? '/id/' : canonicalURL.replace('/', '/id/')) : '/id/';
+---
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang={lang} class="transition-colors duration-300">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <meta name="generator" content={Astro.generator}/>
+
+    <!-- Favicon and Web Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title}/>
+    <meta name="description" content={description}/>
+    <link rel="canonical" href={canonicalURL}/>
+    <link rel="alternate" href={alternateEN} hreflang="en" />
+    <link rel="alternate" href={alternateID} hreflang="id" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content={canonicalURL}/>
+    <meta property="og:title" content={title}/>
+    <meta property="og:description" content={description}/>
+    <meta property="og:image" content={Astro.site ? new URL(image, Astro.site).toString() : image}/>
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image"/>
+    <meta property="twitter:url" content={canonicalURL}/>
+    <meta property="twitter:title" content={title}/>
+    <meta property="twitter:description" content={description}/>
+    <meta property="twitter:image" content={Astro.site ? new URL(image, Astro.site).toString() : image}/>
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#1EA1F1">
+    <meta name="msapplication-TileColor" content="#1EA1F1">
+
+    <!-- Additional head items -->
+    <slot name="head"/>
+</head>
+<body>
+{showTopBanner && <Banner lang={lang} />}
+<Header lang={lang} i18n={i18n} />
+<slot/>
+{showCTA && <CTA lang={lang} i18n={i18n} />}
+<Footer lang={lang} i18n={i18n} />
+</body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+    html,
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
 </style>
+
+<script is:inline>
+    // Initialize theme on page load
+    (function() {
+        // Get theme from localStorage or system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (systemDarkMode ? 'dracula' : 'acid');
+        
+        // Apply theme
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+</script>
+
+<script>
+    // Banner initialization
+    document.addEventListener('astro:page-load', () => {
+        // Banner setup
+        const banner = document.getElementById('announcement-banner') as HTMLElement;
+        if (!banner) return;
+
+        if (localStorage.getItem('hideBanner') === 'true') {
+            banner.style.display = 'none';
+            return;
+        }
+
+        banner.style.cssText = '';
+        banner.style.display = 'block';
+        banner.style.opacity = '1';
+
+        const content = banner.querySelector('#marquee-content') as HTMLElement;
+        if (content) {
+            content.style.cssText = '';
+            content.classList.remove('sliding');
+            requestAnimationFrame(() => {
+                content.classList.add('sliding');
+            });
+        }
+    });
+</script>

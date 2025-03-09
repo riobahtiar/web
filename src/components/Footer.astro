@@ -1,0 +1,21 @@
+---
+interface Props {
+    lang?: string;
+    i18n?: {
+        footer: {
+            allRightsReserved: string;
+        };
+    };
+}
+
+const { lang = 'en', i18n } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+<footer class="footer footer-center p-6 bg-base-200 text-base-content">
+    <div>
+        <p class="text-sm opacity-75">{currentYear} - {i18n?.footer.allRightsReserved || 'All rights reserved'}</p>
+    </div>
+</footer>
+
+
+<div data-fillout-id="gzNUYgmYgrus" data-fillout-embed-type="popup" data-fillout-button-text="Contact me" data-fillout-dynamic-resize data-fillout-button-float="bottom-right" data-fillout-inherit-parameters data-fillout-popup-size="medium"></div><script src="https://server.fillout.com/embed/v1/"></script>

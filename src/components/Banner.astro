@@ -1,0 +1,83 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+    lang: string;
+}
+
+const { lang } = Astro.props;
+const message = lang === 'en' 
+    ? '🚧 This site is currently under construction. Some features might not work as expected.'
+    : '🚧 Situs ini sedang dalam pengembangan. Beberapa fitur mungkin belum berfungsi dengan baik.';
+---
+
+<div id="announcement-banner" class="bg-primary/10 px-4 py-1.5 transition-all duration-300" role="alert">
+    <div class="flex items-center justify-between gap-4 mx-auto">
+        <div class="flex-1 overflow-hidden relative min-h-[1.5rem]">
+            <div id="marquee-content" class="whitespace-nowrap text-sm font-medium text-primary-content/90 absolute left-0 right-0">
+                <span>{message}</span>
+            </div>
+        </div>
+        <button 
+            type="button" 
+            class="flex-shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-lg text-primary hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Close"
+            onclick="hideBanner()"
+        >
+            <Icon name="tabler:close" class="w-4 h-4" />
+        </button>
+    </div>
+</div>
+
+<style>
+    @keyframes slide {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+    }
+
+    #marquee-content {
+        animation: slide 10s linear infinite;
+        transform: translateX(100%);
+    }
+
+    #announcement-banner {
+        min-height: 2.5rem;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Ensure banner is hidden when JavaScript is disabled */
+    .no-js #announcement-banner {
+        display: none;
+    }
+</style>
+
+<script>
+    function hideBanner() {
+        const banner = document.getElementById('announcement-banner');
+        if (!banner) return;
+
+        banner.style.height = '0';
+        banner.style.opacity = '0';
+        banner.style.overflow = 'hidden';
+        banner.style.padding = '0';
+        banner.style.margin = '0';
+        localStorage.setItem('hideBanner', 'true');
+        
+        setTimeout(() => {
+            banner.style.display = 'none';
+        }, 300);
+    }
+
+    document.addEventListener('astro:page-load', () => {
+        const banner = document.getElementById('announcement-banner');
+        if (!banner) return;
+
+        if (localStorage.getItem('hideBanner') === 'true') {
+            banner.style.display = 'none';
+            return;
+        }
+
+        banner.style.display = 'block';
+    });
+</script>

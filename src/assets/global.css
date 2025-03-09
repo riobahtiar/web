@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "daisyui" {
+    themes: acid --default, dracula --prefersdark;
+}
+
+[data-theme="acid"] {
+    --color-primary: #1EA1F1;
+}

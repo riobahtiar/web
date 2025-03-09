@@ -1,5 +1,5 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import WorkComponent from '../components/Work.astro';
 import Layout from '../layouts/Layout.astro';
 import { en } from '../i18n/en';
 
@@ -8,5 +8,5 @@ const lang = 'en';
 ---
 
 <Layout lang={lang}>
-	<Welcome lang={lang} i18n={en} showClientsSection={false} />
+	<WorkComponent lang={lang} i18n={en} />
 </Layout>

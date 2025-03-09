@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+
+// Get current language from URL
+const pathname = Astro.url.pathname;
+const lang = pathname.startsWith('/id/') ? 'id' : 'en';
+
+// Last modified date
+const lastModified = new Date().toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+});
+
+// Page metadata
+const meta = {
+    title: 'About Me',
+    description: 'Learn more about Rio Bahtiar, a software engineer specializing in modern web development, distributed systems, and enterprise solutions.',
+    image: '/smc.jpg'
+};
+---
+
+<Layout 
+    title={meta.title}
+    description={meta.description}
+    image={meta.image}
+    showTopBanner={false}
+>
+    <article class="prose prose-lg md:prose-xl mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-3xl">
+        <!-- Cover Image -->
+        <div class="relative w-full aspect-[21/9] mb-8 rounded-lg overflow-hidden bg-base-200">
+            <img
+                src="/smc.jpg"
+                alt="Cover Image"
+                class="object-cover w-full h-full"
+                width="1200"
+                height="630"
+                loading="eager"
+            />
+        </div>
+
+        <!-- Article Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">{meta.title}</h1>
+            <p class="text-lg md:text-xl opacity-90 mb-4">{meta.description}</p>
+            <div class="text-sm opacity-70">
+                Last updated on {lastModified}
+            </div>
+        </header>
+
+        <!-- Article Content -->
+        <div class="space-y-6">
+            <h2>Introduction</h2>
+            <p>
+                Hello! I'm Rio Bahtiar, a software engineer passionate about creating innovative solutions through technology. 
+                In my free time, I enjoy reading technical literature, staying active with swimming, and exploring the 
+                possibilities of technology through science fiction.
+            </p>
+
+            <h2>Education & Background</h2>
+            <p>
+                I hold a degree in Computer Engineering from Amikom University Yogyakarta. My academic foundation, combined 
+                with continuous self-learning and professional development, has enabled me to stay at the forefront of 
+                modern software development practices and emerging technologies.
+            </p>
+
+            <h2>Professional Experience</h2>
+            <h3>Sekolah.mu (2022-Present) - Senior Software Engineer</h3>
+            <p>
+                Currently leading frontend development initiatives at an innovative EdTech company, focusing on creating 
+                engaging and accessible learning experiences. Key responsibilities include:
+            </p>
+            <ul>
+                <li>Architecting and implementing scalable frontend solutions using Vue.js and Nuxt.js</li>
+                <li>Leading technical decisions and establishing best practices</li>
+                <li>Mentoring team members and promoting code quality standards</li>
+            </ul>
+
+            <h3>Tokopedia (2016-2019) - Senior Software Engineer</h3>
+            <p>
+                Led a dynamic team at one of Southeast Asia's largest technology companies, focusing on high-impact 
+                web applications and distributed systems. Key achievements include:
+            </p>
+            <ul>
+                <li>Architected and implemented scalable microservices handling millions of daily transactions</li>
+                <li>Led development of critical business applications using React.js and Golang</li>
+                <li>Optimized system performance and reduced infrastructure costs by 40%</li>
+                <li>Mentored junior developers and established coding standards</li>
+            </ul>
+
+            <h3>Independent Consulting (2019-2022)</h3>
+            <p>
+                Provided technical consulting and development services to various clients, specializing in:
+            </p>
+            <ul>
+                <li>Custom enterprise solutions and system architecture design</li>
+                <li>Performance optimization and system modernization</li>
+                <li>Technical leadership and team augmentation</li>
+                <li>Cloud infrastructure and DevOps implementation</li>
+            </ul>
+
+            <h2>Technical Expertise</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Frontend Development</h3>
+                    <ul>
+                        <li>React.js & Next.js</li>
+                        <li>Vue.js & Nuxt.js</li>
+                        <li>TypeScript</li>
+                        <li>Modern CSS & TailwindCSS</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Backend Development</h3>
+                    <ul>
+                        <li>Node.js & Express</li>
+                        <li>Golang & Microservices</li>
+                        <li>PHP & Laravel</li>
+                        <li>REST & gRPC APIs</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Database & Cache</h3>
+                    <ul>
+                        <li>PostgreSQL</li>
+                        <li>Redis</li>
+                        <li>MongoDB</li>
+                        <li>Database Design</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">DevOps & Cloud</h3>
+                    <ul>
+                        <li>Docker & Kubernetes</li>
+                        <li>AWS Services</li>
+                        <li>CI/CD Pipelines</li>
+                        <li>Infrastructure as Code</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Professional Philosophy</h2>
+            <p>
+                My approach to software engineering is built on three core principles:
+            </p>
+            <ul>
+                <li><strong>Quality First:</strong> Writing clean, maintainable, and well-tested code that stands the test of time.</li>
+                <li><strong>User-Centric Design:</strong> Creating intuitive experiences that solve real problems and deliver genuine value.</li>
+                <li><strong>Continuous Growth:</strong> Staying current with technology trends while sharing knowledge with the community.</li>
+            </ul>
+            <p>
+                I'm passionate about building scalable solutions that make a positive impact, whether it's improving 
+                user experiences, optimizing system performance, or mentoring the next generation of developers.
+            </p>
+        </div>
+    </article>
+</Layout> 
