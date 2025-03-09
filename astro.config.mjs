@@ -4,6 +4,10 @@ import tailwindcss from "@tailwindcss/vite";
 
 import icon from "astro-icon";
 
+import partytown from "@astrojs/partytown";
+
+import sitemap from "@astrojs/sitemap";
+
 export default defineConfig({
   vite: {
       plugins: [tailwindcss()],
@@ -21,5 +25,8 @@ export default defineConfig({
       }
   },
 
-  integrations: [icon()],
+  integrations: [icon(), partytown(), sitemap()],
+  experimental: {
+    svg: true,
+  },
 });

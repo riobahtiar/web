@@ -70,6 +70,16 @@ const alternateID = canonicalURL ? (canonicalURL === '/' ? '/id/' : canonicalURL
     <!-- Theme Color -->
     <meta name="theme-color" content="#1EA1F1">
     <meta name="msapplication-TileColor" content="#1EA1F1">
+    
+    <!-- Google Analytics -->
+    <script type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-H970X85M9S"></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+  
+      gtag('config', 'G-H970X85M9S');
+    </script>
 
     <!-- Additional head items -->
     <slot name="head"/>

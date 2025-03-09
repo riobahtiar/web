@@ -1,5 +1,8 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import logoDark from '../assets/logo-dark.svg';
+import logoLight from '../assets/logo-light.svg';
 
 interface Props {
     lang: string;
@@ -25,12 +28,32 @@ const pagePath = currentPath.replace(/^\/id\/?/, '/');
 const alternateLanguageUrl = lang === 'en' ? `/id${pagePath}` : pagePath;
 const languageLabel = lang === 'en' ? 'Language' : 'Bahasa';
 const alternateLanguage = lang === 'en' ? 'Bahasa Indonesia' : 'English';
+
+// Homepage URL based on language
+const homeUrl = lang === 'en' ? '/' : '/id/';
 ---
 
 <header id="main-header" class="fixed top-0 left-0 right-0 z-40 bg-base-100/80 backdrop-blur-sm border-b border-base-200 transition-all duration-300">
     <div class="navbar container mx-auto px-4">
         <div class="navbar-start">
-            <a href="/" class="text-xl font-bold">Rio</a>
+            <a href={homeUrl} class="flex items-center hover:opacity-80 transition-opacity duration-300">
+                <div class="w-32 h-8 relative">
+                    <Image
+                        src={logoLight}
+                        alt="Rio Logo Light"
+                        class="logo-light absolute top-0 left-0 w-auto h-full object-contain transform transition-all duration-300"
+                        height={32}
+                        width={58.3}
+                    />
+                    <Image
+                        src={logoDark}
+                        alt="Rio Logo Dark"
+                        class="logo-dark absolute top-0 left-0 w-auto h-full object-contain transform transition-all duration-300"
+                        height={32}
+                        width={58.3}
+                    />
+                </div>
+            </a>
         </div>
         
         <div class="navbar-center hidden lg:flex">
@@ -122,6 +145,44 @@ const alternateLanguage = lang === 'en' ? 'Bahasa Indonesia' : 'English';
 <!-- Spacer to prevent content from hiding under fixed header -->
 <div id="header-spacer" class="h-16 transition-all duration-300"></div>
 
+<style>
+    /* Logo animations and theme-based visibility */
+    .logo-light,
+    .logo-dark {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    /* Light theme */
+    :root[data-theme="acid"] .logo-light {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    :root[data-theme="acid"] .logo-dark {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    /* Dark theme */
+    :root[data-theme="dracula"] .logo-dark {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    :root[data-theme="dracula"] .logo-light {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    /* Hover effect */
+    .navbar-start a:hover .logo-light:not([style*="visibility: hidden"]),
+    .navbar-start a:hover .logo-dark:not([style*="visibility: hidden"]) {
+        transform: scale(1.05);
+    }
+</style>
+
 <script is:inline>
     // Adjust header position based on banner visibility
     function adjustHeaderPosition() {
@@ -141,7 +202,7 @@ const alternateLanguage = lang === 'en' ? 'Bahasa Indonesia' : 'English';
         if (!themeToggle) return;
         
         // Set initial state based on current theme
-        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'acid';
         themeToggle.checked = currentTheme === 'dracula';
         
         // Add click event listener
@@ -150,7 +211,6 @@ const alternateLanguage = lang === 'en' ? 'Bahasa Indonesia' : 'English';
                 const newTheme = e.target.checked ? 'dracula' : 'acid';
                 document.documentElement.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
-                console.log('Theme changed to:', newTheme); // Debug log
             }
         });
     }
@@ -180,4 +240,50 @@ const alternateLanguage = lang === 'en' ? 'Bahasa Indonesia' : 'English';
     if (banner) {
         observer.observe(banner, { attributes: true });
     }
+</script>
+
+<script>
+    function updateLogoVisibility() {
+        const theme = document.documentElement.getAttribute('data-theme') || 'acid';
+        const lightLogo = document.querySelector('.logo-light');
+        const darkLogo = document.querySelector('.logo-dark');
+        
+        if (!lightLogo || !darkLogo) return;
+
+        // Add display classes based on theme
+        if (theme === 'dracula') {
+            lightLogo.classList.remove('opacity-100', 'visible');
+            lightLogo.classList.add('opacity-0', 'invisible');
+            darkLogo.classList.remove('opacity-0', 'invisible');
+            darkLogo.classList.add('opacity-100', 'visible');
+        } else {
+            darkLogo.classList.remove('opacity-100', 'visible');
+            darkLogo.classList.add('opacity-0', 'invisible');
+            lightLogo.classList.remove('opacity-0', 'invisible');
+            lightLogo.classList.add('opacity-100', 'visible');
+        }
+    }
+
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', updateLogoVisibility);
+    
+    // Run on Astro page transitions
+    document.addEventListener('astro:page-load', updateLogoVisibility);
+    
+    // Watch for theme changes
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'data-theme') {
+                updateLogoVisibility();
+            }
+        });
+    });
+
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+    });
+
+    // Initial update
+    updateLogoVisibility();
 </script>
