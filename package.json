@@ -9,6 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/markdoc": "^0.12.10",
+    "@astrojs/mdx": "^4.1.0",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/prefetch": "^0.4.1",
     "@astrojs/sitemap": "^3.2.1",
