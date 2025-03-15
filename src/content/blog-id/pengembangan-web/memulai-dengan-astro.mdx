@@ -1,0 +1,110 @@
+---
+title: "Memulai dengan Astro: Generator Situs Statis Modern"
+description: "Pelajari cara membangun website super cepat dengan Astro, generator situs statis modern yang memungkinkan Anda menggunakan framework JavaScript favorit sambil mengirimkan zero JavaScript secara default."
+created_at: 2024-03-09
+modified_at: 2024-03-09
+category: "pengembangan-web"
+tags: ["astro", "javascript", "pengembangan-web", "generator-situs-statis"]
+author:
+  name: "Rio Astamal"
+  image: "/authors/rio.jpg"
+  bio: "Full Stack Developer & Tech Enthusiast"
+image: "/blog/astro-intro.jpg"
+---
+
+# Memulai dengan Astro
+
+Astro adalah generator situs statis modern yang memungkinkan Anda membangun website super cepat menggunakan framework JavaScript favorit Anda sambil mengirimkan zero JavaScript secara default.
+
+## Mengapa Astro?
+
+Astro menonjol dari generator situs statis lainnya karena beberapa alasan:
+
+1. **Component Islands**: Gunakan komponen React, Vue, Svelte, atau framework lainnya sesuai kebutuhan
+2. **Zero JavaScript secara Default**: Tidak mengirimkan JavaScript ke client kecuali diperlukan
+3. **Pengalaman Developer yang Sangat Baik**: Hot module reloading, dukungan TypeScript, dan banyak lagi
+4. **Content Collections yang Powerful**: Dukungan kelas satu untuk manajemen konten
+
+## Menyiapkan Proyek Astro Pertama Anda
+
+Memulai dengan Astro sangat mudah. Berikut caranya:
+
+```bash
+# Buat proyek baru dengan npm
+npm create astro@latest
+
+# Atau dengan pnpm
+pnpm create astro@latest
+
+# Atau dengan yarn
+yarn create astro
+```
+
+## Struktur Proyek
+
+Struktur proyek Astro yang tipikal terlihat seperti ini:
+
+```
+├── src/
+│   ├── components/
+│   ├── layouts/
+│   ├── pages/
+│   └── styles/
+├── public/
+├── astro.config.mjs
+└── package.json
+```
+
+## Membangun Halaman
+
+Di Astro, halaman dapat dibuat menggunakan file `.astro`, `.md`, `.mdx`, atau bahkan `.html`:
+
+```astro
+---
+// src/pages/index.astro
+---
+
+<html lang="id">
+  <head>
+    <title>Situs Astro Saya</title>
+  </head>
+  <body>
+    <h1>Selamat datang di Astro!</h1>
+  </body>
+</html>
+```
+
+## Menggunakan Komponen
+
+Komponen Astro sangat powerful dan fleksibel:
+
+```astro
+---
+// src/components/Card.astro
+interface Props {
+  title: string;
+  body: string;
+}
+
+const { title, body } = Astro.props;
+---
+
+<div class="card">
+  <h2>{title}</h2>
+  <p>{body}</p>
+</div>
+
+<style>
+  .card {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+</style>
+```
+
+## Kesimpulan
+
+Astro adalah pilihan yang sangat baik untuk membangun website modern, terutama situs yang berfokus pada konten seperti blog, dokumentasi, dan situs marketing. Pendekatannya yang unik terhadap JavaScript, dikombinasikan dengan pengalaman developer yang sangat baik, menjadikannya alat yang powerful dalam arsenal setiap web developer.
+
+Nantikan tutorial dan tips Astro lainnya! 

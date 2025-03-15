@@ -1,0 +1,34 @@
+---
+import BlogIndex from '../../layouts/BlogIndex.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog-en');
+
+// Sort posts by date
+const sortedPosts = posts.sort((a, b) => b.data.created_at.valueOf() - a.data.created_at.valueOf());
+
+// Get categories and count
+const categories = [...new Set(posts.map(post => post.data.category))].map(category => ({
+    name: category,
+    count: posts.filter(post => post.data.category === category).length
+}));
+
+const title = "Blog";
+const description = "Explore my thoughts, experiences, and insights on software development, technology, and more.";
+---
+
+<BlogIndex
+    title={title}
+    description={description}
+    lang="en"
+    posts={sortedPosts}
+    categories={categories}
+    pagination={{
+        currentPage: 1,
+        totalPages: 1,
+        url: {
+            prev: undefined,
+            next: undefined
+        }
+    }}
+/> 

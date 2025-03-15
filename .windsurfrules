@@ -1,0 +1,59 @@
+# General Code Style & Formatting
+- Follow the Airbnb Style Guide for code formatting.
+- Use PascalCase for React component file names (e.g., UserCard.tsx, not user-card.tsx).
+- Prefer named exports for components.
+- Use `.astro` files for page layouts and UI components where applicable.
+- Use `.tsx` files for React-based components.
+- Ensure i18n support by following the Astro i18n configuration.
+
+# Project Structure & Architecture
+- Follow the Astro project structure.
+- Use the `src/pages` directory for routing.
+- Place reusable components inside `src/components`.
+- Store global styles in `src/assets/global.css`.
+- Use `astro.config.mjs` for site-wide configuration.
+- Integrate MDX and Markdoc for content management.
+
+# Styling & UI
+- Use Tailwind CSS for styling.
+- Use DaisyUI as the main UI component library.
+- Use `tailwind-merge` and `clsx` for conditional styling.
+- Maintain theme-based color definitions in `global.css`.
+- Ensure dark mode compatibility using Tailwind’s dark mode.
+- Use `astro-icon` for icons.
+- Use `tailwindcss-animate` for animations.
+- Use `@tailwindcss/typography` for typography.
+- Use `daisyui` for dark mode support.
+- Use `@tailwindcss/aspect-ratio` for aspect ratio support.
+- Never generate tailwind.config.*
+- Use only the Tailwind CSS v5 above. look https://tailwindcss.com/docs/upgrade-guide
+
+
+# Data Fetching & Forms
+- Use Astro’s built-in data fetching when possible.
+- Use React Query (TanStack Query) only within client-side React components.
+- Use React Hook Form for form handling.
+- Use Zod for validation.
+
+# State Management & Logic
+- Use React Context for state management inside React components.
+- Use Astro’s built-in reactivity for static pages.
+
+# Backend & Database
+- If a backend is needed, integrate it using API routes or external services.
+- Use Prisma for database access if required.
+
+# SEO & Performance
+- Use `@astrojs/sitemap` for automatic sitemap generation.
+- Use `@astrojs/prefetch` for optimizing navigation performance.
+- Optimize images and assets for better load times.
+- Use `@astrojs/partytown` for improving third-party script performance.
+
+# Internationalization (i18n)
+- Follow the i18n configuration in `astro.config.mjs`.
+- Use `en` as the default locale and support `id` as an additional locale.
+- Ensure all pages and components handle language switching correctly.
+
+# Experimental Features
+- Enable SVG support using Astro’s experimental features.
+- Use `@astrojs/react` for integrating React components when necessary.

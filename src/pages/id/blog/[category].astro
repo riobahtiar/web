@@ -1,0 +1,53 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BlogIndex from '../../../layouts/BlogIndex.astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog-id');
+  
+  // Get all categories
+  const categories = [...new Set(posts.map(post => post.data.category))];
+  
+  // Return a route for each category
+  return categories.map(category => {
+    return {
+      params: { category },
+      props: { category }
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { category } = Astro.props;
+
+const posts = await getCollection('blog-id');
+const sortedPosts = posts
+  .filter(post => post.data.category === category)
+  .sort((a, b) => b.data.created_at.valueOf() - a.data.created_at.valueOf());
+
+// Get categories and count for sidebar
+const allCategories = [...new Set(posts.map(post => post.data.category))].map(cat => ({
+  name: cat,
+  count: posts.filter(post => post.data.category === cat).length
+}));
+
+const title = `Kategori: ${category}`;
+const description = `Jelajahi semua artikel dalam kategori ${category}`;
+---
+
+<BlogIndex
+    title={title}
+    description={description}
+    lang="id"
+    posts={sortedPosts}
+    categories={allCategories}
+    currentCategory={category}
+    pagination={{
+        currentPage: 1,
+        totalPages: 1,
+        url: {
+            prev: undefined,
+            next: undefined
+        }
+    }}
+/> 

@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths, Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import BlogIndex from '../../../layouts/BlogIndex.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+    page: Page<CollectionEntry<'blog-id'>>;
+    categories: {
+        name: string;
+        count: number;
+    }[];
+}
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+    const posts = await getCollection('blog-id');
+
+    // Sort posts by date
+    const sortedPosts = posts.sort((a, b) => b.data.created_at.valueOf() - a.data.created_at.valueOf());
+
+    // Get categories and count
+    const categories = [...new Set(posts.map(post => post.data.category))].map(category => ({
+        name: category,
+        count: posts.filter(post => post.data.category === category).length
+    }));
+
+    return paginate(sortedPosts, {
+        pageSize: 10,
+        props: { categories }
+    });
+};
+
+const { page, categories } = Astro.props;
+const title = "Blog";
+const description = "Jelajahi pemikiran, pengalaman, dan wawasan saya tentang pengembangan perangkat lunak, teknologi, dan lainnya.";
+---
+
+<BlogIndex
+    title={title}
+    description={description}
+    lang="id"
+    posts={page.data}
+    categories={categories}
+    pagination={{
+        currentPage: page.currentPage,
+        totalPages: page.lastPage,
+        url: {
+            prev: page.url.prev,
+            next: page.url.next
+        }
+    }}
+/> 

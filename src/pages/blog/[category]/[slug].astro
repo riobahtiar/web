@@ -1,0 +1,43 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BlogPost from '../../../layouts/BlogPost.astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog-en');
+  
+  return posts.map(post => {
+    // Extract the actual slug without the category prefix
+    let cleanSlug = post.slug;
+    // Remove the category prefix if it exists in the slug
+    if (cleanSlug.startsWith(post.data.category + '/')) {
+      cleanSlug = cleanSlug.substring(post.data.category.length + 1);
+    }
+    
+    return {
+      params: { 
+        category: post.data.category,
+        slug: cleanSlug
+      },
+      props: { post }
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<BlogPost
+  title={post.data.title}
+  description={post.data.description}
+  created_at={post.data.created_at}
+  modified_at={post.data.modified_at}
+  image={post.data.image}
+  category={post.data.category}
+  tags={post.data.tags}
+  author={post.data.author}
+  lang="en"
+>
+  <Content />
+</BlogPost> 
