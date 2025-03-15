@@ -1,7 +1,7 @@
 {
   "name": "astro-rio",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -9,18 +9,30 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/markdoc": "^0.12.10",
-    "@astrojs/mdx": "^4.1.0",
+    "@astrojs/markdoc": "^0.12.11",
+    "@astrojs/mdx": "^4.1.1",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/prefetch": "^0.4.1",
+    "@astrojs/react": "^4.2.1",
     "@astrojs/sitemap": "^3.2.1",
     "@iconify-json/tabler": "^1.2.17",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.1.3",
     "@tailwindcss/vite": "^4.0.12",
-    "astro": "^5.4.2",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "astro": "^5.4.3",
     "astro-icon": "^1.1.5",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "daisyui": "^5.0.0",
+    "lucide-react": "^0.482.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "sass": "^1.85.1",
-    "tailwindcss": "^4.0.12"
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.12",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16"

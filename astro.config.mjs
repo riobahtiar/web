@@ -12,6 +12,8 @@ import markdoc from "@astrojs/markdoc";
 
 import mdx from "@astrojs/mdx";
 
+import react from "@astrojs/react";
+
 export default defineConfig({
   vite: {
       plugins: [tailwindcss()],
@@ -29,7 +31,7 @@ export default defineConfig({
       }
   },
 
-  integrations: [icon(), partytown(), sitemap(), markdoc(), mdx()],
+  integrations: [icon(), partytown(), sitemap(), markdoc(), mdx(), react()],
   experimental: {
     svg: true,
   },
