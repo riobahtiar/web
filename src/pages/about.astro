@@ -29,13 +29,13 @@ const meta = {
 >
     <article class="prose prose-lg md:prose-xl mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-3xl">
         <!-- Cover Image -->
-        <div class="relative w-full aspect-[21/9] mb-8 rounded-lg overflow-hidden bg-base-200">
-            <img
+        <div class="relative h-auto w-full mb-8 rounded-lg overflow-hidden bg-base-200">
+            <Image
                 src="/smc.jpg"
                 alt="Cover Image"
-                class="object-cover w-full h-full"
-                width="1200"
-                height="630"
+                class="h-auto w-full object-fill"
+                width={900}
+                height={1000}
                 loading="eager"
             />
         </div>

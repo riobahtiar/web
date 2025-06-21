@@ -1,0 +1,110 @@
+---
+title: "Hello World"
+description: "Learn how to build lightning-fast websites with Astro, a modern static site generator that lets you use your favorite JavaScript frameworks while shipping zero JavaScript by default."
+created_at: 2024-03-09
+modified_at: 2024-03-09
+category: "thought"
+tags: ["astro", "javascript", "thought", "static-site-generator"]
+author:
+  name: "Rio X"
+  image: "/authors/rio.jpg"
+  bio: "Full Stack Developer & Tech Enthusiast"
+image: "/blog/astro-intro.jpg"
+---
+
+# Getting Started with Astro
+
+Astro is a modern static site generator that allows you to build lightning-fast websites using your favorite JavaScript frameworks while shipping zero JavaScript by default.
+
+## Why Astro?
+
+Astro stands out from other static site generators for several reasons:
+
+1. **Component Islands**: Use React, Vue, Svelte, or any other framework components where needed
+2. **Zero JavaScript by Default**: Ship no JavaScript to the client unless necessary
+3. **Excellent Developer Experience**: Hot module reloading, TypeScript support, and more
+4. **Powerful Content Collections**: First-class support for content management
+
+## Setting Up Your First Astro Project
+
+Getting started with Astro is straightforward. Here's how:
+
+```bash
+# Create a new project with npm
+npm create astro@latest
+
+# Or with pnpm
+pnpm create astro@latest
+
+# Or with yarn
+yarn create astro
+```
+
+## Project Structure
+
+A typical Astro project structure looks like this:
+
+```
+├── src/
+│   ├── components/
+│   ├── layouts/
+│   ├── pages/
+│   └── styles/
+├── public/
+├── astro.config.mjs
+└── package.json
+```
+
+## Building Pages
+
+In Astro, pages can be created using `.astro`, `.md`, `.mdx`, or even `.html` files:
+
+```astro
+---
+// src/pages/index.astro
+---
+
+<html lang="en">
+  <head>
+    <title>My Astro Site</title>
+  </head>
+  <body>
+    <h1>Welcome to Astro!</h1>
+  </body>
+</html>
+```
+
+## Using Components
+
+Astro components are powerful and flexible:
+
+```astro
+---
+// src/components/Card.astro
+interface Props {
+  title: string;
+  body: string;
+}
+
+const { title, body } = Astro.props;
+---
+
+<div class="card">
+  <h2>{title}</h2>
+  <p>{body}</p>
+</div>
+
+<style>
+  .card {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+</style>
+```
+
+## Conclusion
+
+Astro is an excellent choice for building modern websites, especially content-focused sites like blogs, documentation, and marketing sites. Its unique approach to JavaScript, combined with its excellent developer experience, makes it a powerful tool in any web developer's arsenal.
+
+Stay tuned for more Astro tutorials and tips! 

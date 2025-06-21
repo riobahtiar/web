@@ -1,7 +1,7 @@
 {
   "name": "astro-rio",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -9,18 +9,38 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.0",
+    "@astrojs/markdoc": "^0.15.0",
+    "@astrojs/mdx": "^4.3.0",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/prefetch": "^0.4.1",
-    "@astrojs/sitemap": "^3.2.1",
-    "@iconify-json/tabler": "^1.2.17",
-    "@tailwindcss/vite": "^4.0.12",
-    "astro": "^5.4.2",
+    "@astrojs/react": "^4.3.0",
+    "@astrojs/sitemap": "^3.4.1",
+    "@iconify-json/tabler": "^1.2.19",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.12",
+    "@tailwindcss/vite": "^4.1.10",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "astro": "^5.10.0",
     "astro-icon": "^1.1.5",
-    "daisyui": "^5.0.0",
-    "sass": "^1.85.1",
-    "tailwindcss": "^4.0.12"
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "daisyui": "^5.0.43",
+    "lucide-react": "^0.488.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sass": "^1.89.2",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.10",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16"
-  }
+    "@tailwindcss/typography": "^0.5.16",
+    "wrangler": "^4.20.5"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher",
+    "@tailwindcss/oxide"
+  ]
 }

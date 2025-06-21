@@ -1,0 +1,105 @@
+---
+import Layout from './Layout.astro';
+import { Image } from 'astro:assets';
+import { formatDate } from '../utils/date';
+
+interface Props {
+    title: string;
+    description: string;
+    created_at: Date;
+    modified_at: Date;
+    image?: string;
+    category: string;
+    tags: string[];
+    lang: string;
+    author: {
+        name: string;
+        image: string;
+        bio: string;
+    };
+}
+
+const { 
+    title, 
+    description, 
+    created_at, 
+    modified_at,
+    image, 
+    category,
+    tags,
+    lang,
+    author
+} = Astro.props;
+
+const formattedDate = formatDate(created_at, lang);
+const formattedModifiedDate = formatDate(modified_at, lang);
+---
+
+<Layout title={title} description={description} lang={lang}>
+    <article class="prose prose-lg max-w-4xl mx-auto px-4 py-12">
+        <!-- Article Header -->
+        <header>
+            <div class="flex items-center gap-4 mb-4">
+                <a href={`/${lang === 'en' ? '' : 'id/'}blog/${category}`} class="hover:text-primary transition-colors">
+                    {category}
+                </a>
+                <span>•</span>
+                <time datetime={created_at.toISOString()}>{formattedDate}</time>
+            </div>
+            
+            <h1>{title}</h1>
+            
+            <p class="lead">{description}</p>
+
+            <!-- Author Info -->
+            <div class="flex items-center gap-4 not-prose">
+                <Image
+                    src={author.image}
+                    alt={author.name}
+                    width={48}
+                    height={48}
+                    class="rounded-full"
+                />
+                <div>
+                    <div class="font-medium">{author.name}</div>
+                    <div class="text-sm">{author.bio}</div>
+                </div>
+            </div>
+
+            {image && (
+                <div class="relative aspect-[2/1] not-prose">
+                    <Image
+                        src={image}
+                        alt={title}
+                        class="rounded-xl object-cover"
+                        width={1200}
+                        height={600}
+                    />
+                </div>
+            )}
+        </header>
+
+        <slot />
+
+        <!-- Article Footer -->
+        <footer class="not-prose mt-12 pt-8 border-t border-base-200">
+            <div class="flex flex-wrap gap-2 mb-6">
+                {tags.map(tag => (
+                    <a
+                        href={`/${lang === 'en' ? '' : 'id/'}blog/tag/${tag}`}
+                        class="px-3 py-1 bg-base-200 hover:bg-base-300 rounded-full text-sm transition-colors"
+                    >
+                        #{tag}
+                    </a>
+                ))}
+            </div>
+
+            {modified_at > created_at && (
+                <p class="text-sm">
+                    {lang === 'en' ? 'Last updated: ' : 'Terakhir diperbarui: '}
+                    <time datetime={modified_at.toISOString()}>{formattedModifiedDate}</time>
+                </p>
+            )}
+        </footer>
+    </article>
+</Layout> 

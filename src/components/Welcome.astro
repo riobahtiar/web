@@ -63,13 +63,13 @@ const alternateLanguage = lang === 'en' ? 'Bahasa Indonesia' : 'English';
                 </div>
                 <div class="flex flex-wrap gap-2">
                     <a 
-                        href={`/${lang === 'en' ? '' : 'id/'}work`} 
+                        href={`/${lang === 'en' ? '' : 'id/'}services`} 
                         class="btn btn-primary hover:scale-105 transition-transform duration-300"
                     >
                         {i18n.welcome.viewWork}
                     </a>
                     <a 
-                        href="#contact" 
+                        href={`/${lang === 'en' ? '' : 'id/'}contact`} 
                         class="btn btn-outline btn-primary hover:scale-105 transition-transform duration-300"
                     >
                         {i18n.welcome.contactMe}

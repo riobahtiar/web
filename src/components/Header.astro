@@ -13,6 +13,8 @@ interface Props {
             projects: string;
             contact: string;
             work: string;
+            blog: string;
+            comingSoon: string;
         };
         footer: {
             darkMode: string;
@@ -31,6 +33,18 @@ const alternateLanguage = lang === 'en' ? 'Bahasa Indonesia' : 'English';
 
 // Homepage URL based on language
 const homeUrl = lang === 'en' ? '/' : '/id/';
+
+// Check if current page is active
+const isActive = (path: string) => {
+    if (path === '#projects') return false; // Projects is an anchor, not a page
+    if (path === homeUrl) return currentPath === homeUrl;
+    return currentPath.startsWith(path);
+};
+
+// Define URLs for each page
+const aboutUrl = `/${lang === 'en' ? '' : 'id/'}about`;
+const servicesUrl = lang === 'en' ? '/services' : '/id/services';
+const contactUrl = `/${lang === 'en' ? '' : 'id/'}contact`;
 ---
 
 <header id="main-header" class="fixed top-0 left-0 right-0 z-40 bg-base-100/80 backdrop-blur-sm border-b border-base-200 transition-all duration-300">
@@ -58,10 +72,14 @@ const homeUrl = lang === 'en' ? '/' : '/id/';
         
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1 gap-2">
-                <li><a href={`/${lang === 'en' ? '' : 'id/'}about`}>{i18n.nav.about}</a></li>
-                <li><a href="#projects">{i18n.nav.projects}</a></li>
-                <li><a href="#contact">{i18n.nav.contact}</a></li>
-                <li><a href={lang === 'en' ? '/work' : '/id/work'} class="text-primary font-medium">{i18n.nav.work}</a></li>
+                <li><a href={aboutUrl} class={isActive(aboutUrl) ? "active font-medium" : ""}>{i18n.nav.about}</a></li>
+                <li><a href={servicesUrl} class={isActive(servicesUrl) ? "active font-medium" : ""}>{i18n.nav.work}</a></li>
+                <li>
+                    <div class="tooltip tooltip-bottom" data-tip={i18n.nav.comingSoon}>
+                        <a class="opacity-50 cursor-not-allowed">{i18n.nav.blog}</a>
+                    </div>
+                </li>
+                <li><a href={contactUrl} class={isActive(contactUrl) ? "active font-medium" : ""}>{i18n.nav.contact}</a></li>
             </ul>
         </div>
         
@@ -112,10 +130,14 @@ const homeUrl = lang === 'en' ? '/' : '/id/';
                         <Icon name="tabler:menu" class="w-5 h-5" />
                     </button>
                     <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52">
-                        <li><a href={`/${lang === 'en' ? '' : 'id/'}about`}>{i18n.nav.about}</a></li>
-                        <li><a href="#projects">{i18n.nav.projects}</a></li>
-                        <li><a href="#contact">{i18n.nav.contact}</a></li>
-                        <li><a href={lang === 'en' ? '/work' : '/id/work'} class="text-primary font-medium">{i18n.nav.work}</a></li>
+                        <li><a href={aboutUrl} class={isActive(aboutUrl) ? "active font-medium" : ""}>{i18n.nav.about}</a></li>
+                        <li><a href={servicesUrl} class={isActive(servicesUrl) ? "active font-medium" : ""}>{i18n.nav.work}</a></li>
+                        <li>
+                            <div class="tooltip tooltip-left" data-tip={i18n.nav.comingSoon}>
+                                <a class="opacity-50 cursor-not-allowed">{i18n.nav.blog}</a>
+                            </div>
+                        </li>
+                        <li><a href={contactUrl} class={isActive(contactUrl) ? "active font-medium" : ""}>{i18n.nav.contact}</a></li>
                         <div class="divider my-1"></div>
                         <li class="sm:hidden">
                             <a href="https://go.rio.my.id/g">
@@ -146,6 +168,12 @@ const homeUrl = lang === 'en' ? '/' : '/id/';
 <div id="header-spacer" class="h-16 transition-all duration-300"></div>
 
 <style>
+    /* Active link styling */
+    .menu a.active {
+        background-color: hsl(var(--p) / 0.1);
+        color: hsl(var(--p));
+    }
+    
     /* Logo animations and theme-based visibility */
     .logo-light,
     .logo-dark {
@@ -155,23 +183,23 @@ const homeUrl = lang === 'en' ? '/' : '/id/';
     }
 
     /* Light theme */
-    :root[data-theme="acid"] .logo-light {
+    :root[data-theme="light"] .logo-light {
         opacity: 1;
         visibility: visible;
     }
 
-    :root[data-theme="acid"] .logo-dark {
+    :root[data-theme="light"] .logo-dark {
         opacity: 0;
         visibility: hidden;
     }
 
     /* Dark theme */
-    :root[data-theme="dracula"] .logo-dark {
+    :root[data-theme="dark"] .logo-dark {
         opacity: 1;
         visibility: visible;
     }
 
-    :root[data-theme="dracula"] .logo-light {
+    :root[data-theme="dark"] .logo-light {
         opacity: 0;
         visibility: hidden;
     }
@@ -202,15 +230,22 @@ const homeUrl = lang === 'en' ? '/' : '/id/';
         if (!themeToggle) return;
         
         // Set initial state based on current theme
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'acid';
-        themeToggle.checked = currentTheme === 'dracula';
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        themeToggle.checked = currentTheme === 'dark';
         
         // Add click event listener
         themeToggle.addEventListener('change', function(e) {
             if (e.target && 'checked' in e.target) {
-                const newTheme = e.target.checked ? 'dracula' : 'acid';
+                const newTheme = e.target.checked ? 'dark' : 'light';
                 document.documentElement.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
+                
+                // Also update dark class for Tailwind dark mode
+                if (newTheme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
             }
         });
     }
@@ -244,14 +279,14 @@ const homeUrl = lang === 'en' ? '/' : '/id/';
 
 <script>
     function updateLogoVisibility() {
-        const theme = document.documentElement.getAttribute('data-theme') || 'acid';
+        const theme = document.documentElement.getAttribute('data-theme') || 'light';
         const lightLogo = document.querySelector('.logo-light');
         const darkLogo = document.querySelector('.logo-dark');
         
         if (!lightLogo || !darkLogo) return;
 
         // Add display classes based on theme
-        if (theme === 'dracula') {
+        if (theme === 'dark') {
             lightLogo.classList.remove('opacity-100', 'visible');
             lightLogo.classList.add('opacity-0', 'invisible');
             darkLogo.classList.remove('opacity-0', 'invisible');

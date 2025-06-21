@@ -32,7 +32,7 @@ const alternateEN = canonicalURL ? canonicalURL.replace('/id/', '/') : '/';
 const alternateID = canonicalURL ? (canonicalURL === '/' ? '/id/' : canonicalURL.replace('/', '/id/')) : '/id/';
 ---
 <!doctype html>
-<html lang={lang} class="transition-colors duration-300">
+<html lang={lang} class="transition-colors duration-300" data-theme="light">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width"/>
@@ -67,9 +67,9 @@ const alternateID = canonicalURL ? (canonicalURL === '/' ? '/id/' : canonicalURL
     <meta property="twitter:description" content={description}/>
     <meta property="twitter:image" content={Astro.site ? new URL(image, Astro.site).toString() : image}/>
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#1EA1F1">
-    <meta name="msapplication-TileColor" content="#1EA1F1">
+    <!-- Theme Color - Using our primary color -->
+    <meta name="theme-color" content="oklch(0.72 0.25 142.53)">
+    <meta name="msapplication-TileColor" content="oklch(0.72 0.25 142.53)">
     
     <!-- Google Analytics -->
     <script type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-H970X85M9S"></script>
@@ -108,10 +108,17 @@ const alternateID = canonicalURL ? (canonicalURL === '/' ? '/id/' : canonicalURL
         // Get theme from localStorage or system preference
         const savedTheme = localStorage.getItem('theme');
         const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = savedTheme || (systemDarkMode ? 'dracula' : 'acid');
+        const theme = savedTheme || (systemDarkMode ? 'dark' : 'light');
         
         // Apply theme
         document.documentElement.setAttribute('data-theme', theme);
+        
+        // Also add dark class for Tailwind dark mode
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
     })();
 </script>
 
