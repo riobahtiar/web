@@ -26,7 +26,9 @@
 - Use `daisyui` for dark mode support.
 - Use `@tailwindcss/aspect-ratio` for aspect ratio support.
 - Never generate tailwind.config.*
-- Use only the Tailwind CSS v5 above. look https://tailwindcss.com/docs/upgrade-guide
+- Use only the Tailwind CSS v4 above. look https://tailwindcss.com/docs/upgrade-guide
+- Use only the DaisyUI v5 above. look https://daisyui.com/docs/upgrade/
+- Use only the Shadcn UI Canary above. look https://ui.shadcn.com/docs/tailwind-v4
 
 
 # Data Fetching & Forms

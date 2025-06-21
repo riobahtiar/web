@@ -3,15 +3,18 @@
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
 @plugin "daisyui" {
-    themes: acid --default, dracula --prefersdark;
+    themes: false;
 }
 
 @plugin "tailwindcss-animate";
 
-[data-theme="acid"] {
-    --color-primary: #1EA1F1;
+/* Primary color definition - single source of truth */
+:root {
+    /* Base color - used by all frameworks */
+    --color-primary-base: oklch(0.72 0.25 142.53);
 }
 
+/* Light mode - ShadCN UI variables */
 :root {
     --radius: 0.625rem;
     --background: oklch(1 0 0);
@@ -20,7 +23,7 @@
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
+    --primary: var(--color-primary-base);
     --primary-foreground: oklch(0.985 0 0);
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
@@ -39,23 +42,42 @@
     --chart-5: oklch(0.769 0.188 70.08);
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary: var(--color-primary-base);
     --sidebar-primary-foreground: oklch(0.985 0 0);
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    
+    /* DaisyUI specific variables - light mode */
+    --p: var(--color-primary-base); /* primary */
+    --pc: var(--primary-foreground); /* primary content */
+    --s: var(--secondary); /* secondary */
+    --sc: var(--secondary-foreground); /* secondary content */
+    --a: var(--accent); /* accent */
+    --ac: var(--accent-foreground); /* accent content */
+    --n: oklch(0.3 0 0); /* neutral */
+    --nc: oklch(0.985 0 0); /* neutral content */
+    --b1: var(--background); /* base-100 */
+    --b2: oklch(0.95 0 0); /* base-200 */
+    --b3: oklch(0.9 0 0); /* base-300 */
+    --bc: var(--foreground); /* base content */
+    --in: oklch(0.65 0.2 240); /* info */
+    --su: oklch(0.65 0.2 160); /* success */
+    --wa: oklch(0.65 0.2 80); /* warning */
+    --er: oklch(0.65 0.2 30); /* error */
 }
 
-.dark {
+/* Dark mode - ShadCN UI variables */
+.dark, :root[data-theme="dark"] {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);
     --popover: oklch(0.205 0 0);
     --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
+    --primary: var(--color-primary-base);
+    --primary-foreground: oklch(0.985 0 0);
     --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);
@@ -73,14 +95,33 @@
     --chart-5: oklch(0.645 0.246 16.439);
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary: var(--color-primary-base);
     --sidebar-primary-foreground: oklch(0.985 0 0);
     --sidebar-accent: oklch(0.269 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+    
+    /* DaisyUI specific variables - dark mode */
+    --p: var(--color-primary-base); /* primary */
+    --pc: var(--primary-foreground); /* primary content */
+    --s: var(--secondary); /* secondary */
+    --sc: var(--secondary-foreground); /* secondary content */
+    --a: var(--accent); /* accent */
+    --ac: var(--accent-foreground); /* accent content */
+    --n: oklch(0.3 0 0); /* neutral */
+    --nc: oklch(0.985 0 0); /* neutral content */
+    --b1: var(--background); /* base-100 */
+    --b2: oklch(0.18 0 0); /* base-200 */
+    --b3: oklch(0.22 0 0); /* base-300 */
+    --bc: var(--foreground); /* base content */
+    --in: oklch(0.65 0.2 240); /* info */
+    --su: oklch(0.65 0.2 160); /* success */
+    --wa: oklch(0.65 0.2 80); /* warning */
+    --er: oklch(0.65 0.2 30); /* error */
 }
 
+/* Shared variables for all frameworks */
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);

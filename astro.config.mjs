@@ -14,6 +14,8 @@ import mdx from "@astrojs/mdx";
 
 import react from "@astrojs/react";
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   vite: {
       plugins: [tailwindcss()],
@@ -32,7 +34,10 @@ export default defineConfig({
   },
 
   integrations: [icon(), partytown(), sitemap(), markdoc(), mdx(), react()],
-  experimental: {
-    svg: true,
+
+  image: {
+    responsiveStyles: true,
   },
+
+  adapter: cloudflare(),
 });
