@@ -6,6 +6,11 @@ compatibility_flags = ["nodejs_compat_v2"]
 [site]
 bucket = "dist"
 
+[[assets]]
+binding = "ASSETS"
+bucket = "dist"
+serve_single_page_app = false
+
 # wrangler.toml (wrangler v3.88.0^)
 [observability.logs]
 enabled = true
