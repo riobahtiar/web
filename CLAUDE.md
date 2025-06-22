@@ -31,3 +31,10 @@
 - Content in both English (en) and Indonesian (id)
 - Default locale is "en" (non-prefixed paths)
 - Indonesian content uses "/id" path prefix
+
+## Deployment
+
+- Use the official "@astrojs/cloudflare" adapter (check astro.config)
+- Configure build and deploy in `package.json` scripts
+- Refer to the latest Cloudflare and Astro docs for setup/CLI usage
+- Ensure Wrangler or Cloudflare Pages settings match project requirements
