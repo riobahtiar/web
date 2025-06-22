@@ -39,5 +39,10 @@ export default defineConfig({
     responsiveStyles: true,
   },
 
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'cloudflare',
+    platformProxy: {
+      enabled: true,
+    },
+  }),
 });
