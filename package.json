@@ -45,6 +45,9 @@
     "prettier-plugin-tailwindcss": "0.6.13",
     "wrangler": "^4.20.5"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.34.9"
+  },
   "trustedDependencies": [
     "@parcel/watcher",
     "@tailwindcss/oxide"
