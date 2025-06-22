@@ -1,178 +1,193 @@
 ---
-import Layout from './Layout.astro';
-import { Image } from 'astro:assets';
-import { formatDate } from '../utils/date';
+import Layout from "./Layout.astro";
+import { Image } from "astro:assets";
+import { formatDate } from "../utils/date";
 
 interface BlogPost {
-    slug: string;
-    data: {
-        title: string;
-        description: string;
-        created_at: Date;
-        image?: string;
-        category: string;
-        tags: string[];
-        author: {
-            name: string;
-            image: string;
-        };
+  slug: string;
+  data: {
+    title: string;
+    description: string;
+    created_at: Date;
+    image?: string;
+    category: string;
+    tags: string[];
+    author: {
+      name: string;
+      image: string;
     };
+  };
 }
 
 interface Props {
-    title: string;
-    description: string;
-    lang: string;
-    posts: BlogPost[];
-    categories?: { name: string; count: number }[];
-    currentCategory?: string;
-    pagination: {
-        currentPage: number;
-        totalPages: number;
-        url: {
-            prev?: string;
-            next?: string;
-        };
+  title: string;
+  description: string;
+  lang: string;
+  posts: BlogPost[];
+  categories?: { name: string; count: number }[];
+  currentCategory?: string;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    url: {
+      prev?: string;
+      next?: string;
     };
+  };
 }
 
-const { 
-    title, 
-    description, 
-    lang,
-    posts,
-    categories,
-    currentCategory,
-    pagination
+const {
+  title,
+  description,
+  lang,
+  posts,
+  categories,
+  currentCategory,
+  pagination,
 } = Astro.props;
 
-const baseUrl = `/${lang === 'en' ? '' : 'id/'}blog`;
+const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
 ---
 
 <Layout title={title} description={description} lang={lang}>
-    <main class="prose prose-lg max-w-7xl mx-auto px-4 py-12">
-        <div class="flex flex-col lg:flex-row gap-12 not-prose">
-            <!-- Main Content -->
-            <div class="flex-1">
-                <header>
-                    <h1>{title}</h1>
-                    <p class="lead">{description}</p>
-                </header>
+  <main class="prose prose-lg mx-auto max-w-7xl px-4 py-12">
+    <div class="not-prose flex flex-col gap-12 lg:flex-row">
+      <!-- Main Content -->
+      <div class="flex-1">
+        <header>
+          <h1>{title}</h1>
+          <p class="lead">{description}</p>
+        </header>
 
-                <!-- Posts Grid -->
-                <div class="grid gap-12">
-                    {posts.map(post => {
-                        // Clean the slug to remove category prefix if needed
-                        let cleanSlug = post.slug;
-                        if (cleanSlug.startsWith(post.data.category + '/')) {
-                            cleanSlug = cleanSlug.substring(post.data.category.length + 1);
-                        }
-                        
-                        return (
-                            <article class="grid md:grid-cols-3 gap-8">
-                                {post.data.image && (
-                                    <a href={`${baseUrl}/${post.data.category}/${cleanSlug}`} class="block md:col-span-1">
-                                        <div class="aspect-[16/9] relative rounded-xl overflow-hidden">
-                                            <Image
-                                                src={post.data.image}
-                                                alt={post.data.title}
-                                                class="object-cover transition-transform hover:scale-105 duration-300"
-                                                width={400}
-                                                height={225}
-                                            />
-                                        </div>
-                                    </a>
-                                )}
-                                
-                                <div class={post.data.image ? "md:col-span-2" : "md:col-span-3"}>
-                                    <div class="flex items-center gap-4 mb-3">
-                                        <a href={`${baseUrl}/${post.data.category}`} class="hover:text-primary transition-colors">
-                                            {post.data.category}
-                                        </a>
-                                        <span>•</span>
-                                        <time datetime={post.data.created_at.toISOString()}>
-                                            {formatDate(post.data.created_at, lang)}
-                                        </time>
-                                    </div>
+        <!-- Posts Grid -->
+        <div class="grid gap-12">
+          {
+            posts.map((post) => {
+              // Clean the slug to remove category prefix if needed
+              let cleanSlug = post.slug;
+              if (cleanSlug.startsWith(post.data.category + "/")) {
+                cleanSlug = cleanSlug.substring(post.data.category.length + 1);
+              }
 
-                                    <h2 class="!mt-0 !mb-3">
-                                        <a href={`${baseUrl}/${post.data.category}/${cleanSlug}`} class="hover:text-primary transition-colors">
-                                            {post.data.title}
-                                        </a>
-                                    </h2>
+              return (
+                <article class="grid gap-8 md:grid-cols-3">
+                  {post.data.image && (
+                    <a
+                      href={`${baseUrl}/${post.data.category}/${cleanSlug}`}
+                      class="block md:col-span-1"
+                    >
+                      <div class="relative aspect-[16/9] overflow-hidden rounded-xl">
+                        <Image
+                          src={post.data.image}
+                          alt={post.data.title}
+                          class="object-cover transition-transform duration-300 hover:scale-105"
+                          width={400}
+                          height={225}
+                        />
+                      </div>
+                    </a>
+                  )}
 
-                                    <p class="!mt-0 line-clamp-2">
-                                        {post.data.description}
-                                    </p>
-
-                                    <div class="flex items-center gap-3">
-                                        <Image
-                                            src={post.data.author.image}
-                                            alt={post.data.author.name}
-                                            width={32}
-                                            height={32}
-                                            class="rounded-full"
-                                        />
-                                        <span>{post.data.author.name}</span>
-                                    </div>
-                                </div>
-                            </article>
-                        );
-                    })}
-                </div>
-
-                <!-- Pagination -->
-                {pagination.totalPages > 1 && (
-                    <div class="flex justify-center gap-2 mt-12">
-                        {pagination.url.prev && (
-                            <a href={pagination.url.prev} class="btn btn-ghost">
-                                ← {lang === 'en' ? 'Previous' : 'Sebelumnya'}
-                            </a>
-                        )}
-                        <span class="btn btn-ghost">
-                            {pagination.currentPage} / {pagination.totalPages}
-                        </span>
-                        {pagination.url.next && (
-                            <a href={pagination.url.next} class="btn btn-ghost">
-                                {lang === 'en' ? 'Next' : 'Selanjutnya'} →
-                            </a>
-                        )}
+                  <div
+                    class={post.data.image ? "md:col-span-2" : "md:col-span-3"}
+                  >
+                    <div class="mb-3 flex items-center gap-4">
+                      <a
+                        href={`${baseUrl}/${post.data.category}`}
+                        class="hover:text-primary transition-colors"
+                      >
+                        {post.data.category}
+                      </a>
+                      <span>•</span>
+                      <time datetime={post.data.created_at.toISOString()}>
+                        {formatDate(post.data.created_at, lang)}
+                      </time>
                     </div>
-                )}
-            </div>
 
-            <!-- Sidebar -->
-            <aside class="lg:w-72 space-y-8">
-                <!-- Categories -->
-                {categories && (
-                    <div class="p-6 bg-base-200 rounded-xl">
-                        <h2 class="!mt-0 !mb-4">
-                            {lang === 'en' ? 'Categories' : 'Kategori'}
-                        </h2>
-                        <ul class="!mt-0 space-y-2">
-                            <li>
-                                <a 
-                                    href={baseUrl}
-                                    class={`block hover:text-primary transition-colors ${!currentCategory ? 'text-primary' : ''}`}
-                                >
-                                    {lang === 'en' ? 'All Posts' : 'Semua Artikel'}
-                                </a>
-                            </li>
-                            {categories.map(category => (
-                                <li>
-                                    <a 
-                                        href={`${baseUrl}/${category.name}`}
-                                        class={`block hover:text-primary transition-colors ${currentCategory === category.name ? 'text-primary' : ''}`}
-                                    >
-                                        {category.name}
-                                        <span> ({category.count})</span>
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
+                    <h2 class="!mt-0 !mb-3">
+                      <a
+                        href={`${baseUrl}/${post.data.category}/${cleanSlug}`}
+                        class="hover:text-primary transition-colors"
+                      >
+                        {post.data.title}
+                      </a>
+                    </h2>
+
+                    <p class="!mt-0 line-clamp-2">{post.data.description}</p>
+
+                    <div class="flex items-center gap-3">
+                      <Image
+                        src={post.data.author.image}
+                        alt={post.data.author.name}
+                        width={32}
+                        height={32}
+                        class="rounded-full"
+                      />
+                      <span>{post.data.author.name}</span>
                     </div>
-                )}
-            </aside>
+                  </div>
+                </article>
+              );
+            })
+          }
         </div>
-    </main>
-</Layout> 
+
+        <!-- Pagination -->
+        {
+          pagination.totalPages > 1 && (
+            <div class="mt-12 flex justify-center gap-2">
+              {pagination.url.prev && (
+                <a href={pagination.url.prev} class="btn btn-ghost">
+                  ← {lang === "en" ? "Previous" : "Sebelumnya"}
+                </a>
+              )}
+              <span class="btn btn-ghost">
+                {pagination.currentPage} / {pagination.totalPages}
+              </span>
+              {pagination.url.next && (
+                <a href={pagination.url.next} class="btn btn-ghost">
+                  {lang === "en" ? "Next" : "Selanjutnya"} →
+                </a>
+              )}
+            </div>
+          )
+        }
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="space-y-8 lg:w-72">
+        <!-- Categories -->
+        {
+          categories && (
+            <div class="bg-base-200 rounded-xl p-6">
+              <h2 class="!mt-0 !mb-4">
+                {lang === "en" ? "Categories" : "Kategori"}
+              </h2>
+              <ul class="!mt-0 space-y-2">
+                <li>
+                  <a
+                    href={baseUrl}
+                    class={`hover:text-primary block transition-colors ${!currentCategory ? "text-primary" : ""}`}
+                  >
+                    {lang === "en" ? "All Posts" : "Semua Artikel"}
+                  </a>
+                </li>
+                {categories.map((category) => (
+                  <li>
+                    <a
+                      href={`${baseUrl}/${category.name}`}
+                      class={`hover:text-primary block transition-colors ${currentCategory === category.name ? "text-primary" : ""}`}
+                    >
+                      {category.name}
+                      <span> ({category.count})</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </main>
+</Layout>

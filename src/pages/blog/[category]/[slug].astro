@@ -1,25 +1,25 @@
 ---
-import type { GetStaticPaths } from 'astro';
-import { getCollection } from 'astro:content';
-import BlogPost from '../../../layouts/BlogPost.astro';
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import BlogPost from "../../../layouts/BlogPost.astro";
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection('blog-en');
-  
-  return posts.map(post => {
+  const posts = await getCollection("blog-en");
+
+  return posts.map((post) => {
     // Extract the actual slug without the category prefix
     let cleanSlug = post.slug;
     // Remove the category prefix if it exists in the slug
-    if (cleanSlug.startsWith(post.data.category + '/')) {
+    if (cleanSlug.startsWith(post.data.category + "/")) {
       cleanSlug = cleanSlug.substring(post.data.category.length + 1);
     }
-    
+
     return {
-      params: { 
+      params: {
         category: post.data.category,
-        slug: cleanSlug
+        slug: cleanSlug,
       },
-      props: { post }
+      props: { post },
     };
   });
 }) satisfies GetStaticPaths;
@@ -40,4 +40,4 @@ const { Content } = await post.render();
   lang="en"
 >
   <Content />
-</BlogPost> 
+</BlogPost>
