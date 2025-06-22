@@ -18,19 +18,19 @@ import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
   vite: {
-      plugins: [tailwindcss()],
+    plugins: [tailwindcss()],
   },
 
   i18n: {
-      defaultLocale: "en",
-      locales: ["en", "id"],
-      routing: {
-          prefixDefaultLocale: false,
-          strategy: "pathname"
-      },
-      fallback: {
-          id: "en"
-      }
+    defaultLocale: "en",
+    locales: ["en", "id"],
+    routing: {
+      prefixDefaultLocale: false,
+      strategy: "pathname",
+    },
+    fallback: {
+      id: "en",
+    },
   },
 
   integrations: [icon(), partytown(), sitemap(), markdoc(), mdx(), react()],

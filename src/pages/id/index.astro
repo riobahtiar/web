@@ -1,12 +1,12 @@
 ---
-import Welcome from '../../components/Welcome.astro';
-import Layout from '../../layouts/Layout.astro';
-import { id } from '../../i18n/id';
+import Welcome from "../../components/Welcome.astro";
+import Layout from "../../layouts/Layout.astro";
+import { id } from "../../i18n/id";
 
 // Set the current language for the page
-const lang = 'id';
+const lang = "id";
 ---
 
 <Layout lang={lang}>
-	<Welcome lang={lang} i18n={id} showClientsSection={false} />
+  <Welcome lang={lang} i18n={id} showClientsSection={false} />
 </Layout>

@@ -1,121 +1,217 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
 interface Props {
-    lang: string;
-    i18n: any;
+  lang: string;
+  i18n: any;
 }
 
 const { lang, i18n } = Astro.props;
 ---
 
-<section class="py-20 relative overflow-hidden">
-    <!-- Background decorative elements -->
-    <div class="absolute inset-0 z-0 opacity-10 dark:opacity-5">
-        <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-primary/30 blur-3xl"></div>
-        <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-secondary/30 blur-3xl"></div>
+<section class="relative overflow-hidden py-20">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 z-0 opacity-10 dark:opacity-5">
+    <div
+      class="bg-primary/30 absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl"
+    >
     </div>
-    
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <!-- Header -->
-        <div class="text-center mb-16">
-            <div class="inline-block mb-4">
-                <div class="relative">
-                    <span class="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-primary/20 rounded-lg transform -rotate-3"></span>
-                    <span class="relative inline-block px-4 py-2 bg-primary text-primary-content rounded-lg font-medium">
-                        {i18n.work.subtitle}
-                    </span>
-                </div>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">{i18n.work.title}</h1>
-            <p class="text-lg md:text-xl text-base-content/80 max-w-3xl mx-auto">{i18n.work.description}</p>
-        </div>
-
-        <!-- Services Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 mb-16 max-w-6xl mx-auto">
-            <!-- Consultation -->
-            <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl transform transition-transform duration-300 group-hover:scale-105"></div>
-                <div class="card bg-base-100 shadow-md border border-base-200 dark:border-base-700 rounded-xl overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 relative z-10">
-                    <div class="card-body p-6">
-                        <div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-5 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                            <Icon name="tabler:message-circle" class="w-8 h-8 text-primary" />
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{i18n.work.services.consultation.title}</h3>
-                        <p class="text-base-content/70">{i18n.work.services.consultation.description}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Website Development -->
-            <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl transform transition-transform duration-300 group-hover:scale-105"></div>
-                <div class="card bg-base-100 shadow-md border border-base-200 dark:border-base-700 rounded-xl overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 relative z-10">
-                    <div class="card-body p-6">
-                        <div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-5 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                            <Icon name="tabler:browser" class="w-8 h-8 text-primary" />
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{i18n.work.services.webDevelopment.title}</h3>
-                        <p class="text-base-content/70">{i18n.work.services.webDevelopment.description}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Website Maintenance -->
-            <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl transform transition-transform duration-300 group-hover:scale-105"></div>
-                <div class="card bg-base-100 shadow-md border border-base-200 dark:border-base-700 rounded-xl overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 relative z-10">
-                    <div class="card-body p-6">
-                        <div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-5 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                            <Icon name="tabler:settings" class="w-8 h-8 text-primary" />
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{i18n.work.services.maintenance.title}</h3>
-                        <p class="text-base-content/70">{i18n.work.services.maintenance.description}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SEO Optimization -->
-            <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl transform transition-transform duration-300 group-hover:scale-105"></div>
-                <div class="card bg-base-100 shadow-md border border-base-200 dark:border-base-700 rounded-xl overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 relative z-10">
-                    <div class="card-body p-6">
-                        <div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-5 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                            <Icon name="tabler:chart-arrows" class="w-8 h-8 text-primary" />
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{i18n.work.services.seo.title}</h3>
-                        <p class="text-base-content/70">{i18n.work.services.seo.description}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- System Design -->
-            <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl transform transition-transform duration-300 group-hover:scale-105"></div>
-                <div class="card bg-base-100 shadow-md border border-base-200 dark:border-base-700 rounded-xl overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 relative z-10">
-                    <div class="card-body p-6">
-                        <div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-5 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                            <Icon name="tabler:topology-star" class="w-8 h-8 text-primary" />
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{i18n.work.services.systemDesign.title}</h3>
-                        <p class="text-base-content/70">{i18n.work.services.systemDesign.description}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Platform Migration -->
-            <div class="group relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl transform transition-transform duration-300 group-hover:scale-105"></div>
-                <div class="card bg-base-100 shadow-md border border-base-200 dark:border-base-700 rounded-xl overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 relative z-10">
-                    <div class="card-body p-6">
-                        <div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-5 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                            <Icon name="tabler:server" class="w-8 h-8 text-primary" />
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{i18n.work.services.platformMigration.title}</h3>
-                        <p class="text-base-content/70">{i18n.work.services.platformMigration.description}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div
+      class="bg-secondary/30 absolute -bottom-24 -left-24 h-96 w-96 rounded-full blur-3xl"
+    >
     </div>
+  </div>
+
+  <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-16 text-center">
+      <div class="mb-4 inline-block">
+        <div class="relative">
+          <span
+            class="bg-primary/20 absolute inset-0 translate-x-1.5 translate-y-1.5 -rotate-3 transform rounded-lg"
+          ></span>
+          <span
+            class="bg-primary text-primary-content relative inline-block rounded-lg px-4 py-2 font-medium"
+          >
+            {i18n.work.subtitle}
+          </span>
+        </div>
+      </div>
+      <h1
+        class="from-primary to-secondary mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+      >
+        {i18n.work.title}
+      </h1>
+      <p class="text-base-content/80 mx-auto max-w-3xl text-lg md:text-xl">
+        {i18n.work.description}
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div
+      class="mx-auto mb-16 grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8"
+    >
+      <!-- Consultation -->
+      <div class="group relative">
+        <div
+          class="from-primary/5 to-secondary/5 absolute inset-0 transform rounded-xl bg-gradient-to-r transition-transform duration-300 group-hover:scale-105"
+        >
+        </div>
+        <div
+          class="card bg-base-100 border-base-200 dark:border-base-700 relative z-10 overflow-hidden rounded-xl border shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
+        >
+          <div class="card-body p-6">
+            <div
+              class="bg-primary/10 dark:bg-primary/20 mb-5 flex h-16 w-16 transform items-center justify-center rounded-full p-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+            >
+              <Icon name="tabler:message-circle" class="text-primary h-8 w-8" />
+            </div>
+            <h3
+              class="group-hover:text-primary mb-3 text-xl font-bold transition-colors duration-300"
+            >
+              {i18n.work.services.consultation.title}
+            </h3>
+            <p class="text-base-content/70">
+              {i18n.work.services.consultation.description}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Website Development -->
+      <div class="group relative">
+        <div
+          class="from-primary/5 to-secondary/5 absolute inset-0 transform rounded-xl bg-gradient-to-r transition-transform duration-300 group-hover:scale-105"
+        >
+        </div>
+        <div
+          class="card bg-base-100 border-base-200 dark:border-base-700 relative z-10 overflow-hidden rounded-xl border shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
+        >
+          <div class="card-body p-6">
+            <div
+              class="bg-primary/10 dark:bg-primary/20 mb-5 flex h-16 w-16 transform items-center justify-center rounded-full p-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+            >
+              <Icon name="tabler:browser" class="text-primary h-8 w-8" />
+            </div>
+            <h3
+              class="group-hover:text-primary mb-3 text-xl font-bold transition-colors duration-300"
+            >
+              {i18n.work.services.webDevelopment.title}
+            </h3>
+            <p class="text-base-content/70">
+              {i18n.work.services.webDevelopment.description}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Website Maintenance -->
+      <div class="group relative">
+        <div
+          class="from-primary/5 to-secondary/5 absolute inset-0 transform rounded-xl bg-gradient-to-r transition-transform duration-300 group-hover:scale-105"
+        >
+        </div>
+        <div
+          class="card bg-base-100 border-base-200 dark:border-base-700 relative z-10 overflow-hidden rounded-xl border shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
+        >
+          <div class="card-body p-6">
+            <div
+              class="bg-primary/10 dark:bg-primary/20 mb-5 flex h-16 w-16 transform items-center justify-center rounded-full p-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+            >
+              <Icon name="tabler:settings" class="text-primary h-8 w-8" />
+            </div>
+            <h3
+              class="group-hover:text-primary mb-3 text-xl font-bold transition-colors duration-300"
+            >
+              {i18n.work.services.maintenance.title}
+            </h3>
+            <p class="text-base-content/70">
+              {i18n.work.services.maintenance.description}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEO Optimization -->
+      <div class="group relative">
+        <div
+          class="from-primary/5 to-secondary/5 absolute inset-0 transform rounded-xl bg-gradient-to-r transition-transform duration-300 group-hover:scale-105"
+        >
+        </div>
+        <div
+          class="card bg-base-100 border-base-200 dark:border-base-700 relative z-10 overflow-hidden rounded-xl border shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
+        >
+          <div class="card-body p-6">
+            <div
+              class="bg-primary/10 dark:bg-primary/20 mb-5 flex h-16 w-16 transform items-center justify-center rounded-full p-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+            >
+              <Icon name="tabler:chart-arrows" class="text-primary h-8 w-8" />
+            </div>
+            <h3
+              class="group-hover:text-primary mb-3 text-xl font-bold transition-colors duration-300"
+            >
+              {i18n.work.services.seo.title}
+            </h3>
+            <p class="text-base-content/70">
+              {i18n.work.services.seo.description}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Design -->
+      <div class="group relative">
+        <div
+          class="from-primary/5 to-secondary/5 absolute inset-0 transform rounded-xl bg-gradient-to-r transition-transform duration-300 group-hover:scale-105"
+        >
+        </div>
+        <div
+          class="card bg-base-100 border-base-200 dark:border-base-700 relative z-10 overflow-hidden rounded-xl border shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
+        >
+          <div class="card-body p-6">
+            <div
+              class="bg-primary/10 dark:bg-primary/20 mb-5 flex h-16 w-16 transform items-center justify-center rounded-full p-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+            >
+              <Icon name="tabler:topology-star" class="text-primary h-8 w-8" />
+            </div>
+            <h3
+              class="group-hover:text-primary mb-3 text-xl font-bold transition-colors duration-300"
+            >
+              {i18n.work.services.systemDesign.title}
+            </h3>
+            <p class="text-base-content/70">
+              {i18n.work.services.systemDesign.description}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform Migration -->
+      <div class="group relative">
+        <div
+          class="from-primary/5 to-secondary/5 absolute inset-0 transform rounded-xl bg-gradient-to-r transition-transform duration-300 group-hover:scale-105"
+        >
+        </div>
+        <div
+          class="card bg-base-100 border-base-200 dark:border-base-700 relative z-10 overflow-hidden rounded-xl border shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
+        >
+          <div class="card-body p-6">
+            <div
+              class="bg-primary/10 dark:bg-primary/20 mb-5 flex h-16 w-16 transform items-center justify-center rounded-full p-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+            >
+              <Icon name="tabler:server" class="text-primary h-8 w-8" />
+            </div>
+            <h3
+              class="group-hover:text-primary mb-3 text-xl font-bold transition-colors duration-300"
+            >
+              {i18n.work.services.platformMigration.title}
+            </h3>
+            <p class="text-base-content/70">
+              {i18n.work.services.platformMigration.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

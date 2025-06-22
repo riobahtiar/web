@@ -1,64 +1,64 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
 interface Props {
-    lang: string;
-    i18n: {
-        contact: {
-            title: string;
-            subtitle: string;
-            description: string;
-            formTitle: string;
-            form: {
-                name: string;
-                email: string;
-                phone: string;
-                company: string;
-                subject: string;
-                message: string;
-                inquiryType: string;
-                submit: string;
-                sending: string;
-                required: string;
-                optional: string;
-                privacyConsent: string;
-                newsletterConsent: string;
-            };
-            inquiryTypes: {
-                general: string;
-                project: string;
-                consultation: string;
-                collaboration: string;
-                support: string;
-                other: string;
-            };
-            success: {
-                title: string;
-                description: string;
-                button: string;
-            };
-            error: {
-                title: string;
-                description: string;
-                button: string;
-            };
-            contactInfo: {
-                title: string;
-                email: string;
-                phone: string;
-                location: string;
-                availability: string;
-                availabilityHours: string;
-            };
-            faq: {
-                title: string;
-                questions: {
-                    question: string;
-                    answer: string;
-                }[];
-            };
-        };
+  lang: string;
+  i18n: {
+    contact: {
+      title: string;
+      subtitle: string;
+      description: string;
+      formTitle: string;
+      form: {
+        name: string;
+        email: string;
+        phone: string;
+        company: string;
+        subject: string;
+        message: string;
+        inquiryType: string;
+        submit: string;
+        sending: string;
+        required: string;
+        optional: string;
+        privacyConsent: string;
+        newsletterConsent: string;
+      };
+      inquiryTypes: {
+        general: string;
+        project: string;
+        consultation: string;
+        collaboration: string;
+        support: string;
+        other: string;
+      };
+      success: {
+        title: string;
+        description: string;
+        button: string;
+      };
+      error: {
+        title: string;
+        description: string;
+        button: string;
+      };
+      contactInfo: {
+        title: string;
+        email: string;
+        phone: string;
+        location: string;
+        availability: string;
+        availabilityHours: string;
+      };
+      faq: {
+        title: string;
+        questions: {
+          question: string;
+          answer: string;
+        }[];
+      };
     };
+  };
 }
 
 const { lang, i18n } = Astro.props;
@@ -66,311 +66,380 @@ const { contact } = i18n;
 ---
 
 <div class="container mx-auto px-4 py-12 md:py-16 lg:py-20">
-    <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">{contact.title}</h1>
-        <p class="text-xl font-medium text-primary mb-2">{contact.subtitle}</p>
-        <p class="max-w-2xl mx-auto text-base-content/80">{contact.description}</p>
+  <div class="mb-12 text-center">
+    <h1 class="mb-4 text-4xl font-bold md:text-5xl">{contact.title}</h1>
+    <p class="text-primary mb-2 text-xl font-medium">{contact.subtitle}</p>
+    <p class="text-base-content/80 mx-auto max-w-2xl">{contact.description}</p>
+  </div>
+
+  <div class="mb-16 grid grid-cols-1 gap-8 lg:grid-cols-3">
+    <!-- Contact Form -->
+    <div class="lg:col-span-2">
+      <div
+        class="card bg-base-100 border-base-200 border shadow-lg transition-all duration-300 hover:shadow-xl"
+      >
+        <div class="card-body p-8">
+          <h2 class="card-title mb-6 text-2xl">{contact.formTitle}</h2>
+
+          <!-- Success Message (Hidden by default) -->
+          <div id="success-message" class="hidden">
+            <div
+              class="flex flex-col items-center justify-center py-8 text-center"
+            >
+              <div class="bg-success/20 mb-4 rounded-full p-4">
+                <Icon name="tabler:check" class="text-success h-12 w-12" />
+              </div>
+              <h3 class="mb-2 text-2xl font-bold">{contact.success.title}</h3>
+              <p class="mb-6 max-w-md">{contact.success.description}</p>
+              <button id="back-to-form" class="btn btn-primary">
+                {contact.success.button}
+              </button>
+            </div>
+          </div>
+
+          <!-- Error Message (Hidden by default) -->
+          <div id="error-message" class="hidden">
+            <div
+              class="flex flex-col items-center justify-center py-8 text-center"
+            >
+              <div class="bg-error/20 mb-4 rounded-full p-4">
+                <Icon
+                  name="tabler:alert-triangle"
+                  class="text-error h-12 w-12"
+                />
+              </div>
+              <h3 class="mb-2 text-2xl font-bold">{contact.error.title}</h3>
+              <p class="mb-6 max-w-md">{contact.error.description}</p>
+              <button id="try-again" class="btn btn-primary">
+                {contact.error.button}
+              </button>
+            </div>
+          </div>
+
+          <!-- Contact Form -->
+          <form id="contact-form" class="space-y-6">
+            <!-- Name and Email -->
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text font-medium"
+                    >{contact.form.name} <span class="text-error">*</span></span
+                  >
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  class="input input-bordered focus:border-primary focus:ring-primary/20 w-full focus:ring-2"
+                  placeholder="John Doe"
+                />
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text font-medium"
+                    >{contact.form.email}
+                    <span class="text-error">*</span></span
+                  >
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  class="input input-bordered focus:border-primary focus:ring-primary/20 w-full focus:ring-2"
+                  placeholder="john@example.com"
+                />
+              </div>
+            </div>
+
+            <!-- Phone and Company -->
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text font-medium"
+                    >{contact.form.phone}</span
+                  >
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  class="input input-bordered focus:border-primary focus:ring-primary/20 w-full focus:ring-2"
+                  placeholder="+1 (555) 123-4567"
+                />
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text font-medium"
+                    >{contact.form.company}</span
+                  >
+                </label>
+                <input
+                  type="text"
+                  name="company"
+                  class="input input-bordered focus:border-primary focus:ring-primary/20 w-full focus:ring-2"
+                  placeholder="Acme Inc."
+                />
+              </div>
+            </div>
+
+            <!-- Inquiry Type and Subject -->
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text font-medium"
+                    >{contact.form.inquiryType}
+                    <span class="text-error">*</span></span
+                  >
+                </label>
+                <select
+                  name="inquiryType"
+                  required
+                  class="select select-bordered focus:border-primary focus:ring-primary/20 w-full focus:ring-2"
+                >
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="general">{contact.inquiryTypes.general}</option
+                  >
+                  <option value="project">{contact.inquiryTypes.project}</option
+                  >
+                  <option value="consultation"
+                    >{contact.inquiryTypes.consultation}</option
+                  >
+                  <option value="collaboration"
+                    >{contact.inquiryTypes.collaboration}</option
+                  >
+                  <option value="support">{contact.inquiryTypes.support}</option
+                  >
+                  <option value="other">{contact.inquiryTypes.other}</option>
+                </select>
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text font-medium"
+                    >{contact.form.subject}
+                    <span class="text-error">*</span></span
+                  >
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  required
+                  class="input input-bordered focus:border-primary focus:ring-primary/20 w-full focus:ring-2"
+                  placeholder="Project Inquiry"
+                />
+              </div>
+            </div>
+
+            <!-- Message -->
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text font-medium"
+                  >{contact.form.message}
+                  <span class="text-error">*</span></span
+                >
+              </label>
+              <textarea
+                name="message"
+                required
+                class="textarea textarea-bordered focus:border-primary focus:ring-primary/20 h-40 w-full focus:ring-2"
+                placeholder="Please describe your project or inquiry in detail..."
+              ></textarea>
+            </div>
+
+            <!-- Consent Checkboxes -->
+            <div class="space-y-3 pt-2">
+              <div class="form-control">
+                <label class="label cursor-pointer justify-start gap-3">
+                  <input
+                    type="checkbox"
+                    name="privacyConsent"
+                    required
+                    class="checkbox checkbox-primary"
+                  />
+                  <span class="label-text">{contact.form.privacyConsent}</span>
+                </label>
+              </div>
+              <div class="form-control">
+                <label class="label cursor-pointer justify-start gap-3">
+                  <input
+                    type="checkbox"
+                    name="newsletterConsent"
+                    class="checkbox checkbox-primary"
+                  />
+                  <span class="label-text"
+                    >{contact.form.newsletterConsent}</span
+                  >
+                </label>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-control mt-8">
+              <button
+                type="submit"
+                class="btn btn-primary w-full md:w-auto md:px-12"
+              >
+                <span class="submit-text">{contact.form.submit}</span>
+                <span class="sending-text hidden">
+                  <span class="loading loading-spinner loading-sm mr-2"></span>
+                  {contact.form.sending}
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-        <!-- Contact Form -->
-        <div class="lg:col-span-2">
-            <div class="card bg-base-100 shadow-lg border border-base-200 transition-all duration-300 hover:shadow-xl">
-                <div class="card-body p-8">
-                    <h2 class="card-title text-2xl mb-6">{contact.formTitle}</h2>
-                    
-                    <!-- Success Message (Hidden by default) -->
-                    <div id="success-message" class="hidden">
-                        <div class="flex flex-col items-center justify-center py-8 text-center">
-                            <div class="bg-success/20 p-4 rounded-full mb-4">
-                                <Icon name="tabler:check" class="w-12 h-12 text-success" />
-                            </div>
-                            <h3 class="text-2xl font-bold mb-2">{contact.success.title}</h3>
-                            <p class="mb-6 max-w-md">{contact.success.description}</p>
-                            <button id="back-to-form" class="btn btn-primary">
-                                {contact.success.button}
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Error Message (Hidden by default) -->
-                    <div id="error-message" class="hidden">
-                        <div class="flex flex-col items-center justify-center py-8 text-center">
-                            <div class="bg-error/20 p-4 rounded-full mb-4">
-                                <Icon name="tabler:alert-triangle" class="w-12 h-12 text-error" />
-                            </div>
-                            <h3 class="text-2xl font-bold mb-2">{contact.error.title}</h3>
-                            <p class="mb-6 max-w-md">{contact.error.description}</p>
-                            <button id="try-again" class="btn btn-primary">
-                                {contact.error.button}
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Contact Form -->
-                    <form id="contact-form" class="space-y-6">
-                        <!-- Name and Email -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-medium">{contact.form.name} <span class="text-error">*</span></span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    name="name" 
-                                    required 
-                                    class="input input-bordered w-full focus:border-primary focus:ring-2 focus:ring-primary/20" 
-                                    placeholder="John Doe"
-                                />
-                            </div>
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-medium">{contact.form.email} <span class="text-error">*</span></span>
-                                </label>
-                                <input 
-                                    type="email" 
-                                    name="email" 
-                                    required 
-                                    class="input input-bordered w-full focus:border-primary focus:ring-2 focus:ring-primary/20" 
-                                    placeholder="john@example.com"
-                                />
-                            </div>
-                        </div>
-                        
-                        <!-- Phone and Company -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-medium">{contact.form.phone}</span>
-                                </label>
-                                <input 
-                                    type="tel" 
-                                    name="phone" 
-                                    class="input input-bordered w-full focus:border-primary focus:ring-2 focus:ring-primary/20" 
-                                    placeholder="+1 (555) 123-4567"
-                                />
-                            </div>
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-medium">{contact.form.company}</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    name="company" 
-                                    class="input input-bordered w-full focus:border-primary focus:ring-2 focus:ring-primary/20" 
-                                    placeholder="Acme Inc."
-                                />
-                            </div>
-                        </div>
-                        
-                        <!-- Inquiry Type and Subject -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-medium">{contact.form.inquiryType} <span class="text-error">*</span></span>
-                                </label>
-                                <select name="inquiryType" required class="select select-bordered w-full focus:border-primary focus:ring-2 focus:ring-primary/20">
-                                    <option value="" disabled selected>Select an option</option>
-                                    <option value="general">{contact.inquiryTypes.general}</option>
-                                    <option value="project">{contact.inquiryTypes.project}</option>
-                                    <option value="consultation">{contact.inquiryTypes.consultation}</option>
-                                    <option value="collaboration">{contact.inquiryTypes.collaboration}</option>
-                                    <option value="support">{contact.inquiryTypes.support}</option>
-                                    <option value="other">{contact.inquiryTypes.other}</option>
-                                </select>
-                            </div>
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-medium">{contact.form.subject} <span class="text-error">*</span></span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    name="subject" 
-                                    required 
-                                    class="input input-bordered w-full focus:border-primary focus:ring-2 focus:ring-primary/20" 
-                                    placeholder="Project Inquiry"
-                                />
-                            </div>
-                        </div>
-                        
-                        <!-- Message -->
-                        <div class="form-control w-full">
-                            <label class="label">
-                                <span class="label-text font-medium">{contact.form.message} <span class="text-error">*</span></span>
-                            </label>
-                            <textarea 
-                                name="message" 
-                                required 
-                                class="textarea textarea-bordered h-40 w-full focus:border-primary focus:ring-2 focus:ring-primary/20" 
-                                placeholder="Please describe your project or inquiry in detail..."
-                            ></textarea>
-                        </div>
-                        
-                        <!-- Consent Checkboxes -->
-                        <div class="space-y-3 pt-2">
-                            <div class="form-control">
-                                <label class="label cursor-pointer justify-start gap-3">
-                                    <input type="checkbox" name="privacyConsent" required class="checkbox checkbox-primary" />
-                                    <span class="label-text">{contact.form.privacyConsent}</span>
-                                </label>
-                            </div>
-                            <div class="form-control">
-                                <label class="label cursor-pointer justify-start gap-3">
-                                    <input type="checkbox" name="newsletterConsent" class="checkbox checkbox-primary" />
-                                    <span class="label-text">{contact.form.newsletterConsent}</span>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <!-- Submit Button -->
-                        <div class="form-control mt-8">
-                            <button type="submit" class="btn btn-primary w-full md:w-auto md:px-12">
-                                <span class="submit-text">{contact.form.submit}</span>
-                                <span class="sending-text hidden">
-                                    <span class="loading loading-spinner loading-sm mr-2"></span>
-                                    {contact.form.sending}
-                                </span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Contact Information -->
-        <div class="lg:col-span-1">
-            <div class="card bg-base-100 shadow-lg border border-base-200 h-full transition-all duration-300 hover:shadow-xl">
-                <div class="card-body p-8">
-                    <h2 class="card-title text-2xl mb-6">{contact.contactInfo.title}</h2>
-                    
-                    <div class="space-y-6">
-                        <!-- Email -->
-                        <div class="flex items-start gap-4">
-                            <div class="bg-primary/10 p-3 rounded-full">
-                                <Icon name="tabler:mail" class="w-6 h-6 text-primary" />
-                            </div>
-                            <div>
-                                <h3 class="font-medium text-lg">{contact.contactInfo.email}</h3>
-                                <a href="mailto:hello@rio.my.id" class="link link-hover link-primary">hello@rio.my.id</a>
-                            </div>
-                        </div>
-                        
+    <!-- Contact Information -->
+    <div class="lg:col-span-1">
+      <div
+        class="card bg-base-100 border-base-200 h-full border shadow-lg transition-all duration-300 hover:shadow-xl"
+      >
+        <div class="card-body p-8">
+          <h2 class="card-title mb-6 text-2xl">{contact.contactInfo.title}</h2>
 
-                        
-                        <!-- Availability -->
-                        <div class="flex items-start gap-4">
-                            <div class="bg-primary/10 p-3 rounded-full">
-                                <Icon name="tabler:clock" class="w-6 h-6 text-primary" />
-                            </div>
-                            <div>
-                                <h3 class="font-medium text-lg">{contact.contactInfo.availability}</h3>
-                                <p>{contact.contactInfo.availabilityHours}</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Social Media Links -->
-                        <div class="pt-4">
-                            <div class="flex items-center justify-start gap-4 mt-4">
-                                <a href="https://go.rio.my.id/g" class="btn btn-circle btn-sm btn-outline" aria-label="GitHub">
-                                    <Icon name="tabler:brand-github" class="w-5 h-5" />
-                                </a>
-                                <a href="https://go.rio.my.id/l" class="btn btn-circle btn-sm btn-outline" aria-label="LinkedIn">
-                                    <Icon name="tabler:brand-linkedin" class="w-5 h-5" />
-                                </a>
-                                <a href="https://go.rio.my.id/x" class="btn btn-circle btn-sm btn-outline" aria-label="Twitter">
-                                    <Icon name="tabler:brand-x" class="w-5 h-5" />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <div class="space-y-6">
+            <!-- Email -->
+            <div class="flex items-start gap-4">
+              <div class="bg-primary/10 rounded-full p-3">
+                <Icon name="tabler:mail" class="text-primary h-6 w-6" />
+              </div>
+              <div>
+                <h3 class="text-lg font-medium">{contact.contactInfo.email}</h3>
+                <a
+                  href="mailto:hello@rio.my.id"
+                  class="link link-hover link-primary">hello@rio.my.id</a
+                >
+              </div>
             </div>
+
+            <!-- Availability -->
+            <div class="flex items-start gap-4">
+              <div class="bg-primary/10 rounded-full p-3">
+                <Icon name="tabler:clock" class="text-primary h-6 w-6" />
+              </div>
+              <div>
+                <h3 class="text-lg font-medium">
+                  {contact.contactInfo.availability}
+                </h3>
+                <p>{contact.contactInfo.availabilityHours}</p>
+              </div>
+            </div>
+
+            <!-- Social Media Links -->
+            <div class="pt-4">
+              <div class="mt-4 flex items-center justify-start gap-4">
+                <a
+                  href="https://go.rio.my.id/g"
+                  class="btn btn-circle btn-sm btn-outline"
+                  aria-label="GitHub"
+                >
+                  <Icon name="tabler:brand-github" class="h-5 w-5" />
+                </a>
+                <a
+                  href="https://go.rio.my.id/l"
+                  class="btn btn-circle btn-sm btn-outline"
+                  aria-label="LinkedIn"
+                >
+                  <Icon name="tabler:brand-linkedin" class="h-5 w-5" />
+                </a>
+                <a
+                  href="https://go.rio.my.id/x"
+                  class="btn btn-circle btn-sm btn-outline"
+                  aria-label="Twitter"
+                >
+                  <Icon name="tabler:brand-x" class="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    
-    <!-- FAQ Section -->
-    <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl font-bold text-center mb-8">{contact.faq.title}</h2>
-        <div class="space-y-4">
-            {contact.faq.questions.map((faq, index) => (
-                <div class="collapse collapse-plus bg-base-100 border border-base-200 rounded-box">
-                    <input type="radio" name="faq-accordion" checked={index === 0} /> 
-                    <div class="collapse-title text-lg font-medium">
-                        {faq.question}
-                    </div>
-                    <div class="collapse-content">
-                        <p>{faq.answer}</p>
-                    </div>
-                </div>
-            ))}
-        </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="mx-auto max-w-4xl">
+    <h2 class="mb-8 text-center text-3xl font-bold">{contact.faq.title}</h2>
+    <div class="space-y-4">
+      {
+        contact.faq.questions.map((faq, index) => (
+          <div class="collapse-plus bg-base-100 border-base-200 rounded-box collapse border">
+            <input type="radio" name="faq-accordion" checked={index === 0} />
+            <div class="collapse-title text-lg font-medium">{faq.question}</div>
+            <div class="collapse-content">
+              <p>{faq.answer}</p>
+            </div>
+          </div>
+        ))
+      }
     </div>
+  </div>
 </div>
 
 <script>
-    // Form submission handler
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('contact-form') as HTMLFormElement;
-        const successMessage = document.getElementById('success-message');
-        const errorMessage = document.getElementById('error-message');
-        const backToFormButton = document.getElementById('back-to-form');
-        const tryAgainButton = document.getElementById('try-again');
-        const submitText = document.querySelector('.submit-text');
-        const sendingText = document.querySelector('.sending-text');
-        
-        if (form && successMessage && errorMessage) {
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                // Show loading state
-                if (submitText && sendingText) {
-                    submitText.classList.add('hidden');
-                    sendingText.classList.remove('hidden');
-                }
-                
-                // Simulate form submission (replace with actual API call later)
-                try {
-                    // Simulate API delay
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    
-                    // For demo purposes, we'll just show success
-                    // In production, this would be an actual API call
-                    const success = true;
-                    
-                    if (success) {
-                        form.classList.add('hidden');
-                        successMessage.classList.remove('hidden');
-                    } else {
-                        throw new Error('Submission failed');
-                    }
-                } catch (error) {
-                    form.classList.add('hidden');
-                    errorMessage.classList.remove('hidden');
-                } finally {
-                    // Reset loading state
-                    if (submitText && sendingText) {
-                        submitText.classList.remove('hidden');
-                        sendingText.classList.add('hidden');
-                    }
-                }
-            });
-            
-            // Back to form button
-            if (backToFormButton) {
-                backToFormButton.addEventListener('click', function() {
-                    successMessage.classList.add('hidden');
-                    form.classList.remove('hidden');
-                    form.reset();
-                });
-            }
-            
-            // Try again button
-            if (tryAgainButton) {
-                tryAgainButton.addEventListener('click', function() {
-                    errorMessage.classList.add('hidden');
-                    form.classList.remove('hidden');
-                });
-            }
+  // Form submission handler
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    const successMessage = document.getElementById("success-message");
+    const errorMessage = document.getElementById("error-message");
+    const backToFormButton = document.getElementById("back-to-form");
+    const tryAgainButton = document.getElementById("try-again");
+    const submitText = document.querySelector(".submit-text");
+    const sendingText = document.querySelector(".sending-text");
+
+    if (form && successMessage && errorMessage) {
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        // Show loading state
+        if (submitText && sendingText) {
+          submitText.classList.add("hidden");
+          sendingText.classList.remove("hidden");
         }
-    });
+
+        // Simulate form submission (replace with actual API call later)
+        try {
+          // Simulate API delay
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          // For demo purposes, we'll just show success
+          // In production, this would be an actual API call
+          const success = true;
+
+          if (success) {
+            form.classList.add("hidden");
+            successMessage.classList.remove("hidden");
+          } else {
+            throw new Error("Submission failed");
+          }
+        } catch (error) {
+          form.classList.add("hidden");
+          errorMessage.classList.remove("hidden");
+        } finally {
+          // Reset loading state
+          if (submitText && sendingText) {
+            submitText.classList.remove("hidden");
+            sendingText.classList.add("hidden");
+          }
+        }
+      });
+
+      // Back to form button
+      if (backToFormButton) {
+        backToFormButton.addEventListener("click", function () {
+          successMessage.classList.add("hidden");
+          form.classList.remove("hidden");
+          form.reset();
+        });
+      }
+
+      // Try again button
+      if (tryAgainButton) {
+        tryAgainButton.addEventListener("click", function () {
+          errorMessage.classList.add("hidden");
+          form.classList.remove("hidden");
+        });
+      }
+    }
+  });
 </script>
