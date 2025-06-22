@@ -18,7 +18,7 @@ import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
   site: 'https://web.riomyid.workers.dev',
-  output: 'server',
+  output: 'static',
   vite: {
     plugins: [tailwindcss()],
   },
