@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.0",
@@ -37,6 +40,9 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
+    "prettier": "3.5.3",
+    "prettier-plugin-astro": "0.14.1",
+    "prettier-plugin-tailwindcss": "0.6.13",
     "wrangler": "^4.20.5"
   },
   "trustedDependencies": [
