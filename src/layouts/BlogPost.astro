@@ -1,6 +1,5 @@
 ---
 import Layout from "./Layout.astro";
-import { Image } from "astro:assets";
 import { formatDate } from "../utils/date";
 import { Icon } from "astro-icon/components";
 import TableOfContents from "../components/blog/TableOfContents.astro";
@@ -95,11 +94,11 @@ const formattedModifiedDate = formatDate(modified_at, lang);
 
           <!-- Author Info -->
           <div class="not-prose flex items-center gap-4">
-            <Image
+            <img
               src={author.image}
               alt={author.name}
-              width={48}
-              height={48}
+              width="48"
+              height="48"
               class="rounded-full"
             />
             <div>
@@ -111,12 +110,12 @@ const formattedModifiedDate = formatDate(modified_at, lang);
           {
             image && (
               <div class="not-prose relative aspect-[2/1]">
-                <Image
+                <img
                   src={image}
                   alt={title}
                   class="rounded-xl object-cover"
-                  width={1200}
-                  height={600}
+                  width="1200"
+                  height="600"
                 />
               </div>
             )

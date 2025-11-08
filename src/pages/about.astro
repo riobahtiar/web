@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
 
 // Get current language from URL
 const pathname = Astro.url.pathname;
@@ -38,12 +37,12 @@ const meta = {
     <div
       class="bg-base-200 relative mb-8 h-auto w-full overflow-hidden rounded-lg"
     >
-      <Image
+      <img
         src="/smc.jpg"
         alt="Cover Image"
         class="h-auto w-full object-fill"
-        width={900}
-        height={1000}
+        width="900"
+        height="1000"
         loading="eager"
       />
     </div>
