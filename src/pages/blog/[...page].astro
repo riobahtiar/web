@@ -1,40 +1,36 @@
 ---
-import type { GetStaticPaths, Page } from "astro";
-import type { CollectionEntry } from "astro:content";
 import BlogIndex from "../../layouts/BlogIndex.astro";
 import { getCollection } from "astro:content";
 
-interface Props {
-  page: Page<CollectionEntry<"blog-en">>;
-  categories: {
-    name: string;
-    count: number;
-  }[];
-}
+// Get page number from URL params (SSR mode)
+const pageParam = Astro.params.page;
+const currentPage = pageParam ? parseInt(pageParam) : 1;
 
-export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
-  const posts = await getCollection("blog-en");
+const posts = await getCollection("blog-en");
 
-  // Sort posts by date
-  const sortedPosts = posts.sort(
-    (a, b) => b.data.created_at.valueOf() - a.data.created_at.valueOf(),
-  );
+// Sort posts by date
+const sortedPosts = posts.sort(
+  (a, b) => b.data.created_at.valueOf() - a.data.created_at.valueOf(),
+);
 
-  // Get categories and count
-  const categories = [...new Set(posts.map((post) => post.data.category))].map(
-    (category) => ({
-      name: category,
-      count: posts.filter((post) => post.data.category === category).length,
-    }),
-  );
+// Get categories and count
+const categories = [...new Set(posts.map((post) => post.data.category))].map(
+  (category) => ({
+    name: category,
+    count: posts.filter((post) => post.data.category === category).length,
+  }),
+);
 
-  return paginate(sortedPosts, {
-    pageSize: 10,
-    props: { categories },
-  });
-};
+// Manual pagination
+const pageSize = 10;
+const totalPages = Math.ceil(sortedPosts.length / pageSize);
+const startIndex = (currentPage - 1) * pageSize;
+const endIndex = startIndex + pageSize;
+const paginatedPosts = sortedPosts.slice(startIndex, endIndex);
 
-const { page, categories } = Astro.props;
+// Build pagination URLs
+const prevUrl = currentPage > 1 ? `/blog/${currentPage - 1}` : undefined;
+const nextUrl = currentPage < totalPages ? `/blog/${currentPage + 1}` : undefined;
 const title = "Blog";
 const description =
   "Explore my thoughts, experiences, and insights on software development, technology, and more.";
@@ -44,14 +40,14 @@ const description =
   title={title}
   description={description}
   lang="en"
-  posts={page.data}
+  posts={paginatedPosts}
   categories={categories}
   pagination={{
-    currentPage: page.currentPage,
-    totalPages: page.lastPage,
+    currentPage: currentPage,
+    totalPages: totalPages,
     url: {
-      prev: page.url.prev,
-      next: page.url.next,
+      prev: prevUrl,
+      next: nextUrl,
     },
   }}
 />
