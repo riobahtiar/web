@@ -1,8 +1,5 @@
 ---
 import { Icon } from "astro-icon/components";
-import { Image } from "astro:assets";
-import logoDark from "../assets/logo-dark.svg";
-import logoLight from "../assets/logo-light.svg";
 
 interface Props {
   lang: string;
@@ -59,19 +56,19 @@ const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
         class="flex items-center transition-opacity duration-300 hover:opacity-80"
       >
         <div class="relative h-8 w-32">
-          <Image
-            src={logoLight}
+          <img
+            src="/_astro/logo-light.YMMznOMd.svg"
             alt="Rio Logo Light"
             class="logo-light absolute top-0 left-0 h-full w-auto transform object-contain transition-all duration-300"
-            height={32}
-            width={58.3}
+            height="32"
+            width="58.3"
           />
-          <Image
-            src={logoDark}
+          <img
+            src="/_astro/logo-dark.MZCSih5i.svg"
             alt="Rio Logo Dark"
             class="logo-dark absolute top-0 left-0 h-full w-auto transform object-contain transition-all duration-300"
-            height={32}
-            width={58.3}
+            height="32"
+            width="58.3"
           />
         </div>
       </a>

@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import Layout from "../../../layouts/Layout.astro";
 import { formatDate } from "../../../utils/date";
 import { getReadingTimeI18n } from "../../../utils/readingTime";
-import { Image } from "astro:assets";
 
 // Get tag from URL (SSR mode)
 const { tag } = Astro.params;
@@ -63,11 +62,11 @@ const pageDescription = `Browse all blog posts tagged with "${tag}". ${filteredP
             <article class="card bg-base-200 shadow-lg transition-shadow hover:shadow-xl">
               {post.data.image && (
                 <figure class="aspect-video">
-                  <Image
+                  <img
                     src={post.data.image}
                     alt={post.data.title}
-                    width={400}
-                    height={225}
+                    width="400"
+                    height="225"
                     class="h-full w-full object-cover"
                   />
                 </figure>
