@@ -30,9 +30,6 @@ export default defineConfig({
           }
         : undefined,
     },
-    ssr: {
-      external: ["node:fs", "node:path", "node:url", "node:buffer", "node:stream"],
-    },
   },
 
   markdown: {
