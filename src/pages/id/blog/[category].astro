@@ -1,24 +1,9 @@
 ---
-import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import BlogIndex from "../../../layouts/BlogIndex.astro";
 
-export const getStaticPaths = (async () => {
-  const posts = await getCollection("blog-id");
-
-  // Get all categories
-  const categories = [...new Set(posts.map((post) => post.data.category))];
-
-  // Return a route for each category
-  return categories.map((category) => {
-    return {
-      params: { category },
-      props: { category },
-    };
-  });
-}) satisfies GetStaticPaths;
-
-const { category } = Astro.props;
+// Get category from URL params (SSR mode)
+const { category } = Astro.params;
 
 const posts = await getCollection("blog-id");
 const sortedPosts = posts
