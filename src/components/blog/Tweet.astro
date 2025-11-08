@@ -7,6 +7,17 @@ interface Props {
   width?: number;
 }
 
+// Extend Window interface for TypeScript
+declare global {
+  interface Window {
+    twttr?: {
+      widgets: {
+        load: () => void;
+      };
+    };
+  }
+}
+
 const {
   tweetId,
   theme = "light",

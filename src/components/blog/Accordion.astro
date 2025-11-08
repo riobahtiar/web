@@ -59,8 +59,8 @@ const variantStyles = {
     const content = details.querySelector('.accordion-content');
     if (content) {
       details.addEventListener('toggle', () => {
-        if ((details as HTMLDetailsElement).open) {
-          (content as HTMLElement).style.animation = 'slideDown 0.3s ease-out';
+        if (details.open) {
+          content.style.animation = 'slideDown 0.3s ease-out';
         }
       });
     }
