@@ -110,6 +110,8 @@ export const id = {
     contactInfo: {
       title: "Informasi Kontak",
       email: "Email",
+      phone: "Telepon",
+      location: "Lokasi",
       availability: "Ketersediaan",
       availabilityHours: "Senin-Jumat, 9 pagi - 6 sore (GMT+7)",
     },

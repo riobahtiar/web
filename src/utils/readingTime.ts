@@ -25,7 +25,10 @@ export function calculateReadingTime(
   const withoutComponents = withoutInlineCode.replace(/<[^>]*>/g, "");
 
   // Remove markdown links but keep the text
-  const withoutLinks = withoutComponents.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  const withoutLinks = withoutComponents.replace(
+    /\[([^\]]+)\]\([^)]+\)/g,
+    "$1",
+  );
 
   // Remove markdown images
   const withoutImages = withoutLinks.replace(/!\[([^\]]*)\]\([^)]+\)/g, "");

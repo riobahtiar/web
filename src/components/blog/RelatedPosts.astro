@@ -22,9 +22,9 @@ if (posts.length === 0) {
 const heading = lang === "id" ? "Artikel Terkait" : "Related Posts";
 ---
 
-<section class="mt-16 border-t border-base-300 pt-12">
-  <h2 class="text-3xl font-bold mb-8 flex items-center gap-2">
-    <Icon name="tabler:article" class="h-7 w-7 text-primary" />
+<section class="border-base-300 mt-16 border-t pt-12">
+  <h2 class="mb-8 flex items-center gap-2 text-3xl font-bold">
+    <Icon name="tabler:article" class="text-primary h-7 w-7" />
     {heading}
   </h2>
 
@@ -37,7 +37,7 @@ const heading = lang === "id" ? "Artikel Terkait" : "Related Posts";
         const postUrl = `/${lang === "en" ? "" : "id/"}blog/${post.data.category}/${slug}`;
 
         return (
-          <article class="card bg-base-200 hover:bg-base-300 transition-colors group">
+          <article class="card bg-base-200 hover:bg-base-300 group transition-colors">
             {post.data.image && (
               <figure class="aspect-video overflow-hidden">
                 <Image
@@ -45,12 +45,12 @@ const heading = lang === "id" ? "Artikel Terkait" : "Related Posts";
                   alt={post.data.title}
                   width={400}
                   height={225}
-                  class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                  class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </figure>
             )}
             <div class="card-body p-4">
-              <div class="flex items-center gap-2 text-xs text-base-content/60 mb-2">
+              <div class="text-base-content/60 mb-2 flex items-center gap-2 text-xs">
                 <span class="badge badge-primary badge-sm">
                   {post.data.category}
                 </span>
@@ -60,21 +60,21 @@ const heading = lang === "id" ? "Artikel Terkait" : "Related Posts";
                 </time>
               </div>
 
-              <h3 class="card-title text-base mb-2">
+              <h3 class="card-title mb-2 text-base">
                 <a
                   href={postUrl}
-                  class="hover:text-primary transition-colors line-clamp-2"
+                  class="hover:text-primary line-clamp-2 transition-colors"
                 >
                   {post.data.title}
                 </a>
               </h3>
 
-              <p class="text-sm text-base-content/70 line-clamp-2 mb-3">
+              <p class="text-base-content/70 mb-3 line-clamp-2 text-sm">
                 {post.data.description}
               </p>
 
               <div class="flex items-center justify-between text-xs">
-                <span class="flex items-center gap-1 text-base-content/60">
+                <span class="text-base-content/60 flex items-center gap-1">
                   <Icon name="tabler:clock" class="h-3 w-3" />
                   {post.readingTime}
                 </span>

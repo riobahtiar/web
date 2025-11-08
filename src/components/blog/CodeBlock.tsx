@@ -31,17 +31,17 @@ export function CodeBlock({
   const lines = code.split("\n");
 
   return (
-    <div className="code-block-wrapper my-4 rounded-lg overflow-hidden border border-base-300">
+    <div className="code-block-wrapper border-base-300 my-4 overflow-hidden rounded-lg border">
       {/* Header with filename and copy button */}
-      <div className="flex items-center justify-between bg-base-200 px-4 py-2 border-b border-base-300">
+      <div className="bg-base-200 border-base-300 flex items-center justify-between border-b px-4 py-2">
         <div className="flex items-center gap-2">
           {filename && (
-            <span className="text-sm font-mono text-base-content/70">
+            <span className="text-base-content/70 font-mono text-sm">
               {filename}
             </span>
           )}
           {!filename && language && (
-            <span className="text-xs font-mono text-base-content/60 uppercase">
+            <span className="text-base-content/60 font-mono text-xs uppercase">
               {language}
             </span>
           )}
@@ -66,8 +66,8 @@ export function CodeBlock({
       </div>
 
       {/* Code content */}
-      <div className="relative overflow-x-auto bg-base-100">
-        <pre className="p-4 m-0">
+      <div className="bg-base-100 relative overflow-x-auto">
+        <pre className="m-0 p-4">
           <code className="font-mono text-sm">
             {lines.map((line, index) => {
               const lineNumber = index + 1;
@@ -78,12 +78,12 @@ export function CodeBlock({
                   key={index}
                   className={`min-h-[1.5rem] ${
                     isHighlighted
-                      ? "bg-primary/10 border-l-4 border-primary pl-2 -ml-2"
+                      ? "bg-primary/10 border-primary -ml-2 border-l-4 pl-2"
                       : ""
                   }`}
                 >
                   {showLineNumbers && (
-                    <span className="inline-block w-8 text-right text-base-content/40 select-none mr-4">
+                    <span className="text-base-content/40 mr-4 inline-block w-8 text-right select-none">
                       {lineNumber}
                     </span>
                   )}

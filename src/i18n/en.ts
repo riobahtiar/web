@@ -111,6 +111,8 @@ export const en = {
     contactInfo: {
       title: "Contact Information",
       email: "Email",
+      phone: "Phone",
+      location: "Location",
       availability: "Availability",
       availabilityHours: "Monday-Friday, 9am-6pm (GMT+7)",
     },

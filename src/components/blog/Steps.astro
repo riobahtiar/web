@@ -8,7 +8,9 @@ interface Props {
 const { variant = "default" } = Astro.props;
 ---
 
-<div class={`steps-wrapper my-8 ${variant === "horizontal" ? "steps-horizontal" : ""}`}>
+<div
+  class={`steps-wrapper my-8 ${variant === "horizontal" ? "steps-horizontal" : ""}`}
+>
   <slot />
 </div>
 

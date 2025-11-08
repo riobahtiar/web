@@ -176,7 +176,7 @@
 
 /* Container styling for code blocks */
 .astro-code {
-  @apply rounded-lg p-4 my-4 overflow-x-auto;
+  @apply my-4 overflow-x-auto rounded-lg p-4;
   font-size: 0.875rem;
   line-height: 1.7;
   tab-size: 2;
@@ -202,23 +202,23 @@
 
 /* Highlighted lines */
 .astro-code .line.highlighted {
-  @apply bg-primary/10 border-l-4 border-primary pl-2 -ml-4;
+  @apply bg-primary/10 border-primary -ml-4 border-l-4 pl-2;
 }
 
 /* Inline code (not in code blocks) */
 :not(pre) > code {
-  @apply bg-base-200 text-primary px-1.5 py-0.5 rounded text-sm font-mono;
+  @apply bg-base-200 text-primary rounded px-1.5 py-0.5 font-mono text-sm;
 }
 
 /* Code block titles (if using remark-code-titles) */
 .remark-code-title {
-  @apply bg-base-300 text-base-content px-4 py-2 rounded-t-lg font-mono text-sm font-semibold;
+  @apply bg-base-300 text-base-content rounded-t-lg px-4 py-2 font-mono text-sm font-semibold;
   margin-bottom: -1rem;
   margin-top: 1rem;
 }
 
 .remark-code-title + pre {
-  @apply rounded-t-none mt-0;
+  @apply mt-0 rounded-t-none;
 }
 
 /* ============================================
@@ -231,19 +231,19 @@
 }
 
 .prose h1 {
-  @apply text-4xl font-bold mt-8 mb-4;
+  @apply mt-8 mb-4 text-4xl font-bold;
 }
 
 .prose h2 {
-  @apply text-3xl font-bold mt-6 mb-3 border-b border-base-300 pb-2;
+  @apply border-base-300 mt-6 mb-3 border-b pb-2 text-3xl font-bold;
 }
 
 .prose h3 {
-  @apply text-2xl font-semibold mt-5 mb-2;
+  @apply mt-5 mb-2 text-2xl font-semibold;
 }
 
 .prose h4 {
-  @apply text-xl font-semibold mt-4 mb-2;
+  @apply mt-4 mb-2 text-xl font-semibold;
 }
 
 .prose a {
@@ -251,11 +251,11 @@
 }
 
 .prose blockquote {
-  @apply border-l-4 border-primary bg-base-200 pl-4 py-2 my-4 italic;
+  @apply border-primary bg-base-200 my-4 border-l-4 py-2 pl-4 italic;
 }
 
 .prose table {
-  @apply w-full border-collapse my-4;
+  @apply my-4 w-full border-collapse;
 }
 
 .prose th {
@@ -263,15 +263,15 @@
 }
 
 .prose td {
-  @apply border border-base-300 p-2;
+  @apply border-base-300 border p-2;
 }
 
 .prose img {
-  @apply rounded-lg my-4;
+  @apply my-4 rounded-lg;
 }
 
 .prose hr {
-  @apply my-8 border-base-300;
+  @apply border-base-300 my-8;
 }
 
 /* Lists */
@@ -293,7 +293,7 @@
     font-size: 0.75rem;
     @apply p-2;
   }
-  
+
   :not(pre) > code {
     font-size: 0.75rem;
   }

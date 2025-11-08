@@ -36,16 +36,17 @@ const aspectRatioStyles = {
 ---
 
 <div class="youtube-embed-wrapper my-8">
-  <div class={`youtube-embed relative overflow-hidden rounded-lg ${aspectRatioStyles[aspectRatio]}`}>
+  <div
+    class={`youtube-embed relative overflow-hidden rounded-lg ${aspectRatioStyles[aspectRatio]}`}
+  >
     <iframe
       src={embedUrl}
       title={title}
       frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowfullscreen
-      class="absolute inset-0 w-full h-full"
-      loading="lazy"
-    ></iframe>
+      class="absolute inset-0 h-full w-full"
+      loading="lazy"></iframe>
   </div>
 </div>
 
@@ -61,7 +62,7 @@ const aspectRatioStyles = {
   /* Loading state */
   .youtube-embed::before {
     content: "";
-    @apply absolute inset-0 bg-gradient-to-br from-base-200 to-base-300 animate-pulse;
+    @apply from-base-200 to-base-300 absolute inset-0 animate-pulse bg-gradient-to-br;
   }
 
   .youtube-embed iframe {

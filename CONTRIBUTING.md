@@ -73,6 +73,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -83,6 +84,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 - `chore`: Maintenance tasks
 
 **Examples:**
+
 ```
 feat(blog): add pagination to blog posts
 fix(i18n): resolve language switcher redirect issue
@@ -220,6 +222,7 @@ export const id = {
 ### Reporting Bugs
 
 Include:
+
 - Clear description of the bug
 - Steps to reproduce
 - Expected vs actual behavior
@@ -259,6 +262,7 @@ Include:
 **DO NOT** create public issues for security vulnerabilities.
 
 Instead:
+
 1. Email security concerns privately
 2. Include detailed description
 3. Provide steps to reproduce
