@@ -30,6 +30,9 @@ export default defineConfig({
           }
         : undefined,
     },
+    ssr: {
+      external: ["node:fs", "node:path", "node:url", "node:buffer", "node:stream"],
+    },
   },
 
   markdown: {
@@ -65,6 +68,7 @@ export default defineConfig({
   },
 
   adapter: cloudflare({
+    imageService: "passthrough",
     platformProxy: {
       enabled: true,
     },
