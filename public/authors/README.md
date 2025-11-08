@@ -5,6 +5,7 @@ This directory contains profile images for blog post authors.
 ## Image Guidelines
 
 ### Profile Images
+
 - **Format**: JPG, PNG, or WebP
 - **Size**: 400x400px (square)
 - **Max file size**: 100KB
@@ -14,6 +15,7 @@ This directory contains profile images for blog post authors.
 ## Usage in Blog Posts
 
 ### Frontmatter Configuration
+
 ```mdx
 ---
 title: "My Blog Post"
@@ -29,6 +31,7 @@ author:
 Create default author profiles that can be referenced across multiple posts.
 
 ### Example: `/src/data/authors.ts`
+
 ```typescript
 export const authors = {
   "rio-bahtiar": {
@@ -38,8 +41,8 @@ export const authors = {
     social: {
       twitter: "https://twitter.com/riobahtiar",
       github: "https://github.com/riobahtiar",
-    }
-  }
+    },
+  },
 };
 ```
 

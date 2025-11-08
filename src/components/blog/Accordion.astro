@@ -19,17 +19,22 @@ const variantStyles = {
 };
 ---
 
-<details class={`accordion-item my-4 rounded-lg ${variantStyles[variant]}`} open={open}>
-  <summary class="accordion-header cursor-pointer p-4 font-semibold text-base-content hover:bg-base-300 transition-colors rounded-lg flex items-center justify-between group">
+<details
+  class={`accordion-item my-4 rounded-lg ${variantStyles[variant]}`}
+  open={open}
+>
+  <summary
+    class="accordion-header text-base-content hover:bg-base-300 group flex cursor-pointer items-center justify-between rounded-lg p-4 font-semibold transition-colors"
+  >
     <span class="flex-1">{title}</span>
     <Icon
       name="tabler:chevron-down"
-      class="h-5 w-5 text-base-content/60 transition-transform group-open:rotate-180"
+      class="text-base-content/60 h-5 w-5 transition-transform group-open:rotate-180"
     />
   </summary>
 
   <div class="accordion-content p-4 pt-0">
-    <div class="prose prose-sm max-w-none text-base-content/90">
+    <div class="prose prose-sm text-base-content/90 max-w-none">
       <slot />
     </div>
   </div>
@@ -55,12 +60,12 @@ const variantStyles = {
 
 <script is:inline>
   // Add smooth animation when opening/closing
-  document.querySelectorAll('.accordion-item').forEach(details => {
-    const content = details.querySelector('.accordion-content');
+  document.querySelectorAll(".accordion-item").forEach((details) => {
+    const content = details.querySelector(".accordion-content");
     if (content) {
-      details.addEventListener('toggle', () => {
+      details.addEventListener("toggle", () => {
         if (details.open) {
-          content.style.animation = 'slideDown 0.3s ease-out';
+          content.style.animation = "slideDown 0.3s ease-out";
         }
       });
     }

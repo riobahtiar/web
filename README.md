@@ -77,14 +77,14 @@ Visit `http://localhost:4321` to see your site.
 
 ### Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server at `localhost:4321` |
-| `npm run build` | Build for production to `./dist/` |
-| `npm run preview` | Preview production build locally |
-| `npx astro check` | Run TypeScript type checking |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting |
+| Command                | Description                                  |
+| ---------------------- | -------------------------------------------- |
+| `npm run dev`          | Start development server at `localhost:4321` |
+| `npm run build`        | Build for production to `./dist/`            |
+| `npm run preview`      | Preview production build locally             |
+| `npx astro check`      | Run TypeScript type checking                 |
+| `npm run format`       | Format code with Prettier                    |
+| `npm run format:check` | Check code formatting                        |
 
 ### Development Workflow
 
@@ -168,6 +168,7 @@ The site supports English (default) and Indonesian:
 - **Indonesian**: `/id/about`, `/id/services`, `/id/contact`
 
 Translations are managed in `src/i18n/`:
+
 - `en.ts` - English translations
 - `id.ts` - Indonesian translations
 
@@ -188,6 +189,7 @@ Site will be live at: `https://web.riomyid.workers.dev`
 ### Environment Variables
 
 No environment variables required for basic deployment. All configuration is in:
+
 - `astro.config.mjs` - Astro settings
 - `wrangler.toml` - Cloudflare Workers settings
 

@@ -21,31 +21,41 @@ const typeStyles = {
 >
   {/* Background pattern (optional) */}
   <div class="absolute inset-0 opacity-10">
-    <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0); background-size: 20px 20px;"></div>
+    <div
+      class="absolute inset-0"
+      style="background-image: radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0); background-size: 20px 20px;"
+    >
+    </div>
   </div>
 
   <div class="relative z-10 flex items-start gap-4">
-    {icon && (
-      <div class="flex-shrink-0 mt-1">
-        <Icon name={icon} class="h-8 w-8" />
-      </div>
-    )}
+    {
+      icon && (
+        <div class="mt-1 flex-shrink-0">
+          <Icon name={icon} class="h-8 w-8" />
+        </div>
+      )
+    }
     <div class="flex-1">
-      <div class="prose prose-lg max-w-none prose-headings:text-current prose-p:text-current prose-strong:text-current">
+      <div
+        class="prose prose-lg prose-headings:text-current prose-p:text-current prose-strong:text-current max-w-none"
+      >
         <slot />
       </div>
     </div>
   </div>
 
-  {dismissible && (
-    <button
-      class="absolute top-4 right-4 btn btn-ghost btn-sm btn-circle opacity-70 hover:opacity-100"
-      onclick="this.parentElement.style.display='none'"
-      aria-label="Dismiss banner"
-    >
-      <Icon name="tabler:x" class="h-5 w-5" />
-    </button>
-  )}
+  {
+    dismissible && (
+      <button
+        class="btn btn-ghost btn-sm btn-circle absolute top-4 right-4 opacity-70 hover:opacity-100"
+        onclick="this.parentElement.style.display='none'"
+        aria-label="Dismiss banner"
+      >
+        <Icon name="tabler:x" class="h-5 w-5" />
+      </button>
+    )
+  }
 </div>
 
 <style>
@@ -58,6 +68,6 @@ const typeStyles = {
   }
 
   .banner :global(a) {
-    @apply underline decoration-2 underline-offset-2 hover:decoration-4 transition-all;
+    @apply underline decoration-2 underline-offset-2 transition-all hover:decoration-4;
   }
 </style>

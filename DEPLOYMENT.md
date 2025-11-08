@@ -29,6 +29,7 @@ npx wrangler kv namespace create SESSION
 ```
 
 You'll get output like:
+
 ```
 ⛅️ wrangler 4.46.0
 -------------------
@@ -57,6 +58,7 @@ npm run build
 ```
 
 This creates the `dist/` directory with:
+
 - `dist/_worker.js/` - Server-side worker code
 - Static assets in `dist/` root
 
@@ -84,12 +86,14 @@ If you prefer Cloudflare Pages instead of Workers:
 ### Environment Variables (if needed)
 
 In Cloudflare Pages dashboard:
+
 - Settings → Environment Variables
 - Add any required variables
 
 ### KV Namespace Binding (Pages)
 
 In Cloudflare Pages dashboard:
+
 1. Settings → Functions
 2. KV namespace bindings
 3. Add binding:
@@ -126,7 +130,7 @@ The project uses `@astrojs/cloudflare` adapter with SSR mode:
 ```javascript
 export default defineConfig({
   site: "https://web.riomyid.workers.dev",
-  output: "server",  // SSR mode
+  output: "server", // SSR mode
   adapter: cloudflare({
     imageService: "cloudflare",
     platformProxy: {
@@ -142,7 +146,7 @@ export default defineConfig({
 
 **Solution**: Create the KV namespace and update wrangler.toml with the correct ID.
 
-### Error: "Uploading a Pages _worker.js directory as an asset"
+### Error: "Uploading a Pages \_worker.js directory as an asset"
 
 **Solution**: This error has been fixed by removing the `[assets]` section from wrangler.toml. Astro handles static assets through the worker itself.
 
@@ -203,6 +207,7 @@ Before deploying to production:
 You can set up automatic deployments on push:
 
 1. Add secrets to GitHub repo:
+
    - `CLOUDFLARE_API_TOKEN`
    - `CLOUDFLARE_ACCOUNT_ID`
 
@@ -222,7 +227,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
       - run: npm ci
       - run: npm run build
       - uses: cloudflare/wrangler-action@v3

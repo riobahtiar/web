@@ -40,7 +40,11 @@ const embedUrl = `https://platform.twitter.com/embed/Tweet.html?${params.toStrin
 
 <div class="tweet-embed-wrapper my-8 flex justify-center">
   <div class="tweet-embed relative w-full max-w-[550px]">
-    <blockquote class="twitter-tweet" data-theme={theme} data-conversation={conversation}>
+    <blockquote
+      class="twitter-tweet"
+      data-theme={theme}
+      data-conversation={conversation}
+    >
       <a href={`https://twitter.com/x/status/${tweetId}`}>Loading tweet...</a>
     </blockquote>
   </div>
@@ -57,7 +61,7 @@ const embedUrl = `https://platform.twitter.com/embed/Tweet.html?${params.toStrin
 
   /* Fallback loading state */
   .tweet-embed :global(.twitter-tweet) {
-    @apply bg-base-200 rounded-lg p-4 min-h-[200px] flex items-center justify-center;
+    @apply bg-base-200 flex min-h-[200px] items-center justify-center rounded-lg p-4;
   }
 
   .tweet-embed :global(.twitter-tweet a) {
@@ -84,4 +88,3 @@ const embedUrl = `https://platform.twitter.com/embed/Tweet.html?${params.toStrin
     }
   }
 </script>
-

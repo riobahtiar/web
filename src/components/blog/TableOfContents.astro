@@ -22,10 +22,14 @@ if (filteredHeadings.length === 0) {
 const title = lang === "id" ? "Daftar Isi" : "Table of Contents";
 ---
 
-<aside class="toc-wrapper hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-auto">
+<aside
+  class="toc-wrapper sticky top-24 hidden max-h-[calc(100vh-8rem)] overflow-auto lg:block"
+>
   <div class="bg-base-200 rounded-lg p-4">
-    <h3 class="text-sm font-bold mb-4 flex items-center gap-2 text-base-content">
-      <Icon name="tabler:list" class="h-4 w-4 text-primary" />
+    <h3
+      class="text-base-content mb-4 flex items-center gap-2 text-sm font-bold"
+    >
+      <Icon name="tabler:list" class="text-primary h-4 w-4" />
       {title}
     </h3>
 
@@ -39,7 +43,7 @@ const title = lang === "id" ? "Daftar Isi" : "Table of Contents";
             >
               <a
                 href={`#${heading.slug}`}
-                class="toc-link block py-1 px-2 rounded transition-colors hover:bg-base-300 hover:text-primary text-base-content/70"
+                class="toc-link hover:bg-base-300 hover:text-primary text-base-content/70 block rounded px-2 py-1 transition-colors"
               >
                 {heading.text}
               </a>
@@ -88,9 +92,7 @@ const title = lang === "id" ? "Daftar Isi" : "Table of Contents";
       (entries) => {
         entries.forEach((entry) => {
           const id = entry.target.getAttribute("id");
-          const tocLink = document.querySelector(
-            `.toc-link[href="#${id}"]`,
-          );
+          const tocLink = document.querySelector(`.toc-link[href="#${id}"]`);
 
           if (entry.isIntersecting) {
             // Remove active class from all links
@@ -112,11 +114,9 @@ const title = lang === "id" ? "Daftar Isi" : "Table of Contents";
     );
 
     // Observe all headings
-    document
-      .querySelectorAll("article h2, article h3")
-      .forEach((heading) => {
-        observer.observe(heading);
-      });
+    document.querySelectorAll("article h2, article h3").forEach((heading) => {
+      observer.observe(heading);
+    });
 
     // Smooth scroll behavior for TOC links
     document.querySelectorAll(".toc-link").forEach((link) => {
@@ -128,8 +128,7 @@ const title = lang === "id" ? "Daftar Isi" : "Table of Contents";
           if (target) {
             const offset = 100; // Offset for sticky header
             const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition =
-              elementPosition + window.scrollY - offset;
+            const offsetPosition = elementPosition + window.scrollY - offset;
 
             window.scrollTo({
               top: offsetPosition,

@@ -33,16 +33,16 @@ const pageDescription = `Telusuri semua artikel blog dengan tag "${tag}". ${filt
 ---
 
 <Layout title={pageTitle} description={pageDescription} lang="id">
-  <main class="container mx-auto px-4 py-12 max-w-6xl">
+  <main class="container mx-auto max-w-6xl px-4 py-12">
     <!-- Page Header -->
     <header class="mb-12">
-      <nav class="text-sm breadcrumbs mb-4">
+      <nav class="breadcrumbs mb-4 text-sm">
         <ul>
           <li><a href="/id/blog">Blog</a></li>
           <li>Tag: {tag}</li>
         </ul>
       </nav>
-      <h1 class="text-4xl font-bold mb-4">
+      <h1 class="mb-4 text-4xl font-bold">
         Artikel dengan tag <span class="text-primary">#{tag}</span>
       </h1>
       <p class="text-base-content/70">
@@ -59,7 +59,7 @@ const pageDescription = `Telusuri semua artikel blog dengan tag "${tag}". ${filt
             : post.slug;
 
           return (
-            <article class="card bg-base-200 shadow-lg hover:shadow-xl transition-shadow">
+            <article class="card bg-base-200 shadow-lg transition-shadow hover:shadow-xl">
               {post.data.image && (
                 <figure class="aspect-video">
                   <Image
@@ -67,12 +67,12 @@ const pageDescription = `Telusuri semua artikel blog dengan tag "${tag}". ${filt
                     alt={post.data.title}
                     width={400}
                     height={225}
-                    class="object-cover w-full h-full"
+                    class="h-full w-full object-cover"
                   />
                 </figure>
               )}
               <div class="card-body">
-                <div class="flex items-center gap-2 text-sm text-base-content/60 mb-2">
+                <div class="text-base-content/60 mb-2 flex items-center gap-2 text-sm">
                   <a
                     href={`/id/blog/${post.data.category}`}
                     class="badge badge-primary badge-sm"
@@ -91,7 +91,7 @@ const pageDescription = `Telusuri semua artikel blog dengan tag "${tag}". ${filt
                   )}
                 </div>
 
-                <h2 class="card-title text-xl mb-2">
+                <h2 class="card-title mb-2 text-xl">
                   <a
                     href={`/id/blog/${post.data.category}/${slug}`}
                     class="hover:text-primary transition-colors"
@@ -100,11 +100,11 @@ const pageDescription = `Telusuri semua artikel blog dengan tag "${tag}". ${filt
                   </a>
                 </h2>
 
-                <p class="text-base-content/80 text-sm mb-4 line-clamp-3">
+                <p class="text-base-content/80 mb-4 line-clamp-3 text-sm">
                   {post.data.description}
                 </p>
 
-                <div class="card-actions justify-between items-center">
+                <div class="card-actions items-center justify-between">
                   <div class="flex flex-wrap gap-1">
                     {post.data.tags.slice(0, 3).map((t) => (
                       <a

@@ -34,25 +34,25 @@ const buttonVariants = {
 };
 ---
 
-<div class={`cta-block my-8 rounded-lg bg-base-200 p-8 ${alignClasses[align]} flex flex-col gap-4`}>
-  {icon && (
-    <div class="flex-shrink-0">
-      <div class="rounded-full bg-primary/20 p-4 inline-block">
-        <Icon name={icon} class="h-8 w-8 text-primary" />
+<div
+  class={`cta-block my-8 rounded-lg bg-base-200 p-8 ${alignClasses[align]} flex flex-col gap-4`}
+>
+  {
+    icon && (
+      <div class="flex-shrink-0">
+        <div class="bg-primary/20 inline-block rounded-full p-4">
+          <Icon name={icon} class="text-primary h-8 w-8" />
+        </div>
       </div>
-    </div>
-  )}
+    )
+  }
 
   <div class="flex flex-col gap-2">
-    <h3 class="text-2xl font-bold text-base-content">
+    <h3 class="text-base-content text-2xl font-bold">
       {title}
     </h3>
 
-    {description && (
-      <p class="text-base-content/70 max-w-2xl">
-        {description}
-      </p>
-    )}
+    {description && <p class="text-base-content/70 max-w-2xl">{description}</p>}
 
     {/* Slot for custom content */}
     <div class="prose prose-sm max-w-none">
@@ -60,17 +60,16 @@ const buttonVariants = {
     </div>
   </div>
 
-  {buttonText && buttonLink && (
-    <div class="mt-2">
-      <a
-        href={buttonLink}
-        class={`btn ${buttonVariants[variant]} gap-2`}
-      >
-        {buttonText}
-        <Icon name="tabler:arrow-right" class="h-5 w-5" />
-      </a>
-    </div>
-  )}
+  {
+    buttonText && buttonLink && (
+      <div class="mt-2">
+        <a href={buttonLink} class={`btn ${buttonVariants[variant]} gap-2`}>
+          {buttonText}
+          <Icon name="tabler:arrow-right" class="h-5 w-5" />
+        </a>
+      </div>
+    )
+  }
 </div>
 
 <style>

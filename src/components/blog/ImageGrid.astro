@@ -26,16 +26,18 @@ const columnClasses = {
     <slot />
   </div>
 
-  {caption && (
-    <figcaption class="text-center text-sm text-base-content/60 mt-4 italic">
-      {caption}
-    </figcaption>
-  )}
+  {
+    caption && (
+      <figcaption class="text-base-content/60 mt-4 text-center text-sm italic">
+        {caption}
+      </figcaption>
+    )
+  }
 </figure>
 
 <style>
   .image-grid :global(img) {
-    @apply w-full h-full object-cover rounded-lg;
+    @apply h-full w-full rounded-lg object-cover;
     aspect-ratio: 4/3;
   }
 
@@ -49,7 +51,7 @@ const columnClasses = {
 
   /* Hover effect */
   .image-grid :global(img) {
-    @apply transition-transform duration-300 hover:scale-105 cursor-pointer;
+    @apply cursor-pointer transition-transform duration-300 hover:scale-105;
   }
 
   /* Image wrapper for better control */

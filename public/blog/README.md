@@ -14,6 +14,7 @@ public/blog/
 ## Image Guidelines
 
 ### Cover Images
+
 - **Format**: JPG or WebP
 - **Size**: 1200x630px (optimal for social sharing)
 - **Max file size**: 200KB
@@ -21,6 +22,7 @@ public/blog/
   - Example: `getting-started-with-astro.jpg`
 
 ### Content Images
+
 - **Format**: JPG, PNG, or WebP
 - **Size**: Varies (optimize for web)
 - **Max file size**: 500KB
@@ -30,6 +32,7 @@ public/blog/
 ## Usage in Blog Posts
 
 ### Cover Image
+
 ```mdx
 ---
 title: "My Blog Post"
@@ -38,6 +41,7 @@ image: "/blog/covers/my-blog-post.jpg"
 ```
 
 ### Content Images (Astro Image component)
+
 ```mdx
 import { Image } from "astro:assets";
 import diagramImage from "/public/blog/content/diagram.png";
@@ -46,6 +50,7 @@ import diagramImage from "/public/blog/content/diagram.png";
 ```
 
 ### Content Images (Markdown)
+
 ```markdown
 ![Alt text](/blog/content/screenshot.png)
 ```

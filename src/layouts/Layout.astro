@@ -63,8 +63,18 @@ const alternateID = canonicalURL
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- RSS Feeds -->
-    <link rel="alternate" type="application/rss+xml" title="Rio Bahtiar Blog (English)" href="/rss.xml" />
-    <link rel="alternate" type="application/rss+xml" title="Rio Bahtiar Blog (Indonesian)" href="/id/rss.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Rio Bahtiar Blog (English)"
+      href="/rss.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Rio Bahtiar Blog (Indonesian)"
+      href="/id/rss.xml"
+    />
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
@@ -83,18 +93,26 @@ const alternateID = canonicalURL
       property="og:image"
       content={Astro.site ? new URL(image, Astro.site).toString() : image}
     />
-    {type === "article" && publishedTime && (
-      <meta property="article:published_time" content={publishedTime} />
-    )}
-    {type === "article" && modifiedTime && (
-      <meta property="article:modified_time" content={modifiedTime} />
-    )}
-    {type === "article" && author && (
-      <meta property="article:author" content={author} />
-    )}
-    {type === "article" && tags && tags.map((tag: string) => (
-      <meta property="article:tag" content={tag} />
-    ))}
+    {
+      type === "article" && publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )
+    }
+    {
+      type === "article" && modifiedTime && (
+        <meta property="article:modified_time" content={modifiedTime} />
+      )
+    }
+    {
+      type === "article" && author && (
+        <meta property="article:author" content={author} />
+      )
+    }
+    {
+      type === "article" &&
+        tags &&
+        tags.map((tag: string) => <meta property="article:tag" content={tag} />)
+    }
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -111,33 +129,38 @@ const alternateID = canonicalURL
     <meta name="msapplication-TileColor" content="oklch(0.72 0.25 142.53)" />
 
     <!-- JSON-LD Structured Data -->
-    {type === "article" && (
-      <script type="application/ld+json" set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": title,
-        "description": description,
-        "image": Astro.site ? new URL(image, Astro.site).toString() : image,
-        "datePublished": publishedTime,
-        "dateModified": modifiedTime || publishedTime,
-        "author": {
-          "@type": "Person",
-          "name": author || "Rio Bahtiar"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Rio Bahtiar",
-          "url": Astro.site ? Astro.site.toString() : ""
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": canonicalURL
-        },
-        "keywords": tags ? tags.join(", ") : "",
-        "wordCount": readingTime ? readingTime.split(" ")[0] : undefined,
-        "inLanguage": lang
-      })} />
-    )}
+    {
+      type === "article" && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: title,
+            description: description,
+            image: Astro.site ? new URL(image, Astro.site).toString() : image,
+            datePublished: publishedTime,
+            dateModified: modifiedTime || publishedTime,
+            author: {
+              "@type": "Person",
+              name: author || "Rio Bahtiar",
+            },
+            publisher: {
+              "@type": "Person",
+              name: "Rio Bahtiar",
+              url: Astro.site ? Astro.site.toString() : "",
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": canonicalURL,
+            },
+            keywords: tags ? tags.join(", ") : "",
+            wordCount: readingTime ? readingTime.split(" ")[0] : undefined,
+            inLanguage: lang,
+          })}
+        />
+      )
+    }
 
     <!-- Google Analytics -->
     <script

@@ -18,7 +18,7 @@ export function BlogTabs({ tabs, defaultValue, className }: BlogTabsProps) {
   return (
     <div className={`my-8 ${className || ""}`}>
       <Tabs defaultValue={defaultTab} className="w-full">
-        <TabsList className="w-full justify-start mb-4">
+        <TabsList className="mb-4 w-full justify-start">
           {tabs.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value}>
               {tab.label}

@@ -18,10 +18,12 @@ Complete guide for writing and publishing blog posts on astro-rio.
 ### Creating a New Blog Post
 
 1. Navigate to the appropriate content directory:
+
    - English: `src/content/blog-en/`
    - Indonesian: `src/content/blog-id/`
 
 2. Create a new `.mdx` file under a category folder:
+
    ```
    src/content/blog-en/tutorial/my-awesome-post.mdx
    ```
@@ -61,9 +63,9 @@ title: "Your Awesome Blog Post Title"
 description: "A compelling 150-160 character description for SEO and social sharing"
 created_at: 2025-01-15
 modified_at: 2025-01-15
-image: "/blog/covers/my-post-cover.jpg"  # Optional, but highly recommended
-category: "tutorial"  # Must match folder name
-tags: ["astro", "typescript", "webdev"]  # Array of relevant tags
+image: "/blog/covers/my-post-cover.jpg" # Optional, but highly recommended
+category: "tutorial" # Must match folder name
+tags: ["astro", "typescript", "webdev"] # Array of relevant tags
 author:
   name: "Rio Bahtiar"
   image: "/authors/rio.jpg"
@@ -73,16 +75,16 @@ author:
 
 #### Frontmatter Fields
 
-| Field | Required | Type | Description |
-|-------|----------|------|-------------|
-| `title` | ✅ | string | Post title (50-60 chars recommended) |
-| `description` | ✅ | string | Meta description (150-160 chars) |
-| `created_at` | ✅ | Date | Publication date (YYYY-MM-DD) |
-| `modified_at` | ✅ | Date | Last update date |
-| `image` | ⚠️ | string | Cover image path (1200x630px recommended) |
-| `category` | ✅ | string | Category folder name |
-| `tags` | ✅ | array | 3-5 relevant tags |
-| `author` | ✅ | object | Author information |
+| Field         | Required | Type   | Description                               |
+| ------------- | -------- | ------ | ----------------------------------------- |
+| `title`       | ✅       | string | Post title (50-60 chars recommended)      |
+| `description` | ✅       | string | Meta description (150-160 chars)          |
+| `created_at`  | ✅       | Date   | Publication date (YYYY-MM-DD)             |
+| `modified_at` | ✅       | Date   | Last update date                          |
+| `image`       | ⚠️       | string | Cover image path (1200x630px recommended) |
+| `category`    | ✅       | string | Category folder name                      |
+| `tags`        | ✅       | array  | 3-5 relevant tags                         |
+| `author`      | ✅       | object | Author information                        |
 
 ## MDX Components
 
@@ -94,23 +96,19 @@ Display important information, warnings, tips, etc.
 import Callout from "@/components/blog/Callout.astro";
 
 <Callout type="info" title="Did you know?">
-This is an informational callout.
+  This is an informational callout.
 </Callout>
 
-<Callout type="warning">
-This is a warning without a custom title.
-</Callout>
+<Callout type="warning">This is a warning without a custom title.</Callout>
 
 <Callout type="error" title="Error!">
-Something went wrong!
+  Something went wrong!
 </Callout>
 
-<Callout type="success">
-Great job! You did it correctly.
-</Callout>
+<Callout type="success">Great job! You did it correctly.</Callout>
 
 <Callout type="tip" title="Pro Tip">
-Here's a helpful tip to improve your workflow.
+  Here's a helpful tip to improve your workflow.
 </Callout>
 ```
 
@@ -124,16 +122,14 @@ Eye-catching announcement or promotional sections.
 import Banner from "@/components/blog/Banner.astro";
 
 <Banner type="default" icon="tabler:rocket">
-**New Feature Alert!** Check out our latest update.
+  **New Feature Alert!** Check out our latest update.
 </Banner>
 
 <Banner type="gradient" dismissible>
-This banner can be dismissed by the user.
+  This banner can be dismissed by the user.
 </Banner>
 
-<Banner type="bordered">
-Simple bordered banner for announcements.
-</Banner>
+<Banner type="bordered">Simple bordered banner for announcements.</Banner>
 ```
 
 **Types**: `default`, `gradient`, `bordered`
@@ -175,18 +171,21 @@ Run the following command:
 \`\`\`bash
 npm install
 \`\`\`
+
 </div>
 
 <div class="step">
 ### Step 2: Configure Settings
 
 Update your configuration file...
+
 </div>
 
 <div class="step">
 ### Step 3: Run the Application
 
 Start the dev server with \`npm run dev\`
+
 </div>
 </Steps>
 ```
@@ -205,7 +204,7 @@ import Quote from "@/components/blog/Quote.astro";
   role="Creator of Linux"
   avatar="/authors/linus.jpg"
 >
-Talk is cheap. Show me the code.
+  Talk is cheap. Show me the code.
 </Quote>
 ```
 
@@ -217,11 +216,12 @@ Collapsible content sections.
 import Accordion from "@/components/blog/Accordion.astro";
 
 <Accordion title="What is Astro?" open>
-Astro is a modern static site generator that allows you to build faster websites with less client-side JavaScript.
+  Astro is a modern static site generator that allows you to build faster
+  websites with less client-side JavaScript.
 </Accordion>
 
 <Accordion title="How do I get started?">
-Simply install Astro with \`npm create astro@latest\`
+  Simply install Astro with \`npm create astro@latest\`
 </Accordion>
 ```
 
@@ -233,9 +233,8 @@ Multi-image layouts.
 import ImageGrid from "@/components/blog/ImageGrid.astro";
 
 <ImageGrid columns={3} gap="md" caption="Project Screenshots">
-![Screenshot 1](/blog/images/screen1.jpg)
-![Screenshot 2](/blog/images/screen2.jpg)
-![Screenshot 3](/blog/images/screen3.jpg)
+  ![Screenshot 1](/blog/images/screen1.jpg) ![Screenshot
+  2](/blog/images/screen2.jpg) ![Screenshot 3](/blog/images/screen3.jpg)
 </ImageGrid>
 ```
 
@@ -247,7 +246,12 @@ import ImageGrid from "@/components/blog/ImageGrid.astro";
 Organize content in tabs.
 
 ```mdx
-import { CodeTabs, TabsList, TabsTrigger, TabsContent } from "@/components/blog/BlogTabs.tsx";
+import {
+  CodeTabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/blog/BlogTabs.tsx";
 
 <CodeTabs defaultValue="js">
   <TabsList>
@@ -255,14 +259,10 @@ import { CodeTabs, TabsList, TabsTrigger, TabsContent } from "@/components/blog/
     <TabsTrigger value="ts">TypeScript</TabsTrigger>
   </TabsList>
   <TabsContent value="js">
-  \`\`\`javascript
-  const greeting = "Hello, World!";
-  \`\`\`
+    \`\`\`javascript const greeting = "Hello, World!"; \`\`\`
   </TabsContent>
   <TabsContent value="ts">
-  \`\`\`typescript
-  const greeting: string = "Hello, World!";
-  \`\`\`
+    \`\`\`typescript const greeting: string = "Hello, World!"; \`\`\`
   </TabsContent>
 </CodeTabs>
 ```
@@ -274,10 +274,7 @@ Embed YouTube videos.
 ```mdx
 import YouTubeEmbed from "@/components/blog/YouTubeEmbed.astro";
 
-<YouTubeEmbed
-  videoId="dQw4w9WgXcQ"
-  title="My Tutorial Video"
-/>
+<YouTubeEmbed videoId="dQw4w9WgXcQ" title="My Tutorial Video" />
 ```
 
 ### Tweet Embed
@@ -299,13 +296,13 @@ Code blocks are automatically highlighted with Shiki.
 \`\`\`typescript
 // TypeScript example
 interface User {
-  name: string;
-  age: number;
+name: string;
+age: number;
 }
 
 const user: User = {
-  name: "Rio",
-  age: 25
+name: "Rio",
+age: 25
 };
 \`\`\`
 
@@ -390,12 +387,14 @@ See [ASSETS.md](./ASSETS.md) for complete asset management guide.
 ### URL Structure
 
 URLs are automatically generated from:
+
 - Category (folder name)
 - Filename
 
 Example: `tutorial/my-awesome-post.mdx` → `/blog/tutorial/my-awesome-post`
 
 Keep filenames:
+
 - Short and descriptive
 - Lowercase with hyphens
 - Keyword-rich
@@ -405,12 +404,14 @@ Keep filenames:
 Before publishing a blog post:
 
 - [ ] **Content Quality**
+
   - [ ] No spelling or grammar errors
   - [ ] All links work correctly
   - [ ] Images load properly
   - [ ] Code examples are tested
 
 - [ ] **Frontmatter**
+
   - [ ] Title is compelling and under 60 chars
   - [ ] Description is 150-160 chars
   - [ ] Dates are correct
@@ -419,18 +420,21 @@ Before publishing a blog post:
   - [ ] Author info is complete
 
 - [ ] **SEO**
+
   - [ ] Title includes primary keyword
   - [ ] Description includes keywords naturally
   - [ ] Cover image has descriptive filename
   - [ ] Alt text on all images
 
 - [ ] **Content Structure**
+
   - [ ] Clear H2/H3 heading hierarchy
   - [ ] Table of contents will be auto-generated
   - [ ] Paragraphs are concise (3-5 sentences)
   - [ ] Code blocks have language specified
 
 - [ ] **Local Testing**
+
   - [ ] Run `npm run dev`
   - [ ] View post at `http://localhost:4321/blog/[category]/[slug]`
   - [ ] Check reading time
@@ -453,6 +457,7 @@ Automatically calculated and displayed based on average reading speed (200 words
 ### Related Posts
 
 Automatically shown at the bottom of each post based on:
+
 - Shared tags
 - Same category
 - Recent publication date
@@ -460,6 +465,7 @@ Automatically shown at the bottom of each post based on:
 ### Table of Contents
 
 Auto-generated from H2 and H3 headings with:
+
 - Smooth scroll navigation
 - Active section highlighting (scroll spy)
 - Sticky sidebar on desktop
@@ -467,12 +473,14 @@ Auto-generated from H2 and H3 headings with:
 ### RSS Feed
 
 Automatically generated at:
+
 - English: `/rss.xml`
 - Indonesian: `/id/rss.xml`
 
 ### Social Sharing
 
 OpenGraph and Twitter Card meta tags automatically generated for:
+
 - Rich previews on social media
 - Proper article attribution
 - Cover image display
@@ -480,6 +488,7 @@ OpenGraph and Twitter Card meta tags automatically generated for:
 ## Examples
 
 Check these example posts:
+
 - English: `src/content/blog-en/tutorial/example.mdx`
 - Indonesian: `src/content/blog-id/tutorial/example.mdx`
 

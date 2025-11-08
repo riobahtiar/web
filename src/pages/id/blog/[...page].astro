@@ -30,7 +30,8 @@ const paginatedPosts = sortedPosts.slice(startIndex, endIndex);
 
 // Build pagination URLs
 const prevUrl = currentPage > 1 ? `/id/blog/${currentPage - 1}` : undefined;
-const nextUrl = currentPage < totalPages ? `/id/blog/${currentPage + 1}` : undefined;
+const nextUrl =
+  currentPage < totalPages ? `/id/blog/${currentPage + 1}` : undefined;
 const title = "Blog";
 const description =
   "Jelajahi pemikiran, pengalaman, dan wawasan saya tentang pengembangan perangkat lunak, teknologi, dan lainnya.";

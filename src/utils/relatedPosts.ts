@@ -7,11 +7,9 @@ import type { CollectionEntry } from "astro:content";
  * @param limit - Maximum number of related posts to return (default: 3)
  * @returns Array of related posts sorted by relevance
  */
-export function getRelatedPosts<T extends CollectionEntry<"blog-en"> | CollectionEntry<"blog-id">>(
-  currentPost: T,
-  allPosts: T[],
-  limit: number = 3,
-): T[] {
+export function getRelatedPosts<
+  T extends CollectionEntry<"blog-en"> | CollectionEntry<"blog-id">,
+>(currentPost: T, allPosts: T[], limit: number = 3): T[] {
   const currentTags = currentPost.data.tags;
   const currentSlug = currentPost.slug;
 
@@ -58,7 +56,9 @@ export function getRelatedPosts<T extends CollectionEntry<"blog-en"> | Collectio
  * @param lang - Language for reading time calculation
  * @returns Array of related posts with reading time
  */
-export async function getRelatedPostsWithReadingTime<T extends CollectionEntry<"blog-en"> | CollectionEntry<"blog-id">>(
+export async function getRelatedPostsWithReadingTime<
+  T extends CollectionEntry<"blog-en"> | CollectionEntry<"blog-id">,
+>(
   currentPost: T,
   allPosts: T[],
   limit: number = 3,
