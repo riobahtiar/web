@@ -15,15 +15,11 @@ binding = "ASSETS"
 binding = "SESSION"
 id = "ab185a6610c74aa7bf7eaacfec22891f"
 
-# Observability and logging
-[observability.logs]
-enabled = true
-
 # Cloudflare Images binding
 [images]
 binding = "IMAGES"
 
-[observability]
+# Observability and logging
 [observability.logs]
 enabled = true
 head_sampling_rate = 1
