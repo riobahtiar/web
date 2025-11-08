@@ -1,7 +1,13 @@
 name = "web"
 compatibility_date = "2025-11-07"
-main = "dist/_worker.js"
-compatibility_flags = ["nodejs_compat"]
+main = "dist/_worker.js/index.js"
+compatibility_flags = ["nodejs_compat_v2"]
+
+# Static assets configuration
+# Serve static files from the dist directory
+[assets]
+directory = "dist"
+binding = "ASSETS"
 
 # KV Namespace for session storage (required by @astrojs/cloudflare)
 # KV Namespace: rio-backend-kv
