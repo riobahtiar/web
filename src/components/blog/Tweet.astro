@@ -1,0 +1,76 @@
+---
+interface Props {
+  tweetId: string;
+  theme?: "light" | "dark";
+  conversation?: "none" | "all";
+  cards?: "visible" | "hidden";
+  width?: number;
+}
+
+const {
+  tweetId,
+  theme = "light",
+  conversation = "none",
+  cards = "visible",
+  width = 550,
+} = Astro.props;
+
+// Build Twitter embed URL with parameters
+const params = new URLSearchParams({
+  id: tweetId,
+  theme: theme,
+  conversation: conversation,
+  cards: cards,
+  width: width.toString(),
+});
+
+const embedUrl = `https://platform.twitter.com/embed/Tweet.html?${params.toString()}`;
+---
+
+<div class="tweet-embed-wrapper my-8 flex justify-center">
+  <div class="tweet-embed relative w-full max-w-[550px]">
+    <blockquote class="twitter-tweet" data-theme={theme} data-conversation={conversation}>
+      <a href={`https://twitter.com/x/status/${tweetId}`}>Loading tweet...</a>
+    </blockquote>
+  </div>
+</div>
+
+<style>
+  .tweet-embed-wrapper {
+    @apply overflow-hidden;
+  }
+
+  .tweet-embed :global(.twitter-tweet) {
+    @apply mx-auto;
+  }
+
+  /* Fallback loading state */
+  .tweet-embed :global(.twitter-tweet) {
+    @apply bg-base-200 rounded-lg p-4 min-h-[200px] flex items-center justify-center;
+  }
+
+  .tweet-embed :global(.twitter-tweet a) {
+    @apply text-primary hover:underline;
+  }
+</style>
+
+<script>
+  // Load Twitter widget script
+  if (typeof window !== "undefined") {
+    // Check if script already exists
+    if (!document.getElementById("twitter-widget-script")) {
+      const script = document.createElement("script");
+      script.id = "twitter-widget-script";
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.async = true;
+      script.charset = "utf-8";
+      document.head.appendChild(script);
+    } else {
+      // If script exists, trigger widget reload
+      if (window.twttr?.widgets) {
+        window.twttr.widgets.load();
+      }
+    }
+  }
+</script>
+

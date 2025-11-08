@@ -1,0 +1,256 @@
+---
+title: "Contoh Artikel Blog - Template MDX Lengkap"
+description: "Template komprehensif yang menampilkan semua komponen MDX dan fitur yang tersedia untuk membuat konten blog yang menarik"
+created_at: 2025-01-15
+modified_at: 2025-01-15
+image: "/blog/covers/example.jpg"
+category: "tutorial"
+tags: ["astro", "mdx", "blogging", "tutorial"]
+author:
+  name: "Rio Bahtiar"
+  image: "/authors/rio.jpg"
+  bio: "Full-stack Developer"
+---
+
+import Callout from "@/components/blog/Callout.astro";
+import Banner from "@/components/blog/Banner.astro";
+import CTA from "@/components/blog/CTA.astro";
+import Steps from "@/components/blog/Steps.astro";
+import Quote from "@/components/blog/Quote.astro";
+import Accordion from "@/components/blog/Accordion.astro";
+import ImageGrid from "@/components/blog/ImageGrid.astro";
+import YouTubeEmbed from "@/components/blog/YouTubeEmbed.astro";
+import { CodeTabs, TabsList, TabsTrigger, TabsContent } from "@/components/blog/BlogTabs.tsx";
+
+## Pendahuluan
+
+Ini adalah contoh template artikel blog yang mendemonstrasikan semua komponen MDX dan fitur yang tersedia. Gunakan ini sebagai referensi saat membuat artikel blog Anda sendiri.
+
+## Menggunakan Komponen Callout
+
+Callout sangat cocok untuk menyorot informasi penting:
+
+<Callout type="info" title="Informasi">
+Ini adalah callout informasi. Gunakan untuk berbagi konteks atau informasi latar belakang yang berguna.
+</Callout>
+
+<Callout type="tip">
+Tips: Anda bisa menghilangkan prop title untuk menggunakan judul default.
+</Callout>
+
+<Callout type="warning" title="Penting!">
+Selalu uji artikel blog Anda secara lokal sebelum dipublikasikan.
+</Callout>
+
+<Callout type="success">
+Bagus! Perubahan Anda telah berhasil disimpan.
+</Callout>
+
+<Callout type="error">
+Error: Terjadi kesalahan. Silakan coba lagi.
+</Callout>
+
+## Membuat Tutorial Step-by-Step
+
+Gunakan komponen Steps untuk tutorial dan panduan:
+
+<Steps>
+<div class="step">
+### Install Dependencies
+
+Pertama, install paket yang diperlukan:
+
+\`\`\`bash
+npm install astro @astrojs/mdx
+\`\`\`
+</div>
+
+<div class="step">
+### Buat Artikel Pertama Anda
+
+Navigasi ke direktori content dan buat file MDX baru:
+
+\`\`\`bash
+touch src/content/blog-id/tutorial/artikel-pertama-saya.mdx
+\`\`\`
+</div>
+
+<div class="step">
+### Tambahkan Frontmatter
+
+Tambahkan frontmatter yang diperlukan ke artikel Anda:
+
+\`\`\`yaml
+---
+title: "Artikel Pertama Saya"
+description: "Ini adalah artikel blog pertama saya"
+created_at: 2025-01-15
+# ... frontmatter lainnya
+---
+\`\`\`
+</div>
+</Steps>
+
+## Contoh Kode dengan Syntax Highlighting
+
+### Contoh JavaScript
+
+\`\`\`javascript
+// Menghitung angka fibonacci
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+console.log(fibonacci(10)); // 55
+\`\`\`
+
+### Contoh TypeScript
+
+\`\`\`typescript
+interface BlogPost {
+  title: string;
+  description: string;
+  created_at: Date;
+  tags: string[];
+}
+
+const post: BlogPost = {
+  title: "Artikel Saya",
+  description: "Artikel yang bagus",
+  created_at: new Date(),
+  tags: ["typescript", "astro"]
+};
+\`\`\`
+
+### Menggunakan Code Tabs
+
+<CodeTabs defaultValue="js" client:load>
+  <TabsList>
+    <TabsTrigger value="js">JavaScript</TabsTrigger>
+    <TabsTrigger value="ts">TypeScript</TabsTrigger>
+    <TabsTrigger value="python">Python</TabsTrigger>
+  </TabsList>
+  <TabsContent value="js">
+  \`\`\`javascript
+  const salam = "Halo, Dunia!";
+  console.log(salam);
+  \`\`\`
+  </TabsContent>
+  <TabsContent value="ts">
+  \`\`\`typescript
+  const salam: string = "Halo, Dunia!";
+  console.log(salam);
+  \`\`\`
+  </TabsContent>
+  <TabsContent value="python">
+  \`\`\`python
+  salam = "Halo, Dunia!"
+  print(salam)
+  \`\`\`
+  </TabsContent>
+</CodeTabs>
+
+## Menambahkan Kutipan
+
+<Quote
+  author="Donald Knuth"
+  role="Ilmuwan Komputer"
+>
+Optimasi prematur adalah akar dari semua kejahatan.
+</Quote>
+
+## Banner Pengumuman
+
+<Banner type="gradient" icon="tabler:sparkles">
+**Fitur Baru!** Lihat peningkatan blog terbaru kami dengan dukungan MDX.
+</Banner>
+
+## Menggunakan Accordion
+
+<Accordion title="Apa itu MDX?" open>
+MDX adalah format yang memungkinkan Anda menulis JSX secara mulus di dokumen Markdown Anda. Anda dapat mengimpor komponen, seperti chart interaktif atau alert, dan menyematkannya dalam konten Anda.
+</Accordion>
+
+<Accordion title="Mengapa menggunakan MDX untuk blogging?">
+MDX memungkinkan Anda membuat konten yang kaya dan interaktif sambil mempertahankan kesederhanaan Markdown. Sangat cocok untuk blog teknis, dokumentasi, dan tutorial.
+</Accordion>
+
+<Accordion title="Bagaimana cara memulai?">
+Lihat dokumentasi [BLOG.md](../../../BLOG.md) untuk panduan lengkap tentang menulis artikel blog dengan MDX.
+</Accordion>
+
+## Call-to-Action
+
+<CTA
+  title="Ingin belajar lebih lanjut tentang Astro?"
+  description="Jelajahi tutorial dan panduan komprehensif kami untuk menguasai pengembangan Astro."
+  buttonText="Lihat Tutorial"
+  buttonLink="/id/blog/tutorial"
+  variant="primary"
+  icon="tabler:school"
+  align="center"
+/>
+
+## List dan Formatting
+
+### Unordered List
+
+- Fitur 1: Performa cepat
+- Fitur 2: Pengalaman developer yang hebat
+- Fitur 3: Arsitektur yang fleksibel
+  - Item bersarang 1
+  - Item bersarang 2
+
+### Ordered List
+
+1. Langkah pertama
+2. Langkah kedua
+3. Langkah ketiga
+
+### Task List
+
+- [x] Tulis artikel blog
+- [x] Tambahkan frontmatter
+- [ ] Publikasikan ke production
+
+## Tabel
+
+| Fitur | Deskripsi | Tersedia |
+|-------|-----------|----------|
+| Dukungan MDX | Tulis JSX di Markdown | ✅ |
+| Syntax Highlighting | Code block dengan Shiki | ✅ |
+| Waktu Baca | Dihitung otomatis | ✅ |
+| Artikel Terkait | Saran berbasis tag | ✅ |
+| Daftar Isi | Auto-generated dengan scroll spy | ✅ |
+
+## Inline Formatting
+
+Anda bisa menggunakan **teks tebal**, *teks miring*, ~~strikethrough~~, dan `inline code`.
+
+Link berfungsi seperti ini: [Kunjungi Astro](https://astro.build)
+
+## Blockquote
+
+> Ini adalah blockquote Markdown standar. Berguna untuk menyorot teks penting atau mengutip sumber.
+>
+> Anda bisa memiliki beberapa paragraf dalam blockquote.
+
+## Horizontal Rule
+
+Gunakan horizontal rule untuk memisahkan bagian:
+
+---
+
+## Kesimpulan
+
+Template ini mendemonstrasikan semua fitur powerful yang tersedia untuk membuat konten blog yang menarik. Jangan ragu untuk menyalin file ini dan menggunakannya sebagai titik awal untuk artikel Anda sendiri!
+
+<CTA
+  title="Siap membuat artikel Anda sendiri?"
+  description="Gunakan template ini sebagai referensi dan mulai menulis konten amazing hari ini."
+  buttonText="Mulai Sekarang"
+  buttonLink="/id/blog"
+  variant="accent"
+  align="center"
+/>

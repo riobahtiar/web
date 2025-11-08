@@ -1,0 +1,146 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  headings: Array<{
+    depth: number;
+    slug: string;
+    text: string;
+  }>;
+  lang?: "en" | "id";
+}
+
+const { headings, lang = "en" } = Astro.props;
+
+// Filter to only show h2 and h3 headings
+const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+
+if (filteredHeadings.length === 0) {
+  return null;
+}
+
+const title = lang === "id" ? "Daftar Isi" : "Table of Contents";
+---
+
+<aside class="toc-wrapper hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-auto">
+  <div class="bg-base-200 rounded-lg p-4">
+    <h3 class="text-sm font-bold mb-4 flex items-center gap-2 text-base-content">
+      <Icon name="tabler:list" class="h-4 w-4 text-primary" />
+      {title}
+    </h3>
+
+    <nav class="toc-nav">
+      <ul class="space-y-2 text-sm">
+        {
+          filteredHeadings.map((heading) => (
+            <li
+              class={`toc-item ${heading.depth === 3 ? "ml-4" : ""}`}
+              data-heading-id={heading.slug}
+            >
+              <a
+                href={`#${heading.slug}`}
+                class="toc-link block py-1 px-2 rounded transition-colors hover:bg-base-300 hover:text-primary text-base-content/70"
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</aside>
+
+<style>
+  .toc-wrapper {
+    will-change: transform;
+  }
+
+  .toc-link.active {
+    color: hsl(var(--p));
+    font-weight: 500;
+    border-left: 2px solid hsl(var(--p));
+    background-color: oklch(from oklch(var(--p)) l c h / 0.1);
+  }
+
+  /* Custom scrollbar for TOC */
+  .toc-wrapper::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .toc-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toc-wrapper::-webkit-scrollbar-thumb {
+    background: hsl(var(--b3));
+    border-radius: 9999px;
+  }
+
+  .toc-wrapper::-webkit-scrollbar-thumb:hover {
+    background: oklch(from oklch(var(--p)) l c h / 0.5);
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.getAttribute("id");
+          const tocLink = document.querySelector(
+            `.toc-link[href="#${id}"]`,
+          );
+
+          if (entry.isIntersecting) {
+            // Remove active class from all links
+            document.querySelectorAll(".toc-link").forEach((link) => {
+              link.classList.remove("active");
+            });
+
+            // Add active class to current link
+            if (tocLink) {
+              tocLink.classList.add("active");
+            }
+          }
+        });
+      },
+      {
+        rootMargin: "-100px 0px -66%",
+        threshold: 0,
+      },
+    );
+
+    // Observe all headings
+    document
+      .querySelectorAll("article h2, article h3")
+      .forEach((heading) => {
+        observer.observe(heading);
+      });
+
+    // Smooth scroll behavior for TOC links
+    document.querySelectorAll(".toc-link").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const href = link.getAttribute("href");
+        if (href) {
+          const target = document.querySelector(href);
+          if (target) {
+            const offset = 100; // Offset for sticky header
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition =
+              elementPosition + window.scrollY - offset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth",
+            });
+
+            // Update URL without jumping
+            history.pushState(null, "", href);
+          }
+        }
+      });
+    });
+  });
+</script>

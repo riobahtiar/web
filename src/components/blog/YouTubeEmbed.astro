@@ -1,0 +1,70 @@
+---
+interface Props {
+  videoId: string;
+  title?: string;
+  aspectRatio?: "16/9" | "4/3" | "1/1";
+  autoplay?: boolean;
+  mute?: boolean;
+  controls?: boolean;
+  startAt?: number; // Start time in seconds
+}
+
+const {
+  videoId,
+  title = "YouTube video player",
+  aspectRatio = "16/9",
+  autoplay = false,
+  mute = false,
+  controls = true,
+  startAt,
+} = Astro.props;
+
+// Build YouTube embed URL with parameters
+const params = new URLSearchParams();
+if (autoplay) params.append("autoplay", "1");
+if (mute) params.append("mute", "1");
+if (!controls) params.append("controls", "0");
+if (startAt) params.append("start", startAt.toString());
+
+const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}${params.toString() ? `?${params.toString()}` : ""}`;
+
+const aspectRatioStyles = {
+  "16/9": "aspect-video",
+  "4/3": "aspect-[4/3]",
+  "1/1": "aspect-square",
+};
+---
+
+<div class="youtube-embed-wrapper my-8">
+  <div class={`youtube-embed relative overflow-hidden rounded-lg ${aspectRatioStyles[aspectRatio]}`}>
+    <iframe
+      src={embedUrl}
+      title={title}
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+      class="absolute inset-0 w-full h-full"
+      loading="lazy"
+    ></iframe>
+  </div>
+</div>
+
+<style>
+  .youtube-embed {
+    @apply bg-base-300;
+  }
+
+  .youtube-embed iframe {
+    @apply border-0;
+  }
+
+  /* Loading state */
+  .youtube-embed::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-br from-base-200 to-base-300 animate-pulse;
+  }
+
+  .youtube-embed iframe {
+    @apply relative z-10;
+  }
+</style>
