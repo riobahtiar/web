@@ -1,0 +1,100 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import { formatDate } from "../../utils/date";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  posts: Array<
+    (CollectionEntry<"blog-en"> | CollectionEntry<"blog-id">) & {
+      readingTime: string;
+    }
+  >;
+  lang: "en" | "id";
+}
+
+const { posts, lang } = Astro.props;
+
+if (posts.length === 0) {
+  return null;
+}
+
+const heading = lang === "id" ? "Artikel Terkait" : "Related Posts";
+---
+
+<section class="mt-16 border-t border-base-300 pt-12">
+  <h2 class="text-3xl font-bold mb-8 flex items-center gap-2">
+    <Icon name="tabler:article" class="h-7 w-7 text-primary" />
+    {heading}
+  </h2>
+
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {
+      posts.map((post) => {
+        const slug = post.slug.startsWith(post.data.category + "/")
+          ? post.slug.substring(post.data.category.length + 1)
+          : post.slug;
+        const postUrl = `/${lang === "en" ? "" : "id/"}blog/${post.data.category}/${slug}`;
+
+        return (
+          <article class="card bg-base-200 hover:bg-base-300 transition-colors group">
+            {post.data.image && (
+              <figure class="aspect-video overflow-hidden">
+                <Image
+                  src={post.data.image}
+                  alt={post.data.title}
+                  width={400}
+                  height={225}
+                  class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </figure>
+            )}
+            <div class="card-body p-4">
+              <div class="flex items-center gap-2 text-xs text-base-content/60 mb-2">
+                <span class="badge badge-primary badge-sm">
+                  {post.data.category}
+                </span>
+                <span>•</span>
+                <time datetime={post.data.created_at.toISOString()}>
+                  {formatDate(post.data.created_at, lang)}
+                </time>
+              </div>
+
+              <h3 class="card-title text-base mb-2">
+                <a
+                  href={postUrl}
+                  class="hover:text-primary transition-colors line-clamp-2"
+                >
+                  {post.data.title}
+                </a>
+              </h3>
+
+              <p class="text-sm text-base-content/70 line-clamp-2 mb-3">
+                {post.data.description}
+              </p>
+
+              <div class="flex items-center justify-between text-xs">
+                <span class="flex items-center gap-1 text-base-content/60">
+                  <Icon name="tabler:clock" class="h-3 w-3" />
+                  {post.readingTime}
+                </span>
+                <a href={postUrl} class="link link-primary">
+                  {lang === "id" ? "Baca" : "Read"} →
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

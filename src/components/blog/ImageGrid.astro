@@ -1,0 +1,60 @@
+---
+interface Props {
+  columns?: 2 | 3 | 4;
+  gap?: "sm" | "md" | "lg";
+  rounded?: boolean;
+  caption?: string;
+}
+
+const { columns = 2, gap = "md", rounded = true, caption } = Astro.props;
+
+const gapClasses = {
+  sm: "gap-2",
+  md: "gap-4",
+  lg: "gap-6",
+};
+
+const columnClasses = {
+  2: "grid-cols-1 sm:grid-cols-2",
+  3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
+};
+---
+
+<figure class="image-grid-wrapper my-8">
+  <div class={`image-grid grid ${columnClasses[columns]} ${gapClasses[gap]}`}>
+    <slot />
+  </div>
+
+  {caption && (
+    <figcaption class="text-center text-sm text-base-content/60 mt-4 italic">
+      {caption}
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .image-grid :global(img) {
+    @apply w-full h-full object-cover rounded-lg;
+    aspect-ratio: 4/3;
+  }
+
+  .image-grid :global(.tall) {
+    @apply row-span-2;
+  }
+
+  .image-grid :global(.wide) {
+    @apply col-span-2;
+  }
+
+  /* Hover effect */
+  .image-grid :global(img) {
+    @apply transition-transform duration-300 hover:scale-105 cursor-pointer;
+  }
+
+  /* Image wrapper for better control */
+  .image-grid :global(a),
+  .image-grid :global(div) {
+    @apply overflow-hidden rounded-lg;
+  }
+</style>

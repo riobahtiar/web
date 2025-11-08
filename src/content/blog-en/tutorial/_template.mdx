@@ -1,0 +1,256 @@
+---
+title: "Example Blog Post - Complete MDX Template"
+description: "A comprehensive template showcasing all available MDX components and features for creating rich, engaging blog content"
+created_at: 2025-01-15
+modified_at: 2025-01-15
+image: "/blog/covers/example.jpg"
+category: "tutorial"
+tags: ["astro", "mdx", "blogging", "tutorial"]
+author:
+  name: "Rio Bahtiar"
+  image: "/authors/rio.jpg"
+  bio: "Full-stack Developer"
+---
+
+import Callout from "@/components/blog/Callout.astro";
+import Banner from "@/components/blog/Banner.astro";
+import CTA from "@/components/blog/CTA.astro";
+import Steps from "@/components/blog/Steps.astro";
+import Quote from "@/components/blog/Quote.astro";
+import Accordion from "@/components/blog/Accordion.astro";
+import ImageGrid from "@/components/blog/ImageGrid.astro";
+import YouTubeEmbed from "@/components/blog/YouTubeEmbed.astro";
+import { CodeTabs, TabsList, TabsTrigger, TabsContent } from "@/components/blog/BlogTabs.tsx";
+
+## Introduction
+
+This is an example blog post template demonstrating all available MDX components and features. Use this as a reference when creating your own blog posts.
+
+## Using Callout Components
+
+Callouts are perfect for highlighting important information:
+
+<Callout type="info" title="Information">
+This is an informational callout. Use it to share helpful context or background information.
+</Callout>
+
+<Callout type="tip">
+Pro tip: You can omit the title prop to use default titles.
+</Callout>
+
+<Callout type="warning" title="Important!">
+Always test your blog posts locally before publishing.
+</Callout>
+
+<Callout type="success">
+Great! Your changes have been saved successfully.
+</Callout>
+
+<Callout type="error">
+Error: Something went wrong. Please try again.
+</Callout>
+
+## Creating Step-by-Step Tutorials
+
+Use the Steps component for tutorials and guides:
+
+<Steps>
+<div class="step">
+### Install Dependencies
+
+First, install the required packages:
+
+\`\`\`bash
+npm install astro @astrojs/mdx
+\`\`\`
+</div>
+
+<div class="step">
+### Create Your First Post
+
+Navigate to the content directory and create a new MDX file:
+
+\`\`\`bash
+touch src/content/blog-en/tutorial/my-first-post.mdx
+\`\`\`
+</div>
+
+<div class="step">
+### Add Frontmatter
+
+Add the required frontmatter to your post:
+
+\`\`\`yaml
+---
+title: "My First Post"
+description: "This is my first blog post"
+created_at: 2025-01-15
+# ... more frontmatter
+---
+\`\`\`
+</div>
+</Steps>
+
+## Code Examples with Syntax Highlighting
+
+### JavaScript Example
+
+\`\`\`javascript
+// Calculate fibonacci numbers
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+console.log(fibonacci(10)); // 55
+\`\`\`
+
+### TypeScript Example
+
+\`\`\`typescript
+interface BlogPost {
+  title: string;
+  description: string;
+  created_at: Date;
+  tags: string[];
+}
+
+const post: BlogPost = {
+  title: "My Post",
+  description: "A great post",
+  created_at: new Date(),
+  tags: ["typescript", "astro"]
+};
+\`\`\`
+
+### Using Code Tabs
+
+<CodeTabs defaultValue="js" client:load>
+  <TabsList>
+    <TabsTrigger value="js">JavaScript</TabsTrigger>
+    <TabsTrigger value="ts">TypeScript</TabsTrigger>
+    <TabsTrigger value="python">Python</TabsTrigger>
+  </TabsList>
+  <TabsContent value="js">
+  \`\`\`javascript
+  const greeting = "Hello, World!";
+  console.log(greeting);
+  \`\`\`
+  </TabsContent>
+  <TabsContent value="ts">
+  \`\`\`typescript
+  const greeting: string = "Hello, World!";
+  console.log(greeting);
+  \`\`\`
+  </TabsContent>
+  <TabsContent value="python">
+  \`\`\`python
+  greeting = "Hello, World!"
+  print(greeting)
+  \`\`\`
+  </TabsContent>
+</CodeTabs>
+
+## Adding Quotes
+
+<Quote
+  author="Donald Knuth"
+  role="Computer Scientist"
+>
+Premature optimization is the root of all evil.
+</Quote>
+
+## Banner Announcements
+
+<Banner type="gradient" icon="tabler:sparkles">
+**New Feature!** Check out our latest blog enhancements with MDX support.
+</Banner>
+
+## Using Accordions
+
+<Accordion title="What is MDX?" open>
+MDX is a format that lets you seamlessly write JSX in your Markdown documents. You can import components, such as interactive charts or alerts, and embed them within your content.
+</Accordion>
+
+<Accordion title="Why use MDX for blogging?">
+MDX allows you to create rich, interactive content while maintaining the simplicity of Markdown. It's perfect for technical blogs, documentation, and tutorials.
+</Accordion>
+
+<Accordion title="How do I get started?">
+Check out the [BLOG.md](../../../BLOG.md) documentation for a complete guide on writing blog posts with MDX.
+</Accordion>
+
+## Call-to-Action
+
+<CTA
+  title="Want to learn more about Astro?"
+  description="Explore our comprehensive tutorials and guides to master Astro development."
+  buttonText="View Tutorials"
+  buttonLink="/blog/tutorial"
+  variant="primary"
+  icon="tabler:school"
+  align="center"
+/>
+
+## Lists and Formatting
+
+### Unordered List
+
+- Feature 1: Fast performance
+- Feature 2: Great developer experience
+- Feature 3: Flexible architecture
+  - Nested item 1
+  - Nested item 2
+
+### Ordered List
+
+1. First step
+2. Second step
+3. Third step
+
+### Task List
+
+- [x] Write blog post
+- [x] Add frontmatter
+- [ ] Publish to production
+
+## Tables
+
+| Feature | Description | Available |
+|---------|-------------|-----------|
+| MDX Support | Write JSX in Markdown | ✅ |
+| Syntax Highlighting | Shiki-powered code blocks | ✅ |
+| Reading Time | Auto-calculated | ✅ |
+| Related Posts | Tag-based suggestions | ✅ |
+| Table of Contents | Auto-generated with scroll spy | ✅ |
+
+## Inline Formatting
+
+You can use **bold text**, *italic text*, ~~strikethrough~~, and `inline code`.
+
+Links work like this: [Visit Astro](https://astro.build)
+
+## Blockquotes
+
+> This is a standard Markdown blockquote. It's useful for highlighting important text or quoting sources.
+>
+> You can have multiple paragraphs in a blockquote.
+
+## Horizontal Rule
+
+Use horizontal rules to separate sections:
+
+---
+
+## Conclusion
+
+This template demonstrates all the powerful features available for creating engaging blog content. Feel free to copy this file and use it as a starting point for your own posts!
+
+<CTA
+  title="Ready to create your own post?"
+  description="Use this template as a reference and start writing amazing content today."
+  buttonText="Get Started"
+  buttonLink="/blog"
+  variant="accent"
+  align="center"
+/>

@@ -1,0 +1,84 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  title: string;
+  description?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  variant?: "primary" | "secondary" | "accent";
+  icon?: string;
+  align?: "left" | "center" | "right";
+}
+
+const {
+  title,
+  description,
+  buttonText = "Learn More",
+  buttonLink = "#",
+  variant = "primary",
+  icon,
+  align = "center",
+} = Astro.props;
+
+const alignClasses = {
+  left: "text-left items-start",
+  center: "text-center items-center",
+  right: "text-right items-end",
+};
+
+const buttonVariants = {
+  primary: "btn-primary",
+  secondary: "btn-secondary",
+  accent: "btn-accent",
+};
+---
+
+<div class={`cta-block my-8 rounded-lg bg-base-200 p-8 ${alignClasses[align]} flex flex-col gap-4`}>
+  {icon && (
+    <div class="flex-shrink-0">
+      <div class="rounded-full bg-primary/20 p-4 inline-block">
+        <Icon name={icon} class="h-8 w-8 text-primary" />
+      </div>
+    </div>
+  )}
+
+  <div class="flex flex-col gap-2">
+    <h3 class="text-2xl font-bold text-base-content">
+      {title}
+    </h3>
+
+    {description && (
+      <p class="text-base-content/70 max-w-2xl">
+        {description}
+      </p>
+    )}
+
+    {/* Slot for custom content */}
+    <div class="prose prose-sm max-w-none">
+      <slot />
+    </div>
+  </div>
+
+  {buttonText && buttonLink && (
+    <div class="mt-2">
+      <a
+        href={buttonLink}
+        class={`btn ${buttonVariants[variant]} gap-2`}
+      >
+        {buttonText}
+        <Icon name="tabler:arrow-right" class="h-5 w-5" />
+      </a>
+    </div>
+  )}
+</div>
+
+<style>
+  .cta-block :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .cta-block :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>
