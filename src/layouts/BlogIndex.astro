@@ -1,6 +1,5 @@
 ---
 import Layout from "./Layout.astro";
-import { Image } from "astro:assets";
 import { formatDate } from "../utils/date";
 
 interface BlogPost {
@@ -77,12 +76,12 @@ const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
                       class="block md:col-span-1"
                     >
                       <div class="relative aspect-[16/9] overflow-hidden rounded-xl">
-                        <Image
+                        <img
                           src={post.data.image}
                           alt={post.data.title}
                           class="object-cover transition-transform duration-300 hover:scale-105"
-                          width={400}
-                          height={225}
+                          width="400"
+                          height="225"
                         />
                       </div>
                     </a>
@@ -116,11 +115,11 @@ const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
                     <p class="!mt-0 line-clamp-2">{post.data.description}</p>
 
                     <div class="flex items-center gap-3">
-                      <Image
+                      <img
                         src={post.data.author.image}
                         alt={post.data.author.name}
-                        width={32}
-                        height={32}
+                        width="32"
+                        height="32"
                         class="rounded-full"
                       />
                       <span>{post.data.author.name}</span>
