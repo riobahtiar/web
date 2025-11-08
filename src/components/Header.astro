@@ -44,6 +44,7 @@ const isActive = (path: string) => {
 // Define URLs for each page
 const aboutUrl = `/${lang === "en" ? "" : "id/"}about`;
 const servicesUrl = lang === "en" ? "/services" : "/id/services";
+const blogUrl = `/${lang === "en" ? "" : "id/"}blog`;
 const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
 ---
 
@@ -93,9 +94,11 @@ const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
           >
         </li>
         <li>
-          <div class="tooltip tooltip-bottom" data-tip={i18n.nav.comingSoon}>
-            <a class="cursor-not-allowed opacity-50">{i18n.nav.blog}</a>
-          </div>
+          <a
+            href={blogUrl}
+            class={isActive(blogUrl) ? "active font-medium" : ""}
+            >{i18n.nav.blog}</a
+          >
         </li>
         <li>
           <a
@@ -187,9 +190,11 @@ const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
               >
             </li>
             <li>
-              <div class="tooltip tooltip-left" data-tip={i18n.nav.comingSoon}>
-                <a class="cursor-not-allowed opacity-50">{i18n.nav.blog}</a>
-              </div>
+              <a
+                href={blogUrl}
+                class={isActive(blogUrl) ? "active font-medium" : ""}
+                >{i18n.nav.blog}</a
+              >
             </li>
             <li>
               <a

@@ -1,0 +1,86 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  type?: "info" | "warning" | "error" | "success" | "tip";
+  title?: string;
+}
+
+const { type = "info", title } = Astro.props;
+
+// Icon and color mapping
+const config = {
+  info: {
+    icon: "tabler:info-circle",
+    bgClass: "bg-info/10 border-info",
+    iconClass: "text-info",
+    titleClass: "text-info",
+  },
+  warning: {
+    icon: "tabler:alert-triangle",
+    bgClass: "bg-warning/10 border-warning",
+    iconClass: "text-warning",
+    titleClass: "text-warning",
+  },
+  error: {
+    icon: "tabler:x-circle",
+    bgClass: "bg-error/10 border-error",
+    iconClass: "text-error",
+    titleClass: "text-error",
+  },
+  success: {
+    icon: "tabler:circle-check",
+    bgClass: "bg-success/10 border-success",
+    iconClass: "text-success",
+    titleClass: "text-success",
+  },
+  tip: {
+    icon: "tabler:bulb",
+    bgClass: "bg-primary/10 border-primary",
+    iconClass: "text-primary",
+    titleClass: "text-primary",
+  },
+};
+
+const typeConfig = config[type];
+const defaultTitles = {
+  info: "Info",
+  warning: "Warning",
+  error: "Error",
+  success: "Success",
+  tip: "Tip",
+};
+---
+
+<div class={`callout my-4 rounded-lg border-l-4 p-4 ${typeConfig.bgClass}`}>
+  <div class="flex items-start gap-3">
+    <div class={`flex-shrink-0 mt-0.5 ${typeConfig.iconClass}`}>
+      <Icon name={typeConfig.icon} class="h-5 w-5" />
+    </div>
+    <div class="flex-1">
+      {title && (
+        <p class={`font-semibold mb-1 ${typeConfig.titleClass}`}>
+          {title}
+        </p>
+      )}
+      {!title && (
+        <p class={`font-semibold mb-1 ${typeConfig.titleClass}`}>
+          {defaultTitles[type]}
+        </p>
+      )}
+      <div class="prose prose-sm max-w-none text-base-content/90">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .callout :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .callout :global(p:first-child) {
+    margin-top: 0;
+  }
+</style>

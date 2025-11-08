@@ -169,3 +169,132 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================
+   Blog Code Block Styling (Shiki)
+   ============================================ */
+
+/* Container styling for code blocks */
+.astro-code {
+  @apply rounded-lg p-4 my-4 overflow-x-auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  tab-size: 2;
+}
+
+/* Theme switching for code blocks */
+:root[data-theme="light"] .astro-code,
+:root[data-theme="light"] .astro-code span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+}
+
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+/* Line numbers (if enabled) */
+.astro-code .line {
+  @apply min-h-[1.5rem];
+}
+
+/* Highlighted lines */
+.astro-code .line.highlighted {
+  @apply bg-primary/10 border-l-4 border-primary pl-2 -ml-4;
+}
+
+/* Inline code (not in code blocks) */
+:not(pre) > code {
+  @apply bg-base-200 text-primary px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+/* Code block titles (if using remark-code-titles) */
+.remark-code-title {
+  @apply bg-base-300 text-base-content px-4 py-2 rounded-t-lg font-mono text-sm font-semibold;
+  margin-bottom: -1rem;
+  margin-top: 1rem;
+}
+
+.remark-code-title + pre {
+  @apply rounded-t-none mt-0;
+}
+
+/* ============================================
+   Blog Prose Styling
+   ============================================ */
+
+/* Enhanced typography for blog content */
+.prose {
+  @apply max-w-none;
+}
+
+.prose h1 {
+  @apply text-4xl font-bold mt-8 mb-4;
+}
+
+.prose h2 {
+  @apply text-3xl font-bold mt-6 mb-3 border-b border-base-300 pb-2;
+}
+
+.prose h3 {
+  @apply text-2xl font-semibold mt-5 mb-2;
+}
+
+.prose h4 {
+  @apply text-xl font-semibold mt-4 mb-2;
+}
+
+.prose a {
+  @apply text-primary hover:underline;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-primary bg-base-200 pl-4 py-2 my-4 italic;
+}
+
+.prose table {
+  @apply w-full border-collapse my-4;
+}
+
+.prose th {
+  @apply bg-base-200 p-2 text-left font-semibold;
+}
+
+.prose td {
+  @apply border border-base-300 p-2;
+}
+
+.prose img {
+  @apply rounded-lg my-4;
+}
+
+.prose hr {
+  @apply my-8 border-base-300;
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+  @apply my-4 pl-6;
+}
+
+.prose li {
+  @apply my-2;
+}
+
+/* ============================================
+   Responsive Code Blocks
+   ============================================ */
+
+@media (max-width: 640px) {
+  .astro-code {
+    font-size: 0.75rem;
+    @apply p-2;
+  }
+  
+  :not(pre) > code {
+    font-size: 0.75rem;
+  }
+}
