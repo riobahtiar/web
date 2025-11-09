@@ -64,6 +64,23 @@ export const id = {
       consultation: "Pesan Konsultasi",
     },
   },
+  portfolio: {
+    title: "Portfolio",
+    subtitle: "Proyek Unggulan",
+    description:
+      "Jelajahi berbagai proyek terbaru saya yang menampilkan keahlian dalam pengembangan web, arsitektur sistem, dan solusi digital.",
+    viewProject: "Lihat Proyek",
+    viewLive: "Lihat Live",
+    sourceCode: "Kode Sumber",
+    technologies: "Teknologi",
+    category: {
+      webDevelopment: "Pengembangan Web",
+      mobileApp: "Aplikasi Mobile",
+      systemDesign: "Desain Sistem",
+      ecommerce: "E-Commerce",
+      dashboard: "Dashboard",
+    },
+  },
   contact: {
     title: "Hubungi Saya",
     subtitle: "Mari Terhubung",

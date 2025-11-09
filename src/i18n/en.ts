@@ -64,6 +64,23 @@ export const en = {
       consultation: "Book Consultation",
     },
   },
+  portfolio: {
+    title: "Portfolio",
+    subtitle: "Featured Projects",
+    description:
+      "Explore a selection of my recent projects showcasing expertise in web development, system architecture, and digital solutions.",
+    viewProject: "View Project",
+    viewLive: "View Live",
+    sourceCode: "Source Code",
+    technologies: "Technologies",
+    category: {
+      webDevelopment: "Web Development",
+      mobileApp: "Mobile App",
+      systemDesign: "System Design",
+      ecommerce: "E-Commerce",
+      dashboard: "Dashboard",
+    },
+  },
   contact: {
     title: "Get in Touch",
     subtitle: "Let's Connect",

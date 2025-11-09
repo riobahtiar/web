@@ -1,0 +1,260 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  lang: string;
+  i18n: any;
+}
+
+const { lang, i18n } = Astro.props;
+
+const portfolioItems = [
+  {
+    id: 1,
+    title: "E-Commerce Platform Modernization",
+    description:
+      "Rebuilt a legacy e-commerce platform using modern tech stack, improving page load times by 70% and increasing conversion rates.",
+    category: i18n.portfolio.category.ecommerce,
+    image:
+      "https://images.unsplash.com/photo-1661956602116-aa6865609028?w=800&h=600&fit=crop",
+    technologies: [
+      "Astro",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Cloudflare",
+    ],
+    liveUrl: "https://example-ecommerce.com",
+    featured: true,
+  },
+  {
+    id: 2,
+    title: "Real-Time Analytics Dashboard",
+    description:
+      "Developed a real-time analytics dashboard for monitoring application metrics with customizable widgets and alerts.",
+    category: i18n.portfolio.category.dashboard,
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+    technologies: ["Vue.js", "Node.js", "WebSocket", "D3.js", "PostgreSQL"],
+    liveUrl: "https://example-dashboard.com",
+    featured: true,
+  },
+  {
+    id: 3,
+    title: "Corporate Website Redesign",
+    description:
+      "Complete redesign and development of a corporate website with focus on accessibility, SEO, and performance optimization.",
+    category: i18n.portfolio.category.webDevelopment,
+    image:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+    technologies: ["Next.js", "TypeScript", "Sanity CMS", "Vercel"],
+    liveUrl: "https://example-corporate.com",
+    featured: false,
+  },
+  {
+    id: 4,
+    title: "Mobile Fitness Tracking App",
+    description:
+      "Cross-platform mobile application for fitness tracking with workout plans, progress analytics, and social features.",
+    category: i18n.portfolio.category.mobileApp,
+    image:
+      "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=600&fit=crop",
+    technologies: ["React Native", "Expo", "Firebase", "Redux"],
+    liveUrl: "https://example-fitness.com",
+    featured: true,
+  },
+  {
+    id: 5,
+    title: "Distributed System Architecture",
+    description:
+      "Designed and implemented a microservices architecture for a high-traffic application handling 10M+ daily requests.",
+    category: i18n.portfolio.category.systemDesign,
+    image:
+      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop",
+    technologies: ["Kubernetes", "Docker", "gRPC", "Redis", "MongoDB"],
+    featured: false,
+  },
+  {
+    id: 6,
+    title: "SaaS Subscription Management Platform",
+    description:
+      "Built a comprehensive SaaS platform for subscription management with payment processing, invoicing, and analytics.",
+    category: i18n.portfolio.category.webDevelopment,
+    image:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop",
+    technologies: ["Laravel", "Vue.js", "Stripe API", "MySQL", "Redis"],
+    liveUrl: "https://example-saas.com",
+    featured: false,
+  },
+  {
+    id: 7,
+    title: "Restaurant Ordering System",
+    description:
+      "Developed a multi-tenant restaurant ordering system with QR code menus, online ordering, and kitchen management.",
+    category: i18n.portfolio.category.webDevelopment,
+    image:
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop",
+    technologies: ["React", "Node.js", "Socket.io", "MongoDB", "Stripe"],
+    liveUrl: "https://example-restaurant.com",
+    featured: true,
+  },
+  {
+    id: 8,
+    title: "Educational Learning Management System",
+    description:
+      "Created an LMS platform with video streaming, interactive quizzes, progress tracking, and certification features.",
+    category: i18n.portfolio.category.webDevelopment,
+    image:
+      "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&h=600&fit=crop",
+    technologies: ["Django", "React", "PostgreSQL", "AWS S3", "FFmpeg"],
+    liveUrl: "https://example-lms.com",
+    featured: false,
+  },
+  {
+    id: 9,
+    title: "Healthcare Patient Portal",
+    description:
+      "Developed a secure patient portal for appointment scheduling, medical records access, and telemedicine consultations.",
+    category: i18n.portfolio.category.webDevelopment,
+    image:
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=600&fit=crop",
+    technologies: [
+      "Angular",
+      "NestJS",
+      "PostgreSQL",
+      "WebRTC",
+      "HIPAA Compliant",
+    ],
+    featured: false,
+  },
+  {
+    id: 10,
+    title: "Real Estate Marketplace",
+    description:
+      "Built a property listing marketplace with advanced search, virtual tours, mortgage calculator, and agent messaging.",
+    category: i18n.portfolio.category.webDevelopment,
+    image:
+      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop",
+    technologies: ["Next.js", "Prisma", "PostgreSQL", "Google Maps API", "S3"],
+    liveUrl: "https://example-realestate.com",
+    featured: false,
+  },
+];
+---
+
+<section class="relative overflow-hidden py-20">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 z-0 opacity-10 dark:opacity-5">
+    <div
+      class="bg-primary/30 absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl"
+    >
+    </div>
+    <div
+      class="bg-secondary/30 absolute -bottom-24 -left-24 h-96 w-96 rounded-full blur-3xl"
+    >
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-16 text-center">
+      <div class="mb-4 inline-block">
+        <div class="relative">
+          <span
+            class="bg-primary/20 absolute inset-0 translate-x-1.5 translate-y-1.5 -rotate-3 transform rounded-lg"
+          ></span>
+          <span
+            class="bg-primary text-primary-content relative inline-block rounded-lg px-4 py-2 font-medium"
+          >
+            {i18n.portfolio.subtitle}
+          </span>
+        </div>
+      </div>
+      <h1
+        class="from-primary to-secondary mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+      >
+        {i18n.portfolio.title}
+      </h1>
+      <p class="text-base-content/80 mx-auto max-w-3xl text-lg md:text-xl">
+        {i18n.portfolio.description}
+      </p>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {
+        portfolioItems.map((item) => (
+          <article class="group bg-base-100 relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+            {/* Project Image */}
+            <div class="relative aspect-[16/9] overflow-hidden">
+              <img
+                src={item.image}
+                alt={item.title}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              <div class="from-base-300/90 absolute inset-0 bg-gradient-to-t to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+              {/* Category Badge */}
+              <div class="absolute top-4 left-4">
+                <span class="badge badge-primary badge-sm">
+                  {item.category}
+                </span>
+              </div>
+
+              {/* Featured Badge */}
+              {item.featured && (
+                <div class="absolute top-4 right-4">
+                  <span class="badge badge-secondary badge-sm">
+                    <Icon name="tabler:star-filled" class="mr-1 h-3 w-3" />
+                    Featured
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Project Info */}
+            <div class="p-6">
+              <h3 class="group-hover:text-primary mb-3 text-xl font-bold transition-colors duration-300">
+                {item.title}
+              </h3>
+              <p class="text-base-content/70 mb-4 line-clamp-3 text-sm">
+                {item.description}
+              </p>
+
+              {/* Technologies */}
+              <div class="mb-4">
+                <p class="mb-2 text-xs font-semibold tracking-wider uppercase opacity-60">
+                  {i18n.portfolio.technologies}
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  {item.technologies.slice(0, 3).map((tech) => (
+                    <span class="badge badge-outline badge-xs">{tech}</span>
+                  ))}
+                  {item.technologies.length > 3 && (
+                    <span class="badge badge-outline badge-xs">
+                      +{item.technologies.length - 3}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Actions */}
+              {item.liveUrl && (
+                <a
+                  href={item.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary btn-sm w-full"
+                >
+                  <Icon name="tabler:external-link" class="h-4 w-4" />
+                  {i18n.portfolio.viewLive}
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

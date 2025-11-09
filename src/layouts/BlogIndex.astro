@@ -1,6 +1,7 @@
 ---
 import Layout from "./Layout.astro";
 import { formatDate } from "../utils/date";
+import BlogSearch from "../components/blog/BlogSearch";
 
 interface BlogPost {
   slug: string;
@@ -49,145 +50,75 @@ const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
 ---
 
 <Layout title={title} description={description} lang={lang}>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
     <main class="prose prose-lg max-w-none">
       <div class="not-prose flex flex-col gap-12 lg:flex-row">
-      <!-- Main Content -->
-      <div class="flex-1">
-        <header>
-          <h1>{title}</h1>
-          <p class="lead">{description}</p>
-        </header>
+        <!-- Main Content -->
+        <div class="flex-1">
+          <header>
+            <h1>{title}</h1>
+            <p class="lead">{description}</p>
+          </header>
 
-        <!-- Posts Grid -->
-        <div class="grid gap-12">
+          <!-- Search and Posts -->
+          <BlogSearch posts={posts} lang={lang} baseUrl={baseUrl} client:load />
+
+          <!-- Pagination -->
           {
-            posts.map((post) => {
-              // Clean the slug to remove category prefix if needed
-              let cleanSlug = post.slug;
-              if (cleanSlug.startsWith(post.data.category + "/")) {
-                cleanSlug = cleanSlug.substring(post.data.category.length + 1);
-              }
-
-              return (
-                <article class="grid gap-8 md:grid-cols-3">
-                  {post.data.image && (
-                    <a
-                      href={`${baseUrl}/${post.data.category}/${cleanSlug}`}
-                      class="block md:col-span-1"
-                    >
-                      <div class="relative aspect-[16/9] overflow-hidden rounded-xl">
-                        <img
-                          src={post.data.image}
-                          alt={post.data.title}
-                          class="object-cover transition-transform duration-300 hover:scale-105"
-                          width="400"
-                          height="225"
-                        />
-                      </div>
-                    </a>
-                  )}
-
-                  <div
-                    class={post.data.image ? "md:col-span-2" : "md:col-span-3"}
-                  >
-                    <div class="mb-3 flex items-center gap-4">
-                      <a
-                        href={`${baseUrl}/${post.data.category}`}
-                        class="hover:text-primary transition-colors"
-                      >
-                        {post.data.category}
-                      </a>
-                      <span>•</span>
-                      <time datetime={post.data.created_at.toISOString()}>
-                        {formatDate(post.data.created_at, lang)}
-                      </time>
-                    </div>
-
-                    <h2 class="!mt-0 !mb-3">
-                      <a
-                        href={`${baseUrl}/${post.data.category}/${cleanSlug}`}
-                        class="hover:text-primary transition-colors"
-                      >
-                        {post.data.title}
-                      </a>
-                    </h2>
-
-                    <p class="!mt-0 line-clamp-2">{post.data.description}</p>
-
-                    <div class="flex items-center gap-3">
-                      <img
-                        src={post.data.author.image}
-                        alt={post.data.author.name}
-                        width="32"
-                        height="32"
-                        class="rounded-full"
-                      />
-                      <span>{post.data.author.name}</span>
-                    </div>
-                  </div>
-                </article>
-              );
-            })
+            pagination.totalPages > 1 && (
+              <div class="mt-12 flex justify-center gap-2">
+                {pagination.url.prev && (
+                  <a href={pagination.url.prev} class="btn btn-ghost">
+                    ← {lang === "en" ? "Previous" : "Sebelumnya"}
+                  </a>
+                )}
+                <span class="btn btn-ghost">
+                  {pagination.currentPage} / {pagination.totalPages}
+                </span>
+                {pagination.url.next && (
+                  <a href={pagination.url.next} class="btn btn-ghost">
+                    {lang === "en" ? "Next" : "Selanjutnya"} →
+                  </a>
+                )}
+              </div>
+            )
           }
         </div>
 
-        <!-- Pagination -->
-        {
-          pagination.totalPages > 1 && (
-            <div class="mt-12 flex justify-center gap-2">
-              {pagination.url.prev && (
-                <a href={pagination.url.prev} class="btn btn-ghost">
-                  ← {lang === "en" ? "Previous" : "Sebelumnya"}
-                </a>
-              )}
-              <span class="btn btn-ghost">
-                {pagination.currentPage} / {pagination.totalPages}
-              </span>
-              {pagination.url.next && (
-                <a href={pagination.url.next} class="btn btn-ghost">
-                  {lang === "en" ? "Next" : "Selanjutnya"} →
-                </a>
-              )}
-            </div>
-          )
-        }
-      </div>
-
-      <!-- Sidebar -->
-      <aside class="space-y-8 lg:w-72">
-        <!-- Categories -->
-        {
-          categories && (
-            <div class="bg-base-200 rounded-xl p-6">
-              <h2 class="!mt-0 !mb-4">
-                {lang === "en" ? "Categories" : "Kategori"}
-              </h2>
-              <ul class="!mt-0 space-y-2">
-                <li>
-                  <a
-                    href={baseUrl}
-                    class={`hover:text-primary block transition-colors ${!currentCategory ? "text-primary" : ""}`}
-                  >
-                    {lang === "en" ? "All Posts" : "Semua Artikel"}
-                  </a>
-                </li>
-                {categories.map((category) => (
+        <!-- Sidebar -->
+        <aside class="space-y-8 lg:w-72">
+          <!-- Categories -->
+          {
+            categories && (
+              <div class="bg-base-200 rounded-xl p-6">
+                <h2 class="!mt-0 !mb-4">
+                  {lang === "en" ? "Categories" : "Kategori"}
+                </h2>
+                <ul class="!mt-0 space-y-2">
                   <li>
                     <a
-                      href={`${baseUrl}/${category.name}`}
-                      class={`hover:text-primary block transition-colors ${currentCategory === category.name ? "text-primary" : ""}`}
+                      href={baseUrl}
+                      class={`hover:text-primary block transition-colors ${!currentCategory ? "text-primary" : ""}`}
                     >
-                      {category.name}
-                      <span> ({category.count})</span>
+                      {lang === "en" ? "All Posts" : "Semua Artikel"}
                     </a>
                   </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
-      </aside>
+                  {categories.map((category) => (
+                    <li>
+                      <a
+                        href={`${baseUrl}/${category.name}`}
+                        class={`hover:text-primary block transition-colors ${currentCategory === category.name ? "text-primary" : ""}`}
+                      >
+                        {category.name}
+                        <span> ({category.count})</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+        </aside>
       </div>
     </main>
   </div>

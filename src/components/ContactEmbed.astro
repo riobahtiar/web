@@ -1,0 +1,161 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  lang: string;
+  i18n: any;
+}
+
+const { lang, i18n } = Astro.props;
+---
+
+<section class="relative overflow-hidden py-20">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 z-0 opacity-10 dark:opacity-5">
+    <div
+      class="bg-primary/30 absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl"
+    >
+    </div>
+    <div
+      class="bg-secondary/30 absolute -bottom-24 -left-24 h-96 w-96 rounded-full blur-3xl"
+    >
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-12 text-center">
+      <div class="mb-4 inline-block">
+        <div class="relative">
+          <span
+            class="bg-primary/20 absolute inset-0 translate-x-1.5 translate-y-1.5 -rotate-3 transform rounded-lg"
+          ></span>
+          <span
+            class="bg-primary text-primary-content relative inline-block rounded-lg px-4 py-2 font-medium"
+          >
+            {i18n.contact.subtitle}
+          </span>
+        </div>
+      </div>
+      <h1
+        class="from-primary to-secondary mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+      >
+        {i18n.contact.title}
+      </h1>
+      <p class="text-base-content/80 mx-auto max-w-3xl text-lg md:text-xl">
+        {i18n.contact.description}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-3">
+      <!-- Contact Information Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="bg-base-200 sticky top-24 rounded-2xl p-8">
+          <h2 class="mb-6 text-xl font-bold">
+            {i18n.contact.contactInfo.title}
+          </h2>
+
+          <!-- Email -->
+          <div class="mb-6">
+            <div class="mb-2 flex items-center gap-3">
+              <div class="bg-primary/10 rounded-full p-2">
+                <Icon name="tabler:mail" class="text-primary h-5 w-5" />
+              </div>
+              <h3 class="font-semibold">{i18n.contact.contactInfo.email}</h3>
+            </div>
+            <a
+              href="mailto:hello@rio.my.id"
+              class="hover:text-primary pl-11 text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              hello@rio.my.id
+            </a>
+          </div>
+
+          <!-- Location -->
+          <div class="mb-6">
+            <div class="mb-2 flex items-center gap-3">
+              <div class="bg-primary/10 rounded-full p-2">
+                <Icon name="tabler:map-pin" class="text-primary h-5 w-5" />
+              </div>
+              <h3 class="font-semibold">{i18n.contact.contactInfo.location}</h3>
+            </div>
+            <p class="pl-11 text-sm opacity-75">
+              {lang === "id" ? "Indonesia" : "Indonesia"}
+            </p>
+          </div>
+
+          <!-- Availability -->
+          <div class="mb-6">
+            <div class="mb-2 flex items-center gap-3">
+              <div class="bg-primary/10 rounded-full p-2">
+                <Icon name="tabler:clock" class="text-primary h-5 w-5" />
+              </div>
+              <h3 class="font-semibold">
+                {i18n.contact.contactInfo.availability}
+              </h3>
+            </div>
+            <p class="pl-11 text-sm opacity-75">
+              {i18n.contact.contactInfo.availabilityHours}
+            </p>
+          </div>
+
+          <!-- Social Links -->
+          <div class="border-base-300 mt-8 border-t pt-8">
+            <h3 class="mb-4 font-semibold">
+              {lang === "id" ? "Ikuti Saya" : "Follow Me"}
+            </h3>
+            <div class="flex gap-3">
+              <a
+                href="https://go.rio.my.id/g"
+                class="btn btn-ghost btn-sm btn-circle hover:btn-primary"
+                aria-label="GitHub"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon name="tabler:brand-github" class="h-5 w-5" />
+              </a>
+              <a
+                href="https://go.rio.my.id/l"
+                class="btn btn-ghost btn-sm btn-circle hover:btn-primary"
+                aria-label="LinkedIn"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon name="tabler:brand-linkedin" class="h-5 w-5" />
+              </a>
+              <a
+                href="https://go.rio.my.id/x"
+                class="btn btn-ghost btn-sm btn-circle hover:btn-primary"
+                aria-label="Twitter"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon name="tabler:brand-x" class="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form (Fillout Embed) -->
+      <div class="lg:col-span-2">
+        <div
+          class="bg-base-100 border-base-300 overflow-hidden rounded-2xl border"
+        >
+          <!-- Fillout Embedded Form -->
+          <div
+            data-fillout-id="gzNUYgmYgrus"
+            data-fillout-embed-type="standard"
+            data-fillout-inherit-parameters
+            data-fillout-dynamic-resize
+            style="width: 100%; min-height: 600px;"
+          >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fillout Script -->
+<script is:inline src="https://server.fillout.com/embed/v1/"></script>

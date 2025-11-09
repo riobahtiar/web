@@ -26,166 +26,172 @@ const meta = {
   image={meta.image}
   showTopBanner={false}
 >
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
+  <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 md:py-12 lg:px-8 lg:py-16">
     <article class="prose prose-lg md:prose-xl mx-auto max-w-3xl">
-    <!-- Cover Image -->
-    <div
-      class="bg-base-200 relative mb-8 aspect-[21/9] w-full overflow-hidden rounded-lg"
-    >
-      <img
-        src="/smc.jpg"
-        alt="Cover Image"
-        class="h-full w-full object-cover"
-        width="1200"
-        height="630"
-        loading="eager"
-      />
-    </div>
-
-    <!-- Article Header -->
-    <header class="mb-12 text-center">
-      <h1 class="mb-4 text-4xl font-bold md:text-5xl">{meta.title}</h1>
-      <p class="mb-4 text-lg opacity-90 md:text-xl">{meta.description}</p>
-      <div class="text-sm opacity-70">
-        Terakhir diperbarui pada {lastModified}
-      </div>
-    </header>
-
-    <!-- Article Content -->
-    <div class="space-y-6">
-      <h2>Perkenalan</h2>
-      <p>
-        Halo! Saya Rio Bahtiar, seorang software engineer yang bersemangat dalam
-        menciptakan solusi inovatif melalui teknologi. Di waktu luang, saya
-        gemar membaca literatur teknis, menjaga kebugaran dengan berenang, dan
-        mengeksplorasi kemungkinan teknologi melalui fiksi ilmiah.
-      </p>
-
-      <h2>Pendidikan & Latar Belakang</h2>
-      <p>
-        Saya memiliki gelar Teknik Komputer dari Universitas Amikom Yogyakarta.
-        Fondasi akademis ini, dikombinasikan dengan pembelajaran mandiri dan
-        pengembangan profesional yang berkelanjutan, telah memungkinkan saya
-        untuk tetap berada di garis depan praktik pengembangan perangkat lunak
-        modern dan teknologi yang sedang berkembang.
-      </p>
-
-      <h2>Pengalaman Profesional</h2>
-      <h3>Sekolah.mu (2022-Sekarang) - Senior Software Engineer</h3>
-      <p>
-        Saat ini memimpin inisiatif pengembangan frontend di perusahaan EdTech
-        yang inovatif, fokus pada menciptakan pengalaman belajar yang menarik
-        dan mudah diakses. Tanggung jawab utama meliputi:
-      </p>
-      <ul>
-        <li>
-          Merancang dan mengimplementasikan solusi frontend yang dapat
-          diskalakan menggunakan Vue.js dan Nuxt.js
-        </li>
-        <li>Memimpin keputusan teknis dan menetapkan praktik terbaik</li>
-        <li>Membimbing anggota tim dan mempromosikan standar kualitas kode</li>
-      </ul>
-
-      <h3>Tokopedia (2016-2019) - Senior Software Engineer</h3>
-      <p>
-        Memimpin tim dinamis di salah satu perusahaan teknologi terbesar di Asia
-        Tenggara, fokus pada aplikasi web berdampak tinggi dan sistem
-        terdistribusi. Pencapaian utama meliputi:
-      </p>
-      <ul>
-        <li>
-          Merancang dan mengimplementasikan microservices yang menangani jutaan
-          transaksi harian
-        </li>
-        <li>
-          Memimpin pengembangan aplikasi bisnis kritis menggunakan React.js dan
-          Golang
-        </li>
-        <li>
-          Mengoptimalkan kinerja sistem dan mengurangi biaya infrastruktur
-          sebesar 40%
-        </li>
-        <li>Membimbing pengembang junior dan menetapkan standar pengkodean</li>
-      </ul>
-
-      <h3>Konsultan Independen (2019-2022)</h3>
-      <p>
-        Menyediakan layanan konsultasi teknis dan pengembangan untuk berbagai
-        klien, dengan spesialisasi dalam:
-      </p>
-      <ul>
-        <li>Solusi enterprise kustom dan desain arsitektur sistem</li>
-        <li>Optimasi kinerja dan modernisasi sistem</li>
-        <li>Kepemimpinan teknis dan penguatan tim</li>
-        <li>Implementasi infrastruktur cloud dan DevOps</li>
-      </ul>
-
-      <h2>Keahlian Teknis</h2>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div>
-          <h3 class="mb-2 text-lg font-semibold">Pengembangan Frontend</h3>
-          <ul>
-            <li>React.js & Next.js</li>
-            <li>Vue.js & Nuxt.js</li>
-            <li>TypeScript</li>
-            <li>Modern CSS & TailwindCSS</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="mb-2 text-lg font-semibold">Pengembangan Backend</h3>
-          <ul>
-            <li>Node.js & Express</li>
-            <li>Golang & Microservices</li>
-            <li>PHP & Laravel</li>
-            <li>REST & gRPC APIs</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="mb-2 text-lg font-semibold">Database & Cache</h3>
-          <ul>
-            <li>PostgreSQL</li>
-            <li>Redis</li>
-            <li>MongoDB</li>
-            <li>Desain Database</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="mb-2 text-lg font-semibold">DevOps & Cloud</h3>
-          <ul>
-            <li>Docker & Kubernetes</li>
-            <li>Layanan AWS</li>
-            <li>Pipeline CI/CD</li>
-            <li>Infrastructure as Code</li>
-          </ul>
-        </div>
+      <!-- Cover Image -->
+      <div
+        class="bg-base-200 relative mb-8 aspect-[21/9] w-full overflow-hidden rounded-lg"
+      >
+        <img
+          src="/smc.jpg"
+          alt="Cover Image"
+          class="h-full w-full object-cover"
+          width="1200"
+          height="630"
+          loading="eager"
+        />
       </div>
 
-      <h2>Filosofi Profesional</h2>
-      <p>
-        Pendekatan saya dalam rekayasa perangkat lunak dibangun di atas tiga
-        prinsip utama:
-      </p>
-      <ul>
-        <li>
-          <strong>Kualitas Utama:</strong> Menulis kode yang bersih, mudah dipelihara,
-          dan teruji yang tahan terhadap waktu.
-        </li>
-        <li>
-          <strong>Desain Berpusat pada Pengguna:</strong> Menciptakan pengalaman
-          intuitif yang memecahkan masalah nyata dan memberikan nilai sejati.
-        </li>
-        <li>
-          <strong>Pertumbuhan Berkelanjutan:</strong> Tetap mengikuti tren teknologi
-          sambil berbagi pengetahuan dengan komunitas.
-        </li>
-      </ul>
-      <p>
-        Saya memiliki semangat dalam membangun solusi yang dapat diskalakan dan
-        memberikan dampak positif, baik itu meningkatkan pengalaman pengguna,
-        mengoptimalkan kinerja sistem, atau membimbing generasi pengembang
-        berikutnya.
-      </p>
-    </div>
-  </article>
+      <!-- Article Header -->
+      <header class="mb-12 text-center">
+        <h1 class="mb-4 text-4xl font-bold md:text-5xl">{meta.title}</h1>
+        <p class="mb-4 text-lg opacity-90 md:text-xl">{meta.description}</p>
+        <div class="text-sm opacity-70">
+          Terakhir diperbarui pada {lastModified}
+        </div>
+      </header>
+
+      <!-- Article Content -->
+      <div class="space-y-6">
+        <h2>Perkenalan</h2>
+        <p>
+          Halo! Saya Rio Bahtiar, seorang software engineer yang bersemangat
+          dalam menciptakan solusi inovatif melalui teknologi. Di waktu luang,
+          saya gemar membaca literatur teknis, menjaga kebugaran dengan
+          berenang, dan mengeksplorasi kemungkinan teknologi melalui fiksi
+          ilmiah.
+        </p>
+
+        <h2>Pendidikan & Latar Belakang</h2>
+        <p>
+          Saya memiliki gelar Teknik Komputer dari Universitas Amikom
+          Yogyakarta. Fondasi akademis ini, dikombinasikan dengan pembelajaran
+          mandiri dan pengembangan profesional yang berkelanjutan, telah
+          memungkinkan saya untuk tetap berada di garis depan praktik
+          pengembangan perangkat lunak modern dan teknologi yang sedang
+          berkembang.
+        </p>
+
+        <h2>Pengalaman Profesional</h2>
+        <h3>Sekolah.mu (2022-Sekarang) - Senior Software Engineer</h3>
+        <p>
+          Saat ini memimpin inisiatif pengembangan frontend di perusahaan EdTech
+          yang inovatif, fokus pada menciptakan pengalaman belajar yang menarik
+          dan mudah diakses. Tanggung jawab utama meliputi:
+        </p>
+        <ul>
+          <li>
+            Merancang dan mengimplementasikan solusi frontend yang dapat
+            diskalakan menggunakan Vue.js dan Nuxt.js
+          </li>
+          <li>Memimpin keputusan teknis dan menetapkan praktik terbaik</li>
+          <li>
+            Membimbing anggota tim dan mempromosikan standar kualitas kode
+          </li>
+        </ul>
+
+        <h3>Tokopedia (2016-2019) - Senior Software Engineer</h3>
+        <p>
+          Memimpin tim dinamis di salah satu perusahaan teknologi terbesar di
+          Asia Tenggara, fokus pada aplikasi web berdampak tinggi dan sistem
+          terdistribusi. Pencapaian utama meliputi:
+        </p>
+        <ul>
+          <li>
+            Merancang dan mengimplementasikan microservices yang menangani
+            jutaan transaksi harian
+          </li>
+          <li>
+            Memimpin pengembangan aplikasi bisnis kritis menggunakan React.js
+            dan Golang
+          </li>
+          <li>
+            Mengoptimalkan kinerja sistem dan mengurangi biaya infrastruktur
+            sebesar 40%
+          </li>
+          <li>
+            Membimbing pengembang junior dan menetapkan standar pengkodean
+          </li>
+        </ul>
+
+        <h3>Konsultan Independen (2019-2022)</h3>
+        <p>
+          Menyediakan layanan konsultasi teknis dan pengembangan untuk berbagai
+          klien, dengan spesialisasi dalam:
+        </p>
+        <ul>
+          <li>Solusi enterprise kustom dan desain arsitektur sistem</li>
+          <li>Optimasi kinerja dan modernisasi sistem</li>
+          <li>Kepemimpinan teknis dan penguatan tim</li>
+          <li>Implementasi infrastruktur cloud dan DevOps</li>
+        </ul>
+
+        <h2>Keahlian Teknis</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Pengembangan Frontend</h3>
+            <ul>
+              <li>React.js & Next.js</li>
+              <li>Vue.js & Nuxt.js</li>
+              <li>TypeScript</li>
+              <li>Modern CSS & TailwindCSS</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Pengembangan Backend</h3>
+            <ul>
+              <li>Node.js & Express</li>
+              <li>Golang & Microservices</li>
+              <li>PHP & Laravel</li>
+              <li>REST & gRPC APIs</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">Database & Cache</h3>
+            <ul>
+              <li>PostgreSQL</li>
+              <li>Redis</li>
+              <li>MongoDB</li>
+              <li>Desain Database</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">DevOps & Cloud</h3>
+            <ul>
+              <li>Docker & Kubernetes</li>
+              <li>Layanan AWS</li>
+              <li>Pipeline CI/CD</li>
+              <li>Infrastructure as Code</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2>Filosofi Profesional</h2>
+        <p>
+          Pendekatan saya dalam rekayasa perangkat lunak dibangun di atas tiga
+          prinsip utama:
+        </p>
+        <ul>
+          <li>
+            <strong>Kualitas Utama:</strong> Menulis kode yang bersih, mudah dipelihara,
+            dan teruji yang tahan terhadap waktu.
+          </li>
+          <li>
+            <strong>Desain Berpusat pada Pengguna:</strong> Menciptakan pengalaman
+            intuitif yang memecahkan masalah nyata dan memberikan nilai sejati.
+          </li>
+          <li>
+            <strong>Pertumbuhan Berkelanjutan:</strong> Tetap mengikuti tren teknologi
+            sambil berbagi pengetahuan dengan komunitas.
+          </li>
+        </ul>
+        <p>
+          Saya memiliki semangat dalam membangun solusi yang dapat diskalakan
+          dan memberikan dampak positif, baik itu meningkatkan pengalaman
+          pengguna, mengoptimalkan kinerja sistem, atau membimbing generasi
+          pengembang berikutnya.
+        </p>
+      </div>
+    </article>
   </div>
 </Layout>

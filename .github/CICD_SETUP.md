@@ -5,6 +5,7 @@ This document explains how to configure GitHub Actions for automatic deployment 
 ## Overview
 
 The project uses GitHub Actions workflows for:
+
 1. **Automatic deployment** to Cloudflare Workers when code is merged to `main`
 2. **PR previews** that build and validate pull requests
 3. **Quality checks** that run type checking, formatting, and security audits
@@ -28,6 +29,7 @@ Your Cloudflare API token with permissions to deploy Workers.
 4. Copy the token
 
 **Add to GitHub:**
+
 1. Go to your repository on GitHub
 2. Navigate to Settings → Secrets and variables → Actions
 3. Click "New repository secret"
@@ -47,6 +49,7 @@ Your Cloudflare Account ID.
 4. Or find it in the right sidebar under "Account ID"
 
 **Add to GitHub:**
+
 1. Go to Settings → Secrets and variables → Actions
 2. Click "New repository secret"
 3. Name: `CLOUDFLARE_ACCOUNT_ID`
@@ -56,6 +59,7 @@ Your Cloudflare Account ID.
 ## Workflows Explained
 
 ### 1. deploy.yml
+
 - **Triggers:** Push to `main` branch or manual workflow dispatch
 - **Purpose:** Build and deploy to production (Cloudflare Workers)
 - **Steps:**
@@ -65,6 +69,7 @@ Your Cloudflare Account ID.
   - Deploy to Cloudflare Workers using Wrangler
 
 ### 2. preview.yml
+
 - **Triggers:** Pull request opened, updated, or reopened
 - **Purpose:** Build validation and preview
 - **Steps:**
@@ -75,6 +80,7 @@ Your Cloudflare Account ID.
   - Comment on PR with build status
 
 ### 3. quality-check.yml
+
 - **Triggers:** Pull requests and pushes to `main`
 - **Purpose:** Code quality validation
 - **Steps:**
@@ -125,26 +131,31 @@ Replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repository
 ## Troubleshooting
 
 ### Deployment fails with "Invalid API token"
+
 - Check that `CLOUDFLARE_API_TOKEN` is set correctly
 - Verify the token has the required permissions
 - Make sure the token hasn't expired
 
 ### Deployment fails with "Account ID not found"
+
 - Verify `CLOUDFLARE_ACCOUNT_ID` is correct
 - Check that the account ID matches your Cloudflare account
 
 ### Build fails in CI but works locally
+
 - Ensure all dependencies are in `package.json`
 - Check Node.js version matches (workflow uses Node 20)
 - Run `npm ci` locally to test clean install
 
 ### Type check errors
+
 - Run `npx astro check` locally
 - Fix any TypeScript errors before pushing
 
 ## Deployment URL
 
 After successful deployment, your site will be available at:
+
 - **Production:** https://web.riomyid.workers.dev
 
 ## Custom Domain (Optional)
@@ -163,6 +174,7 @@ To deploy to a custom domain:
 ## Support
 
 For issues with:
+
 - **GitHub Actions:** Check the Actions tab logs
 - **Cloudflare Workers:** Check Cloudflare dashboard logs
 - **Wrangler CLI:** See https://developers.cloudflare.com/workers/wrangler/
