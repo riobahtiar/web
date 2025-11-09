@@ -32,13 +32,41 @@ npm audit                # Check for security vulnerabilities
 
 ### Pre-Commit Checklist
 
-Before committing code, always run:
+⚠️ **CRITICAL**: Always run these checks before committing to prevent CI/CD failures:
 
 ```bash
-npx astro check          # ✅ Type check
-npm run format           # ✅ Format code
-npm run build            # ✅ Ensure build succeeds
-npm audit                # ✅ Check security
+# 1. Type Check - Must show "0 errors"
+npx astro check          # ✅ Type check - Look for "0 errors" in output
+
+# 2. Format Code
+npm run format           # ✅ Format code (ignore template file errors)
+
+# 3. Build - Must complete successfully
+npm run build            # ✅ Ensure build succeeds with "Complete!"
+
+# 4. Security Check
+npm audit                # ✅ Check security vulnerabilities
+```
+
+**Common Issues to Check:**
+
+1. **Import Naming Conflicts**: Avoid naming imports the same as the page name
+   ```typescript
+   // ❌ Bad - in portfolio.astro
+   import Portfolio from "../components/Portfolio.astro";
+
+   // ✅ Good - in portfolio.astro
+   import PortfolioComponent from "../components/Portfolio.astro";
+   ```
+
+2. **TypeScript Errors**: Must show "0 errors" from `npx astro check`
+3. **Build Success**: Must see "[build] Complete!" at the end of build
+4. **Unused Variables**: Review warnings about unused variables (may cause issues)
+
+**Quick Verification Command:**
+```bash
+# Run all checks in sequence
+npx astro check && npm run build && echo "✅ All checks passed!"
 ```
 
 ## 💻 Code Style & Standards

@@ -1,5 +1,5 @@
 ---
-import Portfolio from "../components/Portfolio.astro";
+import PortfolioComponent from "../components/Portfolio.astro";
 import Layout from "../layouts/Layout.astro";
 import { en } from "../i18n/en";
 
@@ -10,5 +10,5 @@ const description =
 ---
 
 <Layout lang={lang} title={title} description={description}>
-  <Portfolio lang={lang} i18n={en} />
+  <PortfolioComponent lang={lang} i18n={en} />
 </Layout>
