@@ -11,7 +11,7 @@ export const en = {
   welcome: {
     title: "Welcome",
     description:
-      "A software engineer passionate about creating modern web applications.",
+      "A software engineer and tech consultant specializing in modern web applications, system architecture, and digital strategy.",
     viewWork: "View Services",
     contactMe: "Contact Me",
     clients: "Happy Clients",
@@ -26,37 +26,37 @@ export const en = {
     title: "Work With Me",
     subtitle: "Professional Services",
     description:
-      "I offer a range of professional services to help you build and maintain your digital presence.",
+      "I offer comprehensive consulting and development services to help you build scalable solutions, optimize performance, and grow your digital presence through technical expertise and strategic guidance.",
     services: {
       consultation: {
         title: "Technical Consultation",
         description:
-          "Get expert advice on your technical challenges and architecture decisions.",
+          "Expert guidance on tech stack selection, high-performance architecture for busy applications, infrastructure design, deployment strategies, and cloud server selection.",
       },
       webDevelopment: {
         title: "Website Development",
         description:
-          "Custom website development using modern technologies and best practices.",
+          "Custom website development using modern technologies and best practices, optimized for performance and scalability.",
       },
       maintenance: {
         title: "Website Maintenance",
         description:
-          "Keep your website up-to-date, secure, and performing optimally.",
+          "Keep your website up-to-date, secure, and performing optimally with ongoing support and monitoring.",
       },
       seo: {
-        title: "SEO Optimization",
+        title: "SEO & Digital Marketing",
         description:
-          "Improve your website's visibility and ranking in search engines.",
+          "Improve your online visibility through SEO optimization, internet marketing strategies, and technical performance enhancements.",
       },
       systemDesign: {
-        title: "System Design",
+        title: "System Design & Architecture",
         description:
-          "Design scalable and maintainable systems for your business needs.",
+          "Design scalable and maintainable systems for high-traffic applications, with focus on performance, reliability, and cost optimization.",
       },
       platformMigration: {
-        title: "Platform Migration",
+        title: "Platform Migration & Modernization",
         description:
-          "Seamlessly migrate your existing platform to modern technologies.",
+          "Seamlessly migrate your platform to modern technologies, cloud infrastructure, and improve deployment processes.",
       },
     },
     cta: {

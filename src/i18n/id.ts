@@ -11,7 +11,7 @@ export const id = {
   welcome: {
     title: "Selamat Datang",
     description:
-      "Seorang software engineer yang bersemangat dalam menciptakan aplikasi web modern.",
+      "Seorang software engineer dan konsultan teknologi yang mengkhususkan diri dalam aplikasi web modern, arsitektur sistem, dan strategi digital.",
     viewWork: "Lihat Layanan",
     contactMe: "Hubungi Saya",
     clients: "Klien Kami",
@@ -26,36 +26,37 @@ export const id = {
     title: "Bekerja Sama",
     subtitle: "Layanan Profesional",
     description:
-      "Saya menawarkan berbagai layanan profesional untuk membantu Anda membangun dan memelihara kehadiran digital Anda.",
+      "Saya menawarkan layanan konsultasi dan pengembangan komprehensif untuk membantu Anda membangun solusi yang dapat diskalakan, mengoptimalkan kinerja, dan mengembangkan kehadiran digital melalui keahlian teknis dan panduan strategis.",
     services: {
       consultation: {
         title: "Konsultasi Teknis",
         description:
-          "Dapatkan saran ahli tentang tantangan teknis dan keputusan arsitektur Anda.",
+          "Panduan ahli dalam pemilihan tech stack, arsitektur berkinerja tinggi untuk aplikasi sibuk, desain infrastruktur, strategi deployment, dan pemilihan cloud server.",
       },
       webDevelopment: {
         title: "Pengembangan Website",
         description:
-          "Pengembangan website kustom menggunakan teknologi modern dan praktik terbaik.",
+          "Pengembangan website kustom menggunakan teknologi modern dan praktik terbaik, dioptimalkan untuk kinerja dan skalabilitas.",
       },
       maintenance: {
         title: "Pemeliharaan Website",
         description:
-          "Jaga website Anda tetap up-to-date, aman, dan berkinerja optimal.",
+          "Jaga website Anda tetap up-to-date, aman, dan berkinerja optimal dengan dukungan dan monitoring berkelanjutan.",
       },
       seo: {
-        title: "Optimasi SEO",
+        title: "SEO & Digital Marketing",
         description:
-          "Tingkatkan visibilitas dan peringkat website Anda di mesin pencari.",
+          "Tingkatkan visibilitas online Anda melalui optimasi SEO, strategi internet marketing, dan peningkatan performa teknis.",
       },
       systemDesign: {
-        title: "Desain Sistem",
+        title: "Desain Sistem & Arsitektur",
         description:
-          "Rancang sistem yang dapat diskalakan dan mudah dipelihara untuk kebutuhan bisnis Anda.",
+          "Rancang sistem yang dapat diskalakan dan mudah dipelihara untuk aplikasi bertraffic tinggi, dengan fokus pada kinerja, reliabilitas, dan optimasi biaya.",
       },
       platformMigration: {
-        title: "Migrasi Platform",
-        description: "Migrasi platform Anda ke teknologi modern dengan lancar.",
+        title: "Migrasi & Modernisasi Platform",
+        description:
+          "Migrasi platform Anda ke teknologi modern, infrastruktur cloud, dan tingkatkan proses deployment dengan mulus.",
       },
     },
     cta: {

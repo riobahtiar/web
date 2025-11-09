@@ -12,8 +12,8 @@ const { lang = "en", i18n } = Astro.props;
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="footer footer-center bg-base-200 text-base-content p-6">
-  <div>
+<footer class="footer footer-center bg-base-200 text-base-content py-6">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <p class="text-sm opacity-75">
       {currentYear} - {i18n?.footer.allRightsReserved || "All rights reserved"}
     </p>
