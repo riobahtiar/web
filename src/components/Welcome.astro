@@ -1,4 +1,6 @@
 ---
+import profileImage from "../assets/me-avatar.png";
+
 interface Props {
   lang: string;
   showClientsSection?: boolean;
@@ -40,7 +42,7 @@ const alternateLanguage = lang === "en" ? "Bahasa Indonesia" : "English";
     <div class="hero-content flex-col lg:flex-row">
       <div class="avatar ring-primary ring-offset-base-100 ring ring-offset-2">
         <div class="w-24">
-          <img src="/_astro/me-avatar.DIg4xMhG.png" alt="Profile" width="200" height="200" />
+          <img src={profileImage.src} alt="Profile" width="200" height="200" />
         </div>
       </div>
       <div>

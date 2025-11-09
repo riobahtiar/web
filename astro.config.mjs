@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, passthroughImageService } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
 import icon from "astro-icon";
@@ -60,7 +60,14 @@ export default defineConfig({
 
   integrations: [icon(), partytown(), sitemap(), markdoc(), mdx(), react()],
 
+  image: {
+    service: {
+      entrypoint: "astro/assets/services/noop",
+    },
+  },
+
   adapter: cloudflare({
+    imageService: "passthrough",
     platformProxy: {
       enabled: true,
     },
