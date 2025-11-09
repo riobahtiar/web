@@ -164,4 +164,134 @@ export const en = {
       ],
     },
   },
+  privacy: {
+    title: "Privacy Policy",
+    subtitle: "Your Privacy Matters",
+    lastUpdated: "Last Updated",
+    sections: {
+      introduction: {
+        title: "Introduction",
+        content:
+          "This Privacy Policy explains how Rio Bahtiar ('we', 'us', or 'our') collects, uses, and protects your personal information when you visit our website or use our services.",
+      },
+      informationCollection: {
+        title: "Information We Collect",
+        content:
+          "We collect information you provide directly to us, such as when you fill out a contact form, subscribe to our newsletter, or communicate with us. This may include your name, email address, phone number, company name, and any other information you choose to provide.",
+      },
+      howWeUse: {
+        title: "How We Use Your Information",
+        points: [
+          "To respond to your inquiries and provide customer support",
+          "To send you updates, newsletters, and marketing communications (with your consent)",
+          "To improve our website and services",
+          "To analyze usage patterns and trends",
+          "To comply with legal obligations",
+        ],
+      },
+      dataProtection: {
+        title: "Data Protection",
+        content:
+          "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet is 100% secure.",
+      },
+      cookies: {
+        title: "Cookies and Tracking",
+        content:
+          "We use cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, and understand user preferences. You can control cookie settings through your browser preferences.",
+      },
+      thirdParty: {
+        title: "Third-Party Services",
+        content:
+          "We may use third-party services (such as analytics providers, hosting services, and form processors) that collect, monitor, and analyze information. These third parties have their own privacy policies governing their use of your information.",
+      },
+      yourRights: {
+        title: "Your Rights",
+        points: [
+          "Access your personal data",
+          "Correct inaccurate data",
+          "Request deletion of your data",
+          "Object to processing of your data",
+          "Request data portability",
+          "Withdraw consent at any time",
+        ],
+      },
+      contact: {
+        title: "Contact Us",
+        content:
+          "If you have any questions about this Privacy Policy or our data practices, please contact us at hello@rio.my.id",
+      },
+    },
+  },
+  terms: {
+    title: "Terms of Service",
+    subtitle: "Terms & Conditions",
+    lastUpdated: "Last Updated",
+    sections: {
+      acceptance: {
+        title: "Acceptance of Terms",
+        content:
+          "By accessing and using this website, you accept and agree to be bound by the terms and conditions of this agreement. If you do not agree to these terms, please do not use this website.",
+      },
+      services: {
+        title: "Services Description",
+        content:
+          "Rio Bahtiar provides professional web development, technical consultation, system design, and related services. The specific scope, deliverables, and terms of each project will be outlined in individual service agreements or proposals.",
+      },
+      intellectualProperty: {
+        title: "Intellectual Property",
+        content:
+          "All content on this website, including text, graphics, logos, images, and software, is the property of Rio Bahtiar or its content suppliers and is protected by international copyright and trademark laws. Upon full payment for custom development work, you will receive ownership rights to the deliverables as specified in the project agreement.",
+      },
+      userResponsibilities: {
+        title: "User Responsibilities",
+        points: [
+          "Provide accurate and complete information",
+          "Maintain the confidentiality of any account credentials",
+          "Use the website for lawful purposes only",
+          "Not attempt to interfere with the website's operation",
+          "Not transmit harmful code or malicious software",
+        ],
+      },
+      projectTerms: {
+        title: "Project Terms",
+        content:
+          "For consulting and development projects, specific terms including scope, timeline, payment terms, and deliverables will be outlined in a separate project agreement or statement of work. These project-specific terms supplement these general Terms of Service.",
+      },
+      payment: {
+        title: "Payment Terms",
+        content:
+          "Payment terms are specified in individual project agreements. Generally, payments are required according to agreed milestones or schedules. Late payments may result in project delays or suspension of services.",
+      },
+      confidentiality: {
+        title: "Confidentiality",
+        content:
+          "We respect the confidential nature of client information and projects. Both parties agree to keep proprietary information confidential and not disclose it to third parties without prior written consent.",
+      },
+      limitation: {
+        title: "Limitation of Liability",
+        content:
+          "To the maximum extent permitted by law, Rio Bahtiar shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the website or services.",
+      },
+      termination: {
+        title: "Termination",
+        content:
+          "We reserve the right to terminate or suspend access to our services immediately, without prior notice, for conduct that we believe violates these Terms of Service or is harmful to other users, us, or third parties.",
+      },
+      changes: {
+        title: "Changes to Terms",
+        content:
+          "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to the website. Your continued use of the website after changes constitutes acceptance of the modified terms.",
+      },
+      governingLaw: {
+        title: "Governing Law",
+        content:
+          "These Terms of Service shall be governed by and construed in accordance with the laws of Indonesia, without regard to its conflict of law provisions.",
+      },
+      contact: {
+        title: "Contact Information",
+        content:
+          "If you have any questions about these Terms of Service, please contact us at hello@rio.my.id",
+      },
+    },
+  },
 };

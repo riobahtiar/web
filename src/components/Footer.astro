@@ -27,6 +27,8 @@ const servicesUrl = lang === "en" ? "/services" : "/id/services";
 const portfolioUrl = `/${lang === "en" ? "" : "id/"}portfolio`;
 const blogUrl = `/${lang === "en" ? "" : "id/"}blog`;
 const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
+const privacyUrl = `/${lang === "en" ? "" : "id/"}privacy`;
+const termsUrl = `/${lang === "en" ? "" : "id/"}terms`;
 ---
 
 <footer class="bg-base-200 border-base-300 border-t">
@@ -196,13 +198,13 @@ const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
       </p>
       <div class="flex gap-6 text-xs opacity-60">
         <a
-          href="/privacy"
+          href={privacyUrl}
           class="hover:text-primary transition-all hover:opacity-100"
         >
           {lang === "id" ? "Kebijakan Privasi" : "Privacy Policy"}
         </a>
         <a
-          href="/terms"
+          href={termsUrl}
           class="hover:text-primary transition-all hover:opacity-100"
         >
           {lang === "id" ? "Syarat & Ketentuan" : "Terms of Service"}
