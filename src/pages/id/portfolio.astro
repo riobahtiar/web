@@ -1,0 +1,14 @@
+---
+import PortfolioComponent from "../../components/Portfolio.astro";
+import Layout from "../../layouts/Layout.astro";
+import { id } from "../../i18n/id";
+
+const lang = "id";
+const title = "Portfolio - Rio Bahtiar";
+const description =
+  "Jelajahi portfolio proyek pengembangan web, arsitektur sistem, dan solusi digital saya.";
+---
+
+<Layout lang={lang} title={title} description={description}>
+  <PortfolioComponent lang={lang} i18n={id} />
+</Layout>

@@ -1,7 +1,16 @@
 ---
+import { Icon } from "astro-icon/components";
+
 interface Props {
   lang?: string;
   i18n?: {
+    nav: {
+      home: string;
+      about: string;
+      work: string;
+      blog: string;
+      contact: string;
+    };
     footer: {
       allRightsReserved: string;
     };
@@ -10,23 +19,197 @@ interface Props {
 
 const { lang = "en", i18n } = Astro.props;
 const currentYear = new Date().getFullYear();
+
+// Define URLs for each page
+const homeUrl = lang === "en" ? "/" : "/id/";
+const aboutUrl = `/${lang === "en" ? "" : "id/"}about`;
+const servicesUrl = lang === "en" ? "/services" : "/id/services";
+const portfolioUrl = `/${lang === "en" ? "" : "id/"}portfolio`;
+const blogUrl = `/${lang === "en" ? "" : "id/"}blog`;
+const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
+const privacyUrl = `/${lang === "en" ? "" : "id/"}privacy`;
+const termsUrl = `/${lang === "en" ? "" : "id/"}terms`;
 ---
 
-<footer class="footer footer-center bg-base-200 text-base-content py-6">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <p class="text-sm opacity-75">
-      {currentYear} - {i18n?.footer.allRightsReserved || "All rights reserved"}
-    </p>
+<footer class="bg-base-200 border-base-300 border-t">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
+      <!-- Brand Section -->
+      <div class="md:col-span-1">
+        <h3 class="mb-4 text-lg font-bold">Rio Bahtiar</h3>
+        <p class="mb-4 text-sm opacity-75">
+          {
+            lang === "id"
+              ? "Software Engineer & Tech Consultant"
+              : "Software Engineer & Tech Consultant"
+          }
+        </p>
+        <div class="flex gap-3">
+          <a
+            href="https://go.rio.my.id/g"
+            class="btn btn-ghost btn-sm btn-circle hover:btn-primary"
+            aria-label="GitHub"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="tabler:brand-github" class="h-5 w-5" />
+          </a>
+          <a
+            href="https://go.rio.my.id/l"
+            class="btn btn-ghost btn-sm btn-circle hover:btn-primary"
+            aria-label="LinkedIn"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="tabler:brand-linkedin" class="h-5 w-5" />
+          </a>
+          <a
+            href="https://go.rio.my.id/x"
+            class="btn btn-ghost btn-sm btn-circle hover:btn-primary"
+            aria-label="Twitter"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="tabler:brand-x" class="h-5 w-5" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="mb-4 text-sm font-semibold tracking-wider uppercase">
+          {lang === "id" ? "Tautan Cepat" : "Quick Links"}
+        </h4>
+        <ul class="space-y-2">
+          <li>
+            <a
+              href={homeUrl}
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              {i18n?.nav.home || (lang === "id" ? "Beranda" : "Home")}
+            </a>
+          </li>
+          <li>
+            <a
+              href={aboutUrl}
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              {i18n?.nav.about || (lang === "id" ? "Tentang" : "About")}
+            </a>
+          </li>
+          <li>
+            <a
+              href={portfolioUrl}
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              {lang === "id" ? "Portfolio" : "Portfolio"}
+            </a>
+          </li>
+          <li>
+            <a
+              href={blogUrl}
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              {i18n?.nav.blog || "Blog"}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h4 class="mb-4 text-sm font-semibold tracking-wider uppercase">
+          {lang === "id" ? "Layanan" : "Services"}
+        </h4>
+        <ul class="space-y-2">
+          <li>
+            <a
+              href={servicesUrl}
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              {lang === "id" ? "Konsultasi Teknis" : "Technical Consultation"}
+            </a>
+          </li>
+          <li>
+            <a
+              href={servicesUrl}
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              {lang === "id" ? "Pengembangan Website" : "Website Development"}
+            </a>
+          </li>
+          <li>
+            <a
+              href={servicesUrl}
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              {lang === "id" ? "Desain Sistem" : "System Design"}
+            </a>
+          </li>
+          <li>
+            <a
+              href={servicesUrl}
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              {lang === "id" ? "SEO & Marketing" : "SEO & Marketing"}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="mb-4 text-sm font-semibold tracking-wider uppercase">
+          {lang === "id" ? "Kontak" : "Contact"}
+        </h4>
+        <ul class="space-y-2">
+          <li class="flex items-start gap-2">
+            <Icon name="tabler:mail" class="mt-0.5 h-4 w-4 opacity-60" />
+            <a
+              href="mailto:hello@rio.my.id"
+              class="hover:text-primary text-sm opacity-75 transition-all hover:opacity-100"
+            >
+              hello@rio.my.id
+            </a>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="tabler:map-pin" class="mt-0.5 h-4 w-4 opacity-60" />
+            <span class="text-sm opacity-75">
+              {lang === "id" ? "Indonesia" : "Indonesia"}
+            </span>
+          </li>
+          <li>
+            <a href={contactUrl} class="btn btn-primary btn-sm mt-2">
+              {lang === "id" ? "Hubungi Saya" : "Contact Me"}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div
+      class="border-base-300 mt-8 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row"
+    >
+      <p class="text-center text-sm opacity-60 md:text-left">
+        © {currentYear} Rio Bahtiar. {
+          i18n?.footer.allRightsReserved || "All rights reserved"
+        }
+      </p>
+      <div class="flex gap-6 text-xs opacity-60">
+        <a
+          href={privacyUrl}
+          class="hover:text-primary transition-all hover:opacity-100"
+        >
+          {lang === "id" ? "Kebijakan Privasi" : "Privacy Policy"}
+        </a>
+        <a
+          href={termsUrl}
+          class="hover:text-primary transition-all hover:opacity-100"
+        >
+          {lang === "id" ? "Syarat & Ketentuan" : "Terms of Service"}
+        </a>
+      </div>
+    </div>
   </div>
 </footer>
-
-<div
-  data-fillout-id="gzNUYgmYgrus"
-  data-fillout-embed-type="popup"
-  data-fillout-button-text="Contact me"
-  data-fillout-dynamic-resize
-  data-fillout-button-float="bottom-right"
-  data-fillout-inherit-parameters
-  data-fillout-popup-size="medium"
->
-</div><script src="https://server.fillout.com/embed/v1/"></script>

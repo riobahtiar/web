@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ContactForm from "../components/ContactForm.astro";
+import ContactEmbed from "../components/ContactEmbed.astro";
 import { en } from "../i18n/en";
 
 // Define metadata for the page
@@ -18,5 +18,5 @@ const meta = {
   image={meta.image}
   showTopBanner={false}
 >
-  <ContactForm lang="en" i18n={en} />
+  <ContactEmbed lang="en" i18n={en} />
 </Layout>
