@@ -67,6 +67,24 @@ This will upload:
 - Profile avatar → `portfolio/me-avatar`
 - Cover image → `portfolio/smc-cover`
 
+**Smart Sync Features:**
+- ✅ **Duplicate Prevention:** Won't re-upload existing assets
+- ✅ **Error Handling:** Continues if some uploads fail
+- ✅ **File Validation:** Checks if files exist before uploading
+- ✅ **Detailed Logging:** Shows upload progress and results
+
+**Force Update Existing Assets:**
+
+To overwrite existing images, edit `scripts/upload-to-cloudinary.js` and set `overwrite: true`:
+
+```javascript
+{
+  filePath: join(__dirname, "..", "src", "assets", "me-avatar.png"),
+  publicId: "portfolio/me-avatar",
+  overwrite: true, // Force update
+}
+```
+
 ### Method 2: Manual Upload via Cloudinary Dashboard
 
 1. Go to [Cloudinary Media Library](https://cloudinary.com/console/media_library)
@@ -267,6 +285,63 @@ import BlogImage from "../../components/blog/BlogImage.astro";
 
 - **Hero images**: `loading="eager"`
 - **Below the fold**: `loading="lazy"` (default)
+
+## Asset Management Utilities
+
+We provide several CLI scripts for managing Cloudinary assets:
+
+### List All Assets
+
+View all uploaded assets in a folder:
+
+```bash
+# List all assets
+npm run cloudinary:list
+
+# List assets in a specific folder
+npm run cloudinary:list portfolio
+npm run cloudinary:list blog
+```
+
+**Output includes:**
+- Public ID
+- URL
+- Format and dimensions
+- File size
+- Upload date
+
+### Validate Assets
+
+Check if all referenced assets exist in Cloudinary:
+
+```bash
+npm run cloudinary:validate
+```
+
+This script:
+- ✅ Verifies all assets used in your code exist
+- ❌ Lists missing assets that need to be uploaded
+- 🔍 Prevents broken images in production
+
+**When to use:**
+- Before deploying to production
+- After adding new image references
+- To troubleshoot missing images
+
+### Delete Assets
+
+Remove assets from Cloudinary:
+
+```bash
+npm run cloudinary:delete portfolio/old-image
+```
+
+**Safety Features:**
+- ⚠️  5-second countdown before deletion
+- ✅ Confirms asset exists before deleting
+- 🔒 Prompts if asset is missing
+
+**Warning:** Deletion is permanent and cannot be undone!
 
 ## Managing Assets (CRUD)
 

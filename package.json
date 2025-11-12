@@ -10,7 +10,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro",
-    "cloudinary:upload": "node scripts/upload-to-cloudinary.js"
+    "cloudinary:upload": "node scripts/upload-to-cloudinary.js",
+    "cloudinary:list": "node scripts/list-cloudinary-assets.js",
+    "cloudinary:validate": "node scripts/validate-cloudinary-assets.js",
+    "cloudinary:delete": "node scripts/delete-cloudinary-asset.js"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.10",
