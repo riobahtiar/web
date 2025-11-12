@@ -17,6 +17,11 @@ if (!i18n) {
   throw new Error(`Missing translations for language: ${lang}`);
 }
 
+// Default Cloudinary OG image
+const defaultCloudinaryImage = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME
+  ? `https://res.cloudinary.com/${import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/w_1200,h_630,c_fill,f_auto,q_auto/portfolio/smc-cover`
+  : "/smc.jpg";
+
 // Default SEO values that can be overridden by individual pages
 const {
   title = i18n.welcome.title
@@ -24,7 +29,7 @@ const {
     : "Rio Bahtiar | Full-stack Developer",
   description = i18n.welcome.description ||
     "Full-stack developer with expertise in modern web technologies. Building responsive, user-friendly applications.",
-  image = "/smc.jpg",
+  image = defaultCloudinaryImage,
   canonicalURL = Astro.url.pathname && Astro.site
     ? new URL(Astro.url.pathname, Astro.site).toString()
     : "",
