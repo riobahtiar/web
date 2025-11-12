@@ -11,7 +11,11 @@ const currentDate = new Date().toLocaleDateString("id-ID", {
 });
 ---
 
-<Layout lang={lang} title={`${terms.title} - Rio Bahtiar`} description={terms.sections.acceptance.content}>
+<Layout
+  lang={lang}
+  title={`${terms.title} - Rio Bahtiar`}
+  description={terms.sections.acceptance.content}
+>
   <div class="relative overflow-hidden py-20">
     <!-- Background decorative elements -->
     <div class="absolute inset-0 z-0 opacity-10 dark:opacity-5">
@@ -66,15 +70,23 @@ const currentDate = new Date().toLocaleDateString("id-ID", {
 
         <!-- Intellectual Property -->
         <section class="mb-12">
-          <h2 class="text-primary">{terms.sections.intellectualProperty.title}</h2>
+          <h2 class="text-primary">
+            {terms.sections.intellectualProperty.title}
+          </h2>
           <p>{terms.sections.intellectualProperty.content}</p>
         </section>
 
         <!-- User Responsibilities -->
         <section class="mb-12">
-          <h2 class="text-primary">{terms.sections.userResponsibilities.title}</h2>
+          <h2 class="text-primary">
+            {terms.sections.userResponsibilities.title}
+          </h2>
           <ul>
-            {terms.sections.userResponsibilities.points.map((point: string) => <li>{point}</li>)}
+            {
+              terms.sections.userResponsibilities.points.map(
+                (point: string) => <li>{point}</li>,
+              )
+            }
           </ul>
         </section>
 
