@@ -45,15 +45,15 @@ const posts = await getCollection("blog-en");
       </tr>
       {
         posts.map((post) => {
-          const cleanSlug = post.slug.startsWith(post.data.category + "/")
-            ? post.slug.substring(post.data.category.length + 1)
-            : post.slug;
+          const cleanSlug = post.id.startsWith(post.data.category + "/")
+            ? post.id.substring(post.data.category.length + 1)
+            : post.id;
 
           return (
             <tr>
               <td>{post.data.title}</td>
               <td>{post.data.category}</td>
-              <td>{post.slug}</td>
+              <td>{post.id}</td>
               <td>{cleanSlug}</td>
               <td>
                 /blog/{post.data.category}/{cleanSlug}

@@ -1,294 +1,164 @@
-# Blog Assets Management Guide
+# Asset Management
 
-This document explains how to manage and organize assets for your blog.
+This repo uses two asset paths:
 
-## Directory Structure
+- `public/` for static files served directly by Astro/Cloudflare assets
+- Cloudinary for optimized CDN delivery of selected portfolio and content images
 
-```
+Cloudinary is the current primary image CDN workflow. Cloudflare Images is not configured as the primary pipeline in this repo.
+
+## Static Directory Structure
+
+```text
 public/
 ├── blog/
-│   ├── covers/          # Post cover images (1200x630px)
-│   ├── content/         # Images used in post content
-│   ├── featured/        # Featured post banners
-│   └── README.md        # Blog assets guide
-├── authors/
-│   ├── rio-bahtiar.jpg  # Author profile images (400x400px)
-│   └── README.md        # Authors guide
-└── ...
+│   ├── covers/       # Blog cover images
+│   ├── content/      # Inline blog images
+│   └── featured/     # Featured blog images
+├── authors/          # Author profile images
+├── smc.jpg           # Portfolio cover source used by upload scripts
+└── site.webmanifest
 ```
 
-## Asset Types
+## Source Assets
 
-### 1. Cover Images
+```text
+src/assets/
+├── global.css        # Tailwind CSS 4, DaisyUI, and design tokens
+├── me-avatar.png     # Avatar source used by upload scripts
+├── logo-dark.svg
+├── logo-light.svg
+└── background.svg
+```
 
-**Purpose**: Social sharing, blog listing thumbnails
-**Location**: `/public/blog/covers/`
-**Specs**:
+## Blog Covers
 
-- Dimensions: 1200x630px (16:9 ratio)
+Recommended:
+
+- Size: 1200 x 630
 - Format: JPG or WebP
-- Max size: 200KB
-- Naming: `post-slug.jpg`
+- Max size: about 200 KB when stored locally
+- Naming: match the post slug, e.g. `getting-started-with-astro.jpg`
+- Location: `public/blog/covers/`
 
-**Usage**:
+Frontmatter:
 
-```mdx
----
-title: "Getting Started with Astro"
+```yaml
 image: "/blog/covers/getting-started-with-astro.jpg"
----
 ```
 
-### 2. Content Images
+## Blog Content Images
 
-**Purpose**: Inline images within blog posts
-**Location**: `/public/blog/content/`
-**Specs**:
+Recommended:
 
-- Dimensions: Varies
-- Format: JPG, PNG, WebP, SVG
-- Max size: 500KB
-- Naming: Descriptive kebab-case
+- Width: 800-1200px for regular content
+- Format: JPG, PNG, WebP, or SVG where appropriate
+- Max size: about 500 KB when stored locally
+- Naming: descriptive kebab-case
+- Location: `public/blog/content/`
 
-**Usage (Markdown)**:
+Markdown:
 
-```markdown
-![Architecture diagram](/blog/content/astro-architecture.png)
+```md
+![Astro architecture diagram](/blog/content/astro-architecture-diagram.png)
 ```
 
-**Usage (Astro Image)**:
+## Author Images
 
-```astro
----
-import { Image } from "astro:assets";
-import diagram from "../../public/blog/content/diagram.png";
----
+Recommended:
 
-<Image src={diagram} alt="Diagram" width={800} height={600} />
-```
-
-### 3. Author Images
-
-**Purpose**: Author profile pictures
-**Location**: `/public/authors/`
-**Specs**:
-
-- Dimensions: 400x400px (square)
+- Size: 400 x 400
 - Format: JPG, PNG, or WebP
-- Max size: 100KB
-- Naming: `author-name.jpg`
+- Max size: about 100 KB
+- Naming: lowercase/kebab-case author name
+- Location: `public/authors/`
 
-**Usage**:
+Frontmatter:
 
-```mdx
----
+```yaml
 author:
   name: "Rio Bahtiar"
   image: "/authors/rio-bahtiar.jpg"
   bio: "Full-stack developer"
----
 ```
 
-## Best Practices
+## Cloudinary Workflow
 
-### Image Optimization
+Configured script sources:
 
-1. **Compress Before Upload**
+| Local file                 | Cloudinary public ID  |
+| -------------------------- | --------------------- |
+| `src/assets/me-avatar.png` | `portfolio/me-avatar` |
+| `public/smc.jpg`           | `portfolio/smc-cover` |
 
-   - Use tools: TinyPNG, ImageOptim, or Squoosh
-   - Target: 70-80% quality for JPG
-   - Use WebP when supported
-
-2. **Responsive Images**
-
-   ```astro
-   <Image
-     src={coverImage}
-     alt="Cover"
-     widths={[400, 800, 1200]}
-     sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
-   />
-   ```
-
-3. **Lazy Loading**
-   ```astro
-   <Image src={image} alt="Alt text" loading="lazy" />
-   ```
-
-### Naming Conventions
-
-- Use **kebab-case**: `my-blog-post-image.jpg`
-- Be **descriptive**: `astro-build-output.png` not `img1.png`
-- Match **post slugs** for covers: `post-slug.jpg`
-- Use **author names** for profiles: `rio-bahtiar.jpg`
-
-### Accessibility
-
-Always provide meaningful alt text:
-
-```markdown
-<!-- Bad -->
-
-![Image](/blog/content/screenshot.png)
-
-<!-- Good -->
-
-![Astro dev server running in terminal](/blog/content/astro-dev-server.png)
-```
-
-## Cloudflare Images Integration
-
-This project uses Cloudflare Images binding. To use:
-
-### 1. Upload via Wrangler
+Commands:
 
 ```bash
-npx wrangler r2 object put blog-bucket/covers/image.jpg --file ./image.jpg
+bun run cloudinary:upload
+bun run cloudinary:list
+bun run cloudinary:validate
+bun run cloudinary:delete portfolio/old-image
 ```
 
-### 2. Use in Posts
+Production builds run:
 
-```mdx
----
-image: "https://imagedelivery.net/YOUR_ACCOUNT/image-id/public"
----
+```bash
+bun run prebuild
 ```
 
-### 3. Automatic Optimization
+`prebuild` uses `scripts/prebuild-upload-curl.js`, checks whether configured assets already exist, uploads missing assets, and exits successfully even when credentials are absent so unrelated builds can continue.
 
-Cloudflare Images automatically:
+## Environment Variables
 
-- Converts to WebP
-- Resizes based on viewport
-- Serves from CDN
-- Caches globally
+Required for upload operations:
 
-## Workflow
+```bash
+PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
+PUBLIC_CLOUDINARY_API_KEY="your-api-key"
+CLOUDINARY_API_SECRET="your-api-secret"
+```
 
-### Adding a New Blog Post with Images
+Store them in `.env` locally and in CI/deployment secrets for production parity.
 
-1. **Create Post**:
+## Optimization Guidelines
 
-   ```bash
-   # Create MDX file
-   touch src/content/blog-en/category/my-post.mdx
-   ```
-
-2. **Add Cover Image**:
-
-   ```bash
-   # Optimize and add cover
-   cp ~/Downloads/cover.jpg public/blog/covers/my-post.jpg
-   ```
-
-3. **Add Content Images**:
-
-   ```bash
-   # Add any inline images
-   cp ~/Downloads/*.png public/blog/content/
-   ```
-
-4. **Reference in Frontmatter**:
-
-   ```mdx
-   ---
-   title: "My Post"
-   image: "/blog/covers/my-post.jpg"
-   ---
-
-   Your content here...
-
-   ![Description](/blog/content/image.png)
-   ```
-
-5. **Verify**:
-   ```bash
-   npm run dev
-   # Check http://localhost:4321/blog/category/my-post
-   ```
+- Prefer Cloudinary `f_auto`/`q_auto` transformations for remote image URLs.
+- Compress local static images before committing.
+- Use WebP for photos when broad compatibility is acceptable.
+- Keep SVGs for logos and simple vector graphics.
+- Always provide meaningful alt text.
+- Add explicit dimensions in components to avoid layout shift.
+- Use `loading="eager"` only for likely LCP images; keep other images lazy.
 
 ## Troubleshooting
 
-### Image Not Loading
+### Static image does not load
 
-**Check**:
+- Confirm the path starts with `/`.
+- Confirm the file exists under `public/`.
+- Check filename case exactly.
+- Avoid spaces in filenames.
 
-1. Path is correct (starts with `/`)
-2. File exists in `public/` directory
-3. File extension matches (case-sensitive)
-4. No spaces in filename
+### Cloudinary image does not load
 
-**Example**:
+- Verify the public ID in the Cloudinary dashboard.
+- Check `PUBLIC_CLOUDINARY_CLOUD_NAME`.
+- Run `bun run cloudinary:validate`.
+- Confirm transformations are valid for the asset type.
 
-```mdx
-<!-- Wrong -->
+### Build should not upload images
 
-image: "blog/covers/my-post.jpg"
-image: "/Blog/Covers/my-post.JPG"
+Use:
 
-<!-- Correct -->
-
-image: "/blog/covers/my-post.jpg"
+```bash
+bun run build:skip-upload
 ```
 
-### Image Too Large
+### New upload source is needed
 
-**Solutions**:
+Update both scripts if the image should be managed by the standard workflow:
 
-1. Compress with online tool (TinyPNG)
-2. Convert to WebP format
-3. Reduce dimensions
-4. Use Cloudflare Images for automatic optimization
+- `scripts/upload-to-cloudinary.js`
+- `scripts/prebuild-upload-curl.js`
 
-### Broken Social Sharing
-
-**Check Open Graph Meta Tags**:
-
-```html
-<meta
-  property="og:image"
-  content="https://yourdomain.com/blog/covers/post.jpg"
-/>
-```
-
-**Requirements**:
-
-- Use absolute URL
-- Image must be 1200x630px (minimum 600x315px)
-- File size under 8MB
-- Accessible via HTTPS
-
-## Tools & Resources
-
-### Image Optimization
-
-- [TinyPNG](https://tinypng.com) - PNG/JPG compression
-- [Squoosh](https://squoosh.app) - Google's image optimizer
-- [ImageOptim](https://imageoptim.com) - Mac app for compression
-
-### Image Creation
-
-- [Canva](https://canva.com) - Design cover images
-- [Figma](https://figma.com) - Professional design tool
-- [Unsplash](https://unsplash.com) - Free stock photos
-
-### Testing
-
-- [Facebook Debugger](https://developers.facebook.com/tools/debug/) - Test OG images
-- [Twitter Card Validator](https://cards-dev.twitter.com/validator) - Test Twitter cards
-
-## Quick Reference
-
-| Asset Type | Location         | Size     | Format       | Max Size |
-| ---------- | ---------------- | -------- | ------------ | -------- |
-| Cover      | `/blog/covers/`  | 1200x630 | JPG/WebP     | 200KB    |
-| Content    | `/blog/content/` | Varies   | JPG/PNG/WebP | 500KB    |
-| Author     | `/authors/`      | 400x400  | JPG/WebP     | 100KB    |
-
----
-
-For more details, see:
-
-- `/public/blog/README.md` - Blog assets guide
-- `/public/authors/README.md` - Authors guide
-- [Astro Assets Docs](https://docs.astro.build/en/guides/images/)
+Then update this document and [CLOUDINARY.md](./CLOUDINARY.md).

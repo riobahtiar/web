@@ -1,148 +1,93 @@
-# Performance Optimization Report
+# Performance Notes
 
-## Cloudflare Worker Compatibility ✅
+Current stack: Astro 6 SSR on Cloudflare Workers, React 19 islands, Tailwind CSS 4, Cloudinary image delivery, and Cloudflare static asset serving.
 
-### Configuration
-- ✅ Image service: `noop` with `passthrough` (optimal for Workers)
-- ✅ No server-side image processing in Workers
-- ✅ All images served from Cloudinary CDN
-- ✅ Build completed successfully
+## Current Optimizations
 
-### Image Delivery
-- **Source**: Cloudinary CDN (global edge network)
-- **Processing**: Done at Cloudinary, not in Workers
-- **URLs**: Generated at build time, not runtime
+- Astro SSR runs at the Cloudflare edge.
+- Static assets are served through the `ASSETS` binding configured in `wrangler.jsonc`.
+- React server rendering uses `react-dom/server.edge` in production.
+- Tailwind CSS 4 is compiled through `@tailwindcss/vite`.
+- Shiki code highlighting uses configured light/dark themes with wrapping enabled.
+- Cloudinary delivers selected images with automatic quality and format transformations.
+- The Cloudflare adapter uses `imageService: { build: "compile", runtime: "passthrough" }` to avoid runtime image processing in Workers.
+- Blog related posts and reading time are computed server-side from content collection entries.
 
-## Mobile & Low-End Device Performance ✅
+## Image Strategy
 
-### Current Optimizations
+Primary image CDN: Cloudinary.
 
-1. **Format Optimization**
-   - Auto WebP/AVIF conversion (50-90% smaller than JPEG)
-   - Fallback to JPEG for older browsers
-   - Example: 500KB JPEG → ~50KB WebP
+Managed assets:
 
-2. **Quality Optimization**
-   - Automatic quality adjustment
-   - Visual quality maintained while reducing file size
-   - Smart compression based on content
+- `src/assets/me-avatar.png` -> `portfolio/me-avatar`
+- `public/smc.jpg` -> `portfolio/smc-cover`
 
-3. **Loading Strategy**
-   - Hero images: `loading="eager"` (loads immediately)
-   - Below-fold: `loading="lazy"` (loads when visible)
-   - Reduces initial page weight
+Recommended Cloudinary transformations:
 
-4. **Image Sizes**
-   - Avatar: 200×200px (displayed at 96px) - ✅ Optimal
-   - Cover (EN): 900×1000px - ⚠️ Could be optimized
-   - Cover (ID): 1200×630px - ✅ Good (OG size)
-   - OG images: 1200×630px - ✅ Standard size
+- `f_auto` for modern formats such as WebP/AVIF where supported
+- `q_auto` for adaptive compression
+- Explicit width/height to reserve layout space
+- `loading="eager"` only for LCP candidates
+- `loading="lazy"` for below-fold images
 
-### Performance Metrics
+Static blog images under `public/blog/` should be compressed before commit.
 
-**Estimated Load Times** (on 3G connection):
+## Worker Compatibility
 
-| Image | Original | WebP | Load Time |
-|-------|----------|------|-----------|
-| Avatar (200×200) | ~40KB | ~8KB | ~0.2s |
-| Cover (900×1000) | ~450KB | ~50KB | ~1.3s |
-| OG Image (1200×630) | ~180KB | ~25KB | ~0.7s |
+Keep these settings unless a tested platform migration changes them:
 
-### CDN Benefits
-- ✅ Global edge network
-- ✅ Automatic compression
-- ✅ HTTP/2 & HTTP/3 support
-- ✅ Brotli compression
-- ✅ Automatic image format selection
+```js
+adapter: cloudflare({
+  imageService: { build: "compile", runtime: "passthrough" },
+});
+```
 
-## Recommendations for Further Optimization
+```jsonc
+"compatibility_flags": ["nodejs_compat_v2"]
+```
 
-### Critical (Implement if needed)
+```js
+alias: import.meta.env.PROD
+  ? { "react-dom/server": "react-dom/server.edge" }
+  : undefined;
+```
 
-1. **Responsive Images** - Use different sizes for mobile/desktop
-   ```astro
-   <CldImage
-     src="portfolio/smc-cover"
-     width={900}
-     height={1000}
-     sizes="(max-width: 768px) 100vw, 900px"
-   />
-   ```
+## Validation
 
-2. **Mobile-Specific Sizes** - Reduce dimensions for mobile
-   ```astro
-   <!-- Mobile: 600×667, Desktop: 900×1000 -->
-   <CldImage
-     src="portfolio/smc-cover"
-     width={900}
-     height={1000}
-     crop={{ width: 600, height: 667, type: "fill", gravity: "auto" }}
-   />
-   ```
+Fast local performance sanity check:
 
-### Optional (Nice to have)
+```bash
+bun run typecheck
+bun run build:skip-upload
+bun run preview
+```
 
-3. **Priority Hints** - For LCP images
-   ```astro
-   <CldImage
-     src="portfolio/me-avatar"
-     fetchpriority="high"
-   />
-   ```
+Production-parity build:
 
-4. **Blur Placeholder** - For better perceived performance
-   ```astro
-   <CldImage
-     src="portfolio/smc-cover"
-     placeholder="blur"
-   />
-   ```
+```bash
+bun run build
+```
 
-## Current Status
+Manual checks:
 
-✅ **Production Ready**
-- Works on Cloudflare Workers
-- Optimized for mobile devices
-- Fast loading on low-end devices
-- Images are automatically optimized
+- Use Chrome DevTools mobile viewport.
+- Test slow network throttling for image-heavy pages.
+- Verify `/`, `/blog`, `/id/`, and `/id/blog`.
+- Run Lighthouse against a preview or deployed Worker.
 
-⚠️ **Can be improved**
-- Add responsive image sizes for even better mobile performance
-- Consider smaller dimensions for mobile viewports
+## Targets
 
-## Testing Recommendations
+| Metric     | Target                                                         |
+| ---------- | -------------------------------------------------------------- |
+| LCP        | Under 2.5s on representative mobile network                    |
+| CLS        | Under 0.1                                                      |
+| INP        | Under 200ms                                                    |
+| Initial JS | Keep React islands isolated and intentional                    |
+| Images     | Use appropriately sized Cloudinary or compressed static assets |
 
-Before deploying, test on:
-- ✅ Cloudflare Workers (already tested via build)
-- 📱 Mobile device (Chrome DevTools mobile emulation)
-- 🐌 Slow 3G network (Chrome DevTools throttling)
-- 📊 Lighthouse audit (should score 90+ for performance)
+## Improvement Backlog
 
-## Lighthouse Performance Targets
-
-| Metric | Target | Current Status |
-|--------|--------|----------------|
-| LCP (Largest Contentful Paint) | < 2.5s | Expected: ~1-2s with Cloudinary |
-| FID (First Input Delay) | < 100ms | Expected: < 50ms (static site) |
-| CLS (Cumulative Layout Shift) | < 0.1 | ✅ Fixed dimensions provided |
-| Total Page Weight | < 1MB | Expected: ~100-200KB |
-
-## Conclusion
-
-✅ **Your implementation is production-ready** with good mobile performance.
-
-The combination of:
-- Cloudinary CDN
-- Auto WebP/AVIF
-- Lazy loading
-- Proper dimensions
-- Quality optimization
-
-...ensures fast loading even on low-end devices and slow connections.
-
-**Optional next step**: Implement responsive images for the cover image to further optimize mobile experience (see recommendations above).
-
----
-
-**Performance tested on:** November 2025
-**Build:** Astro 5 + Cloudflare Workers + Cloudinary CDN
+- Add responsive `sizes` and width variants for any remaining image-heavy components.
+- Audit React islands for unnecessary hydration.
+- Keep Cloudinary asset validation in deployment checks when image references change.
+- Re-run Lighthouse after dependency or adapter upgrades.

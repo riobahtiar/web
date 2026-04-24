@@ -1,348 +1,248 @@
-# Claude Development Guidelines for Astro Rio
+# AI Development Guide for Astro Rio
 
-This document provides comprehensive guidelines for AI assistants (Claude) and developers working on this project.
+This file is the canonical operating guide for AI assistants and developers. `AGENTS.md` should remain a symlink to this file so Claude, Codex, and other agent tooling read the same instructions.
 
-## 🎯 Project Overview
+## Project Snapshot
 
-**astro-rio** is a production-grade, bilingual portfolio and blog built with Astro 5, deployed on Cloudflare Workers with SSR.
+`astro-rio` is a production portfolio and bilingual blog.
 
-### Key Characteristics
+- Astro 6 SSR app deployed to Cloudflare Workers
+- Bun-first project with committed `bun.lock`
+- React 19 islands for interactive UI
+- Tailwind CSS 4 plus DaisyUI 5 and shadcn-style React components
+- Astro content collections in `src/content.config.ts`
+- MDX and Markdoc enabled
+- Cloudinary-backed image workflow with local fallback
+- English default routes and Indonesian `/id/*` routes
 
-- **Server-Side Rendering (SSR)** - Dynamic routes, no static generation
-- **Bilingual** - English (default) and Indonesian (id) support
-- **Type-Safe** - Strict TypeScript, Zod-validated content
-- **Production-Ready** - Deployed on Cloudflare Workers edge network
+## Required Context Before Editing
 
-## 📋 Development Commands
-
-### Essential Commands
-
-```bash
-# Development
-npm run dev              # Start dev server (localhost:4321)
-npm run build            # Build for production
-npm run preview          # Preview production build locally
-
-# Quality Assurance
-npx astro check          # TypeScript type checking
-npm run format           # Format code with Prettier
-npm run format:check     # Check code formatting
-npm audit                # Check for security vulnerabilities
-```
-
-### Pre-Commit Checklist
-
-⚠️ **CRITICAL**: Always run these checks before committing to prevent CI/CD failures:
+Before changing code, inspect the relevant files and current git state:
 
 ```bash
-# 1. Type Check - Must show "0 errors"
-npx astro check          # ✅ Type check - Look for "0 errors" in output
-
-# 2. Format Code
-npm run format           # ✅ Format code (ignore template file errors)
-
-# 3. Build - Must complete successfully
-npm run build            # ✅ Ensure build succeeds with "Complete!"
-
-# 4. Security Check
-npm audit                # ✅ Check security vulnerabilities
+git status --short
+rg --files
 ```
 
-**Common Issues to Check:**
+Do not overwrite user changes. If a file has unrelated dirty changes, work around them or ask before touching the conflicting section.
 
-1. **Import Naming Conflicts**: Avoid naming imports the same as the page name
-   ```typescript
-   // ❌ Bad - in portfolio.astro
-   import Portfolio from "../components/Portfolio.astro";
+## Commands
 
-   // ✅ Good - in portfolio.astro
-   import PortfolioComponent from "../components/Portfolio.astro";
-   ```
+Use Bun, not npm, for this repository.
 
-2. **TypeScript Errors**: Must show "0 errors" from `npx astro check`
-3. **Build Success**: Must see "[build] Complete!" at the end of build
-4. **Unused Variables**: Review warnings about unused variables (may cause issues)
-
-**Quick Verification Command:**
 ```bash
-# Run all checks in sequence
-npx astro check && npm run build && echo "✅ All checks passed!"
+bun install
+bun run dev
+bun run typecheck
+bun run format
+bun run format:check
+bun audit --audit-level high
+bun run build
+bun run build:skip-upload
+bun run preview
+bun run deploy
+bun run cf-typegen
 ```
 
-## 💻 Code Style & Standards
+Recommended fast validation while developing:
 
-### TypeScript
+```bash
+bun run typecheck
+bun run build:skip-upload
+```
 
-- **Strict Mode**: Always enabled (`extends astro/tsconfigs/strict`)
-- **Type Imports**: Use `import type` for type-only imports
-- **Explicit Types**: Define return types for functions
-- **No `any`**: Use `unknown` or proper types instead
+Recommended production-parity validation:
 
-```typescript
-// ✅ Good
-import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
+```bash
+bun audit --audit-level high
+bun run build
+```
 
-function formatDate(date: Date): string {
-  return date.toLocaleDateString();
+`bun run build` executes the Cloudinary prebuild upload script. If Cloudinary credentials are missing, the script exits successfully and the Astro build continues.
+
+## Package Management
+
+- Keep `packageManager` aligned with the installed Bun version.
+- Commit `bun.lock`; do not reintroduce `package-lock.json`.
+- Use `bun add`, `bun remove`, and `bun install --frozen-lockfile` in CI.
+- Avoid `npm ci`, `npm install`, and `npx` in project docs and workflows unless explicitly documenting an external one-off command.
+- Bun does not run arbitrary dependency lifecycle scripts by default; add required native build packages to `trustedDependencies`.
+
+## Architecture Rules
+
+### Astro SSR
+
+The app uses `output: "server"`. Dynamic routes should resolve content at request time.
+
+```astro
+---
+import { getCollection, render } from "astro:content";
+
+const { category, slug } = Astro.params;
+const posts = await getCollection("blog-en");
+const post = posts.find((entry) => {
+  const entrySlug = entry.id.startsWith(`${entry.data.category}/`)
+    ? entry.id.slice(entry.data.category.length + 1)
+    : entry.id;
+
+  return entry.data.category === category && entrySlug === slug;
+});
+
+if (!post) return Astro.redirect("/404");
+
+const { Content, headings } = await render(post);
+---
+```
+
+Do not add `getStaticPaths()` to SSR dynamic routes unless the route is intentionally changed to prerendered output and docs are updated.
+
+### Astro 6 Content Collections
+
+- Collection config belongs in `src/content.config.ts`.
+- Use `glob()` from `astro/loaders`.
+- Import `z` from `astro/zod`, not from `astro:content`.
+- Use `entry.id` for route identity; legacy `entry.slug` is not the current API for loader-backed collections.
+- Use `render(entry)` from `astro:content`; do not use `entry.render()`.
+- `entry.body` may be undefined, so reading-time helpers should receive `entry.body ?? ""`.
+
+### Cloudflare Workers
+
+- Cloudflare config belongs in `wrangler.jsonc`.
+- `main` should remain `@astrojs/cloudflare/entrypoints/server`.
+- Keep `compatibility_flags: ["nodejs_compat_v2"]` while React 19 server rendering and current dependencies need Node compatibility.
+- The Cloudflare adapter image mode is `imageService: { build: "compile", runtime: "passthrough" }`.
+- Static assets are configured through the `assets` block in `wrangler.jsonc`.
+- Use `bun run cf-typegen` after binding changes.
+
+### React on Cloudflare
+
+Keep the production Vite alias:
+
+```js
+resolve: {
+  alias: import.meta.env.PROD
+    ? { "react-dom/server": "react-dom/server.edge" }
+    : undefined,
 }
-
-// ❌ Bad
-import { GetStaticPaths } from "astro";
-const formatDate = (date: any) => date.toLocaleDateString();
 ```
 
-### File Naming Conventions
+This avoids server-rendering paths that require `MessageChannel` from `node:worker_threads`.
 
-- **Pages**: `kebab-case.astro` (e.g., `about.astro`, `blog-post.astro`)
-- **Components**: `PascalCase.astro` or `PascalCase.tsx`
-- **Utilities**: `camelCase.ts` (e.g., `formatDate.ts`, `utils.ts`)
-- **Content**: `kebab-case.mdx` (e.g., `introduction-to-astro.mdx`)
+## Code Style
 
-### Import Organization
+- TypeScript strict mode is enabled via `astro/tsconfigs/strict`.
+- Use `import type` for type-only imports.
+- Prefer `unknown` and precise types over `any`.
+- Use path alias imports for internal modules when practical: `@/components`, `@/utils`, `@/lib`.
+- Keep Astro components in `PascalCase.astro`, React components in `PascalCase.tsx`, utilities in `camelCase.ts`, content in `kebab-case.mdx`.
+- Keep comments rare and only explain non-obvious behavior or platform constraints.
 
-Group and order imports as follows:
+Import order:
 
-```typescript
-// 1. Type imports
+```ts
 import type { CollectionEntry } from "astro:content";
 
-// 2. External libraries
-import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
-
-// 3. Internal components
-import Layout from "../../layouts/Layout.astro";
-import BlogPost from "../components/BlogPost.astro";
-
-// 4. Utilities
-import { formatDate } from "@/utils/date";
-import { cn } from "@/lib/utils";
-
-// 5. Assets
-import profileImage from "../assets/me-avatar.png";
-```
-
-### Path Aliases
-
-Always use path aliases for internal imports:
-
-```typescript
-// ✅ Good
-import { cn } from "@/lib/utils";
-import Header from "@/components/Header.astro";
-
-// ❌ Bad
-import { cn } from "../../lib/utils";
-import Header from "../components/Header.astro";
-```
-
-## 🏗️ Architecture Patterns
-
-### SSR Routes (Server-Side Rendering)
-
-**IMPORTANT**: This project uses SSR mode (`output: "server"`). Do NOT use `getStaticPaths()` in dynamic routes.
-
-```astro
----
-// ✅ Correct SSR Pattern
 import { getCollection } from "astro:content";
 
-// Get params from URL (SSR mode)
-const { slug } = Astro.params;
-
-// Fetch data dynamically on each request
-const posts = await getCollection("blog-en");
-const post = posts.find((p) => p.slug === slug);
-
-if (!post) {
-  return Astro.redirect("/404");
-}
----
-
-// ❌ WRONG - Don't use this in SSR mode
-export const getStaticPaths = async () => {
-  // This will cause build warnings in SSR mode
-  return [];
-};
-```
-
-## 🌍 Internationalization (i18n)
-
-### Translation Files
-
-Translations are stored in `src/i18n/`:
-
-```typescript
-// src/i18n/en.ts
-export const en = {
-  nav: {
-    home: "Home",
-    about: "About",
-    contact: "Contact",
-  },
-  // ... more translations
-};
-
-// src/i18n/id.ts
-export const id = {
-  nav: {
-    home: "Beranda",
-    about: "Tentang",
-    contact: "Kontak",
-  },
-  // ... more translations
-};
-```
-
-### Using Translations
-
-```astro
----
-import { en } from "../i18n/en";
-import { id } from "../i18n/id";
-
-const pathname = Astro.url.pathname;
-const lang = pathname.startsWith("/id/") ? "id" : "en";
-const i18n = lang === "id" ? id : en;
----
-
-<h1>{i18n.nav.home}</h1>
-```
-
-### URL Structure
-
-- **English (default)**: `/about`, `/services`, `/contact`
-- **Indonesian**: `/id/about`, `/id/services`, `/id/contact`
-
-## 🎨 Styling Guidelines
-
-### Tailwind CSS
-
-Use Tailwind utility classes:
-
-```astro
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-primary">Title</h1>
-  <p class="mt-4 text-base-content opacity-80">Description</p>
-</div>
-```
-
-### DaisyUI Components
-
-Leverage DaisyUI for common components:
-
-```astro
-<button class="btn btn-primary">Primary Button</button>
-<div class="card bg-base-200">
-  <div class="card-body">
-    <h2 class="card-title">Card Title</h2>
-    <p>Card content</p>
-  </div>
-</div>
-```
-
-### Custom Utilities
-
-Use the `cn()` utility for conditional classes:
-
-```tsx
+import BlogPost from "@/layouts/BlogPost.astro";
 import { cn } from "@/lib/utils";
-
-<div className={cn(
-  "base-class",
-  isActive && "active-class",
-  variant === "primary" && "primary-class"
-)}>
-  Content
-</div>
 ```
 
-## 🔒 Security Best Practices
+## Styling Rules
 
-### Input Validation
+- Tailwind CSS 4 is configured in CSS through `@import`, `@plugin`, and `@theme`, not through a traditional Tailwind config.
+- Shared tokens live in `src/assets/global.css`.
+- DaisyUI themes are disabled and mapped through CSS variables.
+- shadcn-style components use `components.json` aliases.
+- Preserve the existing visual system unless the task explicitly asks for a redesign.
 
-Always validate and sanitize user input:
+## Internationalization
 
-```typescript
-// ✅ Good
-const page = parseInt(Astro.params.page || "1", 10);
-if (isNaN(page) || page < 1) {
-  return Astro.redirect("/404");
-}
+- English routes are unprefixed: `/about`, `/blog/...`.
+- Indonesian routes are prefixed: `/id/about`, `/id/blog/...`.
+- Keep `src/i18n/en.ts` and `src/i18n/id.ts` structurally aligned.
+- Do not hard-code user-facing strings in shared components when translations already exist.
+- Test both locales for route or content changes.
 
-// ❌ Bad
-const page = Astro.params.page; // Unvalidated
+## Blog Content Rules
+
+Content lives under:
+
+- `src/content/blog-en/<category>/<slug>.mdx`
+- `src/content/blog-id/<category>/<slug>.mdx`
+
+Required frontmatter is enforced in `src/content.config.ts`:
+
+```yaml
+title: "Post title"
+description: "Post description"
+created_at: 2026-04-25
+modified_at: 2026-04-25
+image: "/blog/covers/example.jpg"
+category: "web-development"
+tags: ["astro", "cloudflare"]
+author:
+  name: "Rio Bahtiar"
+  image: "/authors/rio-bahtiar.jpg"
+  bio: "Full-stack developer"
+draft: false
 ```
 
-## 🚀 Performance Optimization
+`image` is optional in the schema but strongly recommended for social previews.
 
-### Image Optimization
+## Image Workflow
 
-```astro
----
-import { Image } from "astro:assets";
-import heroImage from "../assets/hero.jpg";
----
+- Source assets currently used by scripts:
+  - `src/assets/me-avatar.png` -> `portfolio/me-avatar`
+  - `public/smc.jpg` -> `portfolio/smc-cover`
+- `bun run cloudinary:upload` performs smart sync through the Cloudinary SDK.
+- `bun run prebuild` uses a curl-based uploader for production build compatibility.
+- `bun run cloudinary:validate` checks referenced configured assets.
+- Do not document Cloudflare Images as the primary image pipeline unless the implementation changes.
 
-<Image
-  src={heroImage}
-  alt="Hero image"
-  width={1200}
-  height={600}
-  loading="lazy"
-  decoding="async"
-/>
-```
+## Documentation Rules
 
-## 📦 Deployment
+Update docs in the same change when any of these change:
 
-### Pre-Deployment Checklist
+- Package manager, lockfile, or command names
+- Astro major version, content collection API, or render API
+- Cloudflare adapter or Wrangler config file format
+- Deployment target, bindings, or compatibility flags
+- Content schema or blog route shape
+- Image upload/delivery workflow
+- CI workflow setup
 
-- [ ] Run `npx astro check` (no errors)
-- [ ] Run `npm run build` (succeeds)
-- [ ] Run `npm audit` (no critical vulnerabilities)
-- [ ] Test preview build locally
-- [ ] Update version in package.json
+Prefer major-version descriptions in prose and exact versions only where they come directly from `package.json`.
 
-### Deployment Process
+## AI Tooling Expectations
+
+- Read this file first and treat it as project-local policy.
+- Prefer `rg` and `rg --files` for exploration.
+- Use official docs when checking modern Astro, Cloudflare, Bun, React, or Tailwind behavior.
+- Keep changes small and focused unless the user asks for a broad modernization.
+- If docs and code disagree, make the code the source of truth and update docs.
+- If a migration creates CI breakage, fix the workflow instead of documenting a broken state.
+- Leave `.claude/settings.local.json` as a local tool permission file; do not depend on it for project behavior.
+
+## Pre-Commit Checklist
 
 ```bash
-# 1. Build
-npm run build
-
-# 2. Deploy to Cloudflare Workers
-npx wrangler deploy
-
-# 3. Verify deployment
-# Visit https://web.riomyid.workers.dev
+bun run typecheck
+bun run format:check
+bun run build:skip-upload
 ```
 
-## ⚠️ Important Notes
+For production/deployment changes, also run:
 
-### DO
+```bash
+bun audit --audit-level high
+bun run build
+```
 
-- ✅ Use SSR patterns (Astro.params, dynamic data fetching)
-- ✅ Validate all user input
-- ✅ Keep dependencies up-to-date
-- ✅ Write type-safe code
-- ✅ Test both languages
-- ✅ Follow naming conventions
-- ✅ Use path aliases
+## Reference Links
 
-### DON'T
-
-- ❌ Use `getStaticPaths()` in SSR mode
-- ❌ Commit sensitive data
-- ❌ Use `any` type
-- ❌ Skip type checking
-- ❌ Ignore build warnings
-- ❌ Hard-code translations
-- ❌ Use relative imports for internal modules
-
----
-
-For more details, see:
-- [README.md](./README.md) - Project overview
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - Deployment guide
-- [CONTRIBUTING.md](./CONTRIBUTING.md) - Contribution guidelines
+- Astro content loaders: https://docs.astro.build/en/reference/content-loader-reference/
+- Astro 6 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v6/
+- Astro Cloudflare adapter: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
+- Cloudflare Wrangler config: https://developers.cloudflare.com/workers/wrangler/configuration/
+- Bun lockfile: https://bun.sh/docs/pm/lockfile

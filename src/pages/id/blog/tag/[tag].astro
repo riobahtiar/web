@@ -24,7 +24,7 @@ if (filteredPosts.length === 0) {
 // Calculate reading time for each post
 const postsWithReadingTime = filteredPosts.map((post) => ({
   ...post,
-  readingTime: getReadingTimeI18n(post.body, "id"),
+  readingTime: getReadingTimeI18n(post.body ?? "", "id"),
 }));
 
 const pageTitle = `Artikel dengan tag "${tag}"`;
@@ -53,9 +53,9 @@ const pageDescription = `Telusuri semua artikel blog dengan tag "${tag}". ${filt
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {
         postsWithReadingTime.map((post) => {
-          const slug = post.slug.startsWith(post.data.category + "/")
-            ? post.slug.substring(post.data.category.length + 1)
-            : post.slug;
+          const slug = post.id.startsWith(post.data.category + "/")
+            ? post.id.substring(post.data.category.length + 1)
+            : post.id;
 
           return (
             <article class="card bg-base-200 shadow-lg transition-shadow hover:shadow-xl">

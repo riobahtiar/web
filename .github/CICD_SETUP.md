@@ -1,184 +1,122 @@
-# CI/CD Setup Guide
+# CI/CD Setup
 
-This document explains how to configure GitHub Actions for automatic deployment to Cloudflare Workers.
+GitHub Actions build and deploy the Astro Rio Cloudflare Worker with Bun.
 
-## Overview
+## Workflows
 
-The project uses GitHub Actions workflows for:
+- `deploy.yml`: builds and deploys pushes to `main`, plus manual dispatch.
+- `preview.yml`: validates pull requests with typecheck and build.
+- `quality-check.yml`: runs formatting check, Astro typecheck, audit, and build.
 
-1. **Automatic deployment** to Cloudflare Workers when code is merged to `main`
-2. **PR previews** that build and validate pull requests
-3. **Quality checks** that run type checking, formatting, and security audits
+## Runtime
 
-## Required GitHub Secrets
+Workflows use:
 
-To enable automatic deployment, you need to add the following secrets to your GitHub repository:
+- Node.js 22
+- `oven-sh/setup-bun@v2`
+- Bun 1.3.11
+- `bun install --frozen-lockfile`
 
-### 1. CLOUDFLARE_API_TOKEN
+Do not switch workflows back to `npm ci`; this repo uses `bun.lock` and no `package-lock.json`.
 
-Your Cloudflare API token with permissions to deploy Workers.
+## Required Secrets
 
-**How to get it:**
+### `CLOUDFLARE_API_TOKEN`
 
-1. Go to https://dash.cloudflare.com/profile/api-tokens
-2. Click "Create Token"
-3. Use the "Edit Cloudflare Workers" template or create a custom token with these permissions:
-   - Account > Workers Scripts > Edit
-   - Account > Account Settings > Read
-   - Zone > Workers Routes > Edit (if using custom domains)
-4. Copy the token
+Cloudflare API token with permissions to deploy Workers.
 
-**Add to GitHub:**
+Minimum typical permissions:
 
-1. Go to your repository on GitHub
-2. Navigate to Settings → Secrets and variables → Actions
-3. Click "New repository secret"
-4. Name: `CLOUDFLARE_API_TOKEN`
-5. Value: Paste your token
-6. Click "Add secret"
+- Account > Workers Scripts > Edit
+- Account > Account Settings > Read
+- Zone > Workers Routes > Edit, only if custom routes are used
 
-### 2. CLOUDFLARE_ACCOUNT_ID
+### `CLOUDFLARE_ACCOUNT_ID`
 
-Your Cloudflare Account ID.
+Cloudflare account ID used by `cloudflare/wrangler-action`.
 
-**How to get it:**
+## Optional Cloudinary Secrets
 
-1. Go to https://dash.cloudflare.com/
-2. Select your account
-3. Look at the URL - it will be like: `https://dash.cloudflare.com/{ACCOUNT_ID}/...`
-4. Or find it in the right sidebar under "Account ID"
+Set these if CI should perform production-parity image uploads during `bun run build`:
 
-**Add to GitHub:**
+- `PUBLIC_CLOUDINARY_CLOUD_NAME`
+- `PUBLIC_CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
 
-1. Go to Settings → Secrets and variables → Actions
-2. Click "New repository secret"
-3. Name: `CLOUDFLARE_ACCOUNT_ID`
-4. Value: Paste your Account ID
-5. Click "Add secret"
+If they are absent, the prebuild upload step logs a warning and the build continues.
 
-## Workflows Explained
+## Local CI Parity
 
-### 1. deploy.yml
-
-- **Triggers:** Push to `main` branch or manual workflow dispatch
-- **Purpose:** Build and deploy to production (Cloudflare Workers)
-- **Steps:**
-  - Checkout code
-  - Install Node.js dependencies
-  - Build Astro project
-  - Deploy to Cloudflare Workers using Wrangler
-
-### 2. preview.yml
-
-- **Triggers:** Pull request opened, updated, or reopened
-- **Purpose:** Build validation and preview
-- **Steps:**
-  - Checkout code
-  - Install dependencies
-  - Run type checks
-  - Build project
-  - Comment on PR with build status
-
-### 3. quality-check.yml
-
-- **Triggers:** Pull requests and pushes to `main`
-- **Purpose:** Code quality validation
-- **Steps:**
-  - Format checking
-  - TypeScript type checking
-  - Security audit
-  - Build verification
-
-## Workflow Status Badges
-
-Add these badges to your README.md to show build status:
-
-```markdown
-![Deploy](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/deploy.yml/badge.svg)
-![Quality Check](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/quality-check.yml/badge.svg)
+```bash
+bun install --frozen-lockfile
+bun run format:check
+bun run typecheck
+bun audit --audit-level high
+bun run build
 ```
 
-Replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repository name.
+For faster non-deployment validation:
 
-## Testing the Setup
+```bash
+bun run typecheck
+bun run build:skip-upload
+```
 
-### 1. Test Manual Deployment
+## Deployment Target
 
-1. Go to Actions tab in your GitHub repository
-2. Select "Deploy to Cloudflare Workers" workflow
-3. Click "Run workflow" → "Run workflow"
-4. Watch the deployment process
+Production Worker:
 
-### 2. Test Automatic Deployment
+- https://web.riomyid.workers.dev
 
-1. Make a small change (e.g., update README.md)
-2. Commit and push to main:
-   ```bash
-   git add .
-   git commit -m "test: trigger deployment"
-   git push origin main
-   ```
-3. Check Actions tab to see deployment running
-4. Verify at https://web.riomyid.workers.dev
+Cloudflare configuration:
 
-### 3. Test PR Preview
+- [wrangler.jsonc](../wrangler.jsonc)
 
-1. Create a new branch
-2. Make changes and create a PR
-3. Watch the quality check and preview workflows run
-4. Check for automated comments on the PR
+## Custom Domain
+
+If a custom domain is added, update `wrangler.jsonc` with routes according to Cloudflare Workers routing docs, then ensure `CLOUDFLARE_API_TOKEN` has the required zone permissions.
 
 ## Troubleshooting
 
-### Deployment fails with "Invalid API token"
+### CI fails during install
 
-- Check that `CLOUDFLARE_API_TOKEN` is set correctly
-- Verify the token has the required permissions
-- Make sure the token hasn't expired
+Confirm the workflow uses:
 
-### Deployment fails with "Account ID not found"
+```yaml
+- uses: oven-sh/setup-bun@v2
+- run: bun install --frozen-lockfile
+```
 
-- Verify `CLOUDFLARE_ACCOUNT_ID` is correct
-- Check that the account ID matches your Cloudflare account
+### Build works locally but not in CI
 
-### Build fails in CI but works locally
+- Check Bun version.
+- Check Node.js version.
+- Verify Cloudinary env vars if the change depends on uploaded assets.
+- Reproduce locally with `bun install --frozen-lockfile`.
 
-- Ensure all dependencies are in `package.json`
-- Check Node.js version matches (workflow uses Node 20)
-- Run `npm ci` locally to test clean install
+### Deploy fails with invalid API token
 
-### Type check errors
+- Verify `CLOUDFLARE_API_TOKEN` exists.
+- Confirm token scopes.
+- Confirm the token has not expired.
 
-- Run `npx astro check` locally
-- Fix any TypeScript errors before pushing
+### Deploy fails with account errors
 
-## Deployment URL
+- Verify `CLOUDFLARE_ACCOUNT_ID`.
+- Confirm the Worker belongs to that account.
 
-After successful deployment, your site will be available at:
+### Type errors
 
-- **Production:** https://web.riomyid.workers.dev
+Run:
 
-## Custom Domain (Optional)
+```bash
+bun run typecheck
+```
 
-To deploy to a custom domain:
+Astro content collection errors often mean `src/content.config.ts` or frontmatter is out of sync.
 
-1. Add your domain to Cloudflare
-2. Update `wrangler.toml`:
-   ```toml
-   routes = [
-     { pattern = "yourdomain.com/*", zone_name = "yourdomain.com" }
-   ]
-   ```
-3. Update the `CLOUDFLARE_API_TOKEN` permissions to include Zone editing
+## References
 
-## Support
-
-For issues with:
-
-- **GitHub Actions:** Check the Actions tab logs
-- **Cloudflare Workers:** Check Cloudflare dashboard logs
-- **Wrangler CLI:** See https://developers.cloudflare.com/workers/wrangler/
-
----
-
-**Last Updated:** November 2025
+- Cloudflare Wrangler action: https://github.com/cloudflare/wrangler-action
+- Cloudflare Wrangler config: https://developers.cloudflare.com/workers/wrangler/configuration/
+- Bun GitHub Actions setup: https://bun.sh/guides/runtime/cicd

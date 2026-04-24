@@ -1,241 +1,137 @@
-# Astro Rio - Personal Portfolio & Blog
+# Astro Rio
 
-A modern, bilingual (English/Indonesian) portfolio and blog website built with Astro 5, deployed on Cloudflare Workers with SSR.
+Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Astro 6, React 19 islands, Tailwind CSS 4, DaisyUI 5, MDX/Markdoc content, Cloudinary image delivery, and Cloudflare Workers SSR.
 
-## 🌟 Features
+## Stack
 
-- **Server-Side Rendering (SSR)** - Dynamic content delivery via Cloudflare Workers
-- **Bilingual Support** - Full internationalization (English & Indonesian)
-- **Type-Safe Content** - Zod-validated content collections
-- **Modern Stack** - Astro 5 + React 19 + TypeScript
-- **Styling** - Tailwind CSS 4 + DaisyUI + ShadCN UI components
-- **SEO Optimized** - Comprehensive meta tags, sitemap, hreflang
-- **Performance** - Edge deployment, image optimization, Partytown analytics
-- **Blog System** - MDX-powered blog with categories, tags, and pagination
+- Runtime/package manager: Bun 1.3.11, committed `bun.lock`
+- Framework: Astro 6 with `output: "server"`
+- Deployment: Cloudflare Workers via `@astrojs/cloudflare` 13 and `wrangler.jsonc`
+- UI: Astro components, React 19 islands, Radix primitives, shadcn-style components
+- Styling: Tailwind CSS 4 Vite plugin, DaisyUI 5, shared CSS variables in `src/assets/global.css`
+- Content: Astro content collections in `src/content.config.ts` using `glob()` loaders
+- Media: local source assets plus Cloudinary upload/validation scripts
+- i18n: Astro i18n config with English default routes and Indonesian `/id/*` routes
 
-## 🚀 Quick Start
+Check [package.json](./package.json) for exact dependency versions.
 
-### Prerequisites
+## Quick Start
 
-- Node.js 22.x or higher
-- npm 10.x or higher
-- Cloudflare account (for deployment)
+Prerequisites:
 
-### Installation
+- Bun 1.3.11 or newer
+- Node.js 22.x or newer for tooling compatibility
+- Cloudflare account for deploys
+- Cloudinary credentials only when uploading/syncing images
 
 ```bash
-# Clone the repository
-git clone https://github.com/riobahtiar/web.git
-cd web
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
+bun install
+bun run dev
 ```
 
-Visit `http://localhost:4321` to see your site.
+Open `http://localhost:4321`.
 
-## 📁 Project Structure
+## Commands
 
-```
-├── public/               # Static assets (favicons, images)
+| Command                        | Description                                     |
+| ------------------------------ | ----------------------------------------------- |
+| `bun run dev`                  | Start the Astro dev server                      |
+| `bun run typecheck`            | Run `astro check`                               |
+| `bun run format`               | Format with Prettier                            |
+| `bun run format:check`         | Check formatting                                |
+| `bun audit --audit-level high` | Check dependency advisories                     |
+| `bun run build`                | Upload configured Cloudinary assets, then build |
+| `bun run build:skip-upload`    | Build without the Cloudinary prebuild step      |
+| `bun run preview`              | Preview the built site locally                  |
+| `bun run deploy`               | Build and deploy with Wrangler                  |
+| `bun run cf-typegen`           | Generate Cloudflare binding types               |
+
+Use `bun run build:skip-upload` for fast local validation when image uploads are irrelevant. Use `bun run build` for production parity.
+
+## Project Structure
+
+```text
+.
 ├── src/
-│   ├── assets/          # Source assets (images, global CSS)
-│   ├── components/      # Astro & React components
-│   │   └── ui/         # ShadCN-style React components
-│   ├── content/         # Content collections
-│   │   ├── blog-en/    # English blog posts
-│   │   └── blog-id/    # Indonesian blog posts
-│   ├── i18n/           # Translation files
-│   │   ├── en.ts       # English translations
-│   │   ├── id.ts       # Indonesian translations
-│   │   ├── technology.ts
-│   │   └── clients.ts
-│   ├── layouts/        # Page layouts
-│   │   ├── Layout.astro
-│   │   ├── BlogPost.astro
-│   │   └── BlogIndex.astro
-│   ├── lib/            # Shared utilities
-│   ├── pages/          # File-based routing
-│   │   ├── index.astro
-│   │   ├── about.astro
-│   │   ├── services.astro
-│   │   ├── contact.astro
-│   │   ├── blog/       # English blog routes
-│   │   └── id/         # Indonesian pages
-│   ├── styles/         # Style configurations
-│   └── utils/          # Utility functions
-├── astro.config.mjs    # Astro configuration
-├── wrangler.toml       # Cloudflare Workers config
-├── tsconfig.json       # TypeScript configuration
-└── package.json        # Dependencies & scripts
+│   ├── assets/              # Global CSS and source assets
+│   ├── components/          # Astro and React components
+│   ├── content/             # Blog MDX files only
+│   │   ├── blog-en/
+│   │   └── blog-id/
+│   ├── content.config.ts    # Content collections and schemas
+│   ├── i18n/                # English/Indonesian copy
+│   ├── layouts/             # Shared page/blog layouts
+│   ├── lib/                 # Shared library utilities
+│   ├── pages/               # File-based routes
+│   ├── styles/              # Theme helpers
+│   └── utils/               # Date, reading-time, related-post helpers
+├── scripts/                 # Cloudinary asset operations
+├── public/                  # Static files served as-is
+├── astro.config.mjs         # Astro, Vite, integrations, adapter
+├── wrangler.jsonc           # Cloudflare Worker config
+├── bun.lock                 # Reproducible Bun lockfile
+├── CLAUDE.md                # AI/developer operating guide
+└── AGENTS.md                # Symlink to CLAUDE.md
 ```
 
-## 🛠️ Development
+## Content
 
-### Available Commands
+Blog posts live in locale-specific collections:
 
-| Command                | Description                                  |
-| ---------------------- | -------------------------------------------- |
-| `npm run dev`          | Start development server at `localhost:4321` |
-| `npm run build`        | Build for production to `./dist/`            |
-| `npm run preview`      | Preview production build locally             |
-| `npx astro check`      | Run TypeScript type checking                 |
-| `npm run format`       | Format code with Prettier                    |
-| `npm run format:check` | Check code formatting                        |
+- English: `src/content/blog-en/<category>/<slug>.mdx`
+- Indonesian: `src/content/blog-id/<category>/<slug>.mdx`
 
-### Development Workflow
+Required frontmatter:
 
-1. **Start the dev server**: `npm run dev`
-2. **Make changes**: Edit files in `src/`
-3. **Check types**: `npx astro check`
-4. **Format code**: `npm run format`
-5. **Build**: `npm run build`
-6. **Preview**: `npm run preview`
-
-### Adding Content
-
-#### Blog Posts
-
-Create new MDX files in `src/content/blog-en/` or `src/content/blog-id/`:
-
-```mdx
+```yaml
 ---
-title: "Your Post Title"
-description: "Post description"
-created_at: 2025-11-08
-modified_at: 2025-11-08
+title: "Post title"
+description: "SEO description"
+created_at: 2026-04-25
+modified_at: 2026-04-25
 category: "web-development"
-tags: ["astro", "typescript"]
+tags: ["astro", "cloudflare"]
 author:
   name: "Rio Bahtiar"
-  image: "/author.jpg"
+  image: "/authors/rio-bahtiar.jpg"
   bio: "Full-stack developer"
 draft: false
 ---
-
-Your content here...
 ```
 
-#### Pages
+Astro 6 content entries use `entry.id`; do not rely on legacy `entry.slug`. Render entries with `render(entry)` from `astro:content`.
 
-Add new routes in `src/pages/` for English and `src/pages/id/` for Indonesian.
+See [BLOG.md](./BLOG.md) for writing guidance and [ASSETS.md](./ASSETS.md) for image conventions.
 
-## 🎨 Tech Stack
+## Deployment
 
-### Core
-
-- **Framework**: [Astro](https://astro.build) 5.15.4
-- **UI Library**: [React](https://react.dev) 19.2.0
-- **Language**: [TypeScript](https://www.typescriptlang.org) (strict mode)
-- **Runtime**: Cloudflare Workers (Node.js compat v2)
-
-### Styling
-
-- **CSS Framework**: [Tailwind CSS](https://tailwindcss.com) 4.1.17
-- **Component Library**: [DaisyUI](https://daisyui.com) 5.4.7
-- **UI Components**: [Radix UI](https://www.radix-ui.com) primitives
-- **Icons**: [Lucide React](https://lucide.dev) + Iconify (Tabler)
-- **Utilities**: `clsx`, `tailwind-merge`, `class-variance-authority`
-
-### Content
-
-- **Format**: MDX & Markdoc
-- **Validation**: Zod schemas
-- **Collections**: Type-safe content collections
-
-### Features
-
-- **SEO**: Auto-generated sitemap
-- **Analytics**: Google Analytics (via Partytown)
-- **Images**: Cloudflare Images integration
-- **i18n**: Custom pathname-based routing
-
-### Deployment
-
-- **Platform**: Cloudflare Workers
-- **Adapter**: `@astrojs/cloudflare` 12.6.10
-- **CLI**: Wrangler 4.46.0
-- **Storage**: Cloudflare KV (sessions)
-
-## 🌍 Internationalization
-
-The site supports English (default) and Indonesian:
-
-- **English**: `/about`, `/services`, `/contact`
-- **Indonesian**: `/id/about`, `/id/services`, `/id/contact`
-
-Translations are managed in `src/i18n/`:
-
-- `en.ts` - English translations
-- `id.ts` - Indonesian translations
-
-## 🚢 Deployment
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment instructions.
-
-### Quick Deploy
+Cloudflare configuration is in [wrangler.jsonc](./wrangler.jsonc), not `wrangler.toml`.
 
 ```bash
-# Ensure KV namespace is created and configured in wrangler.toml
-npm run build
-npx wrangler deploy
+bun run build
+bunx wrangler deploy
 ```
 
-Site will be live at: `https://web.riomyid.workers.dev`
+The current Worker target is `https://web.riomyid.workers.dev`.
 
-### Environment Variables
+See [DEPLOYMENT.md](./DEPLOYMENT.md) and [.github/CICD_SETUP.md](./.github/CICD_SETUP.md) for full setup.
 
-No environment variables required for basic deployment. All configuration is in:
+## AI Tooling
 
-- `astro.config.mjs` - Astro settings
-- `wrangler.toml` - Cloudflare Workers settings
+Read [CLAUDE.md](./CLAUDE.md) before making changes. `AGENTS.md` points to the same file so Codex-style agents and Claude-style agents use identical project guidance.
 
-## 📊 Project Stats
+Core rules for agents:
 
-- **Build Time**: ~6-7 seconds
-- **Bundle Size**: ~195 KB (client)
-- **Languages**: 2 (English, Indonesian)
-- **Routes**: 20+ pages
-- **Type Safety**: 100% TypeScript
+- Keep Bun as the package manager and preserve `bun.lock`.
+- Use SSR route patterns; do not add `getStaticPaths()` to dynamic blog routes.
+- Keep content collection definitions in `src/content.config.ts`.
+- Validate with `bun run typecheck` and `bun run build:skip-upload` unless production upload parity is required.
+- Update docs whenever package manager, deployment config, content schema, routes, or image workflow changes.
 
-## 🔧 Configuration
+## References Checked
 
-### Key Files
-
-- **`astro.config.mjs`** - Astro and integration settings
-- **`wrangler.toml`** - Cloudflare Workers configuration
-- **`tsconfig.json`** - TypeScript compiler options
-- **`components.json`** - ShadCN UI configuration
-- **`.prettierrc.mjs`** - Code formatting rules
-
-### Customization
-
-1. **Site URL**: Update `site` in `astro.config.mjs`
-2. **Branding**: Replace logos in `src/assets/`
-3. **Colors**: Modify theme in `src/assets/global.css`
-4. **Content**: Edit translations in `src/i18n/`
-
-## 🤝 Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for development guidelines.
-
-## 📄 License
-
-This project is proprietary. All rights reserved.
-
-## 🔗 Links
-
-- **Live Site**: https://web.riomyid.workers.dev
-- **GitHub**: https://github.com/riobahtiar/web
-- **Documentation**: [DEPLOYMENT.md](./DEPLOYMENT.md)
-
-## 📧 Contact
-
-Rio Bahtiar - [Contact Page](https://web.riomyid.workers.dev/contact)
-
----
-
-Built with ❤️ using [Astro](https://astro.build) and deployed on [Cloudflare Workers](https://workers.cloudflare.com)
+- Astro content loader docs: https://docs.astro.build/en/reference/content-loader-reference/
+- Astro 6 upgrade docs: https://docs.astro.build/en/guides/upgrade-to/v6/
+- Astro Cloudflare adapter docs: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
+- Cloudflare Wrangler config docs: https://developers.cloudflare.com/workers/wrangler/configuration/
+- Bun lockfile docs: https://bun.sh/docs/pm/lockfile

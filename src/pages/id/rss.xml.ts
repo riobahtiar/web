@@ -14,12 +14,12 @@ export const GET: APIRoute = async (context) => {
     title: "Rio Bahtiar | Blog",
     description:
       "Full-stack developer berbagi wawasan tentang pengembangan web, pemrograman, dan teknologi.",
-    site: context.site?.toString() || "https://riomy.id",
+    site: context.site?.toString() || "https://rio.my.id",
     items: sortedPosts.map((post) => {
       // Clean slug
-      const slug = post.slug.startsWith(post.data.category + "/")
-        ? post.slug.substring(post.data.category.length + 1)
-        : post.slug;
+      const slug = post.id.startsWith(post.data.category + "/")
+        ? post.id.substring(post.data.category.length + 1)
+        : post.id;
 
       return {
         title: post.data.title,

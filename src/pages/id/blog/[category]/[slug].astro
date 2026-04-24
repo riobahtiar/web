@@ -1,17 +1,15 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BlogPost from "../../../../layouts/BlogPost.astro";
 import { getReadingTimeI18n } from "../../../../utils/readingTime";
 import { getRelatedPostsWithReadingTime } from "../../../../utils/relatedPosts";
 import RelatedPosts from "../../../../components/blog/RelatedPosts.astro";
 
-// Get params from URL (SSR mode)
 const { category, slug } = Astro.params;
 
-// Find the post dynamically
 const posts = await getCollection("blog-id");
 const post = posts.find((p) => {
-  let cleanSlug = p.slug;
+  let cleanSlug = p.id;
   if (cleanSlug.startsWith(p.data.category + "/")) {
     cleanSlug = cleanSlug.substring(p.data.category.length + 1);
   }
@@ -22,8 +20,8 @@ if (!post) {
   return Astro.redirect("/id/404");
 }
 
-const { Content, headings } = await post.render();
-const readingTime = getReadingTimeI18n(post.body, "id");
+const { Content, headings } = await render(post);
+const readingTime = getReadingTimeI18n(post.body ?? "", "id");
 
 // Get related posts
 const relatedPosts = await getRelatedPostsWithReadingTime(post, posts, 3, "id");

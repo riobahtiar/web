@@ -40,24 +40,20 @@ image: "/blog/covers/my-blog-post.jpg"
 ---
 ```
 
-### Content Images (Astro Image component)
+### Content Images
 
-```mdx
-import { Image } from "astro:assets";
-import diagramImage from "/public/blog/content/diagram.png";
-
-<Image src={diagramImage} alt="Architecture diagram" width={800} height={600} />
-```
-
-### Content Images (Markdown)
+Images in `public/` are referenced by URL path:
 
 ```markdown
 ![Alt text](/blog/content/screenshot.png)
 ```
+
+If you need Astro's `Image` component, place the source image under `src/assets/` and import it from there.
 
 ## Optimization Tips
 
 1. Use WebP format when possible for better compression
 2. Compress images before uploading (use tools like TinyPNG)
 3. Use descriptive alt text for accessibility
-4. Consider using Cloudflare Images for automatic optimization
+4. Use Cloudinary URLs for images that need CDN transformations
+5. Keep local static images compressed before committing

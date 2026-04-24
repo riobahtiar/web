@@ -1,323 +1,126 @@
 # Build-Time Cloudinary Upload
 
-## Overview
+`bun run build` runs a prebuild step that syncs configured local images to Cloudinary before Astro builds the Worker bundle.
 
-Images are automatically uploaded to Cloudinary during the build process, ensuring your production site always uses CDN-optimized images.
+## Flow
 
-## Workflow
-
+```text
+Local source image
+  -> bun run prebuild
+  -> Cloudinary check/upload
+  -> astro build
+  -> Cloudflare Workers deploy
 ```
-Local Development → Build Time Upload → Production
-      ↓                    ↓                 ↓
-  Local files      Cloudinary API      CDN delivery
-```
-
-### Development
-```bash
-npm run dev
-```
-- Images served from local folders
-- No Cloudinary uploads
-- Fast local development
-
-### Build & Deploy
-```bash
-npm run build
-```
-This runs:
-1. **Prebuild**: Upload images to Cloudinary (if not exist)
-2. **Build**: Astro build process
-3. **Result**: Production site with CDN images
-
-## Build Process Details
-
-### Step 1: Prebuild Upload
-
-```bash
-npm run prebuild
-```
-
-**What it does:**
-1. ✅ Loads Cloudinary credentials from `.env`
-2. ✅ Checks each image:
-   - File exists locally?
-   - Already on Cloudinary?
-3. ✅ Uploads only new images
-4. ✅ Shows detailed logs
-
-**Example Output:**
-```
-🚀 Pre-build: Uploading images to Cloudinary...
-
-📡 Cloud Name: dzeklj6tr
-🔑 API Key: 7735...1646
-
-============================================================
-📁 Processing: Avatar
-   Local path: /home/user/web/src/assets/me-avatar.png
-   Cloudinary ID: portfolio/me-avatar
-✅ Local file exists (451.49 KB)
-🔍 Checking if already on Cloudinary...
-✅ Already uploaded to Cloudinary (skipping)
-   URL: https://res.cloudinary.com/dzeklj6tr/image/upload/portfolio/me-avatar
-
-============================================================
-📊 Upload Summary:
-   ✅ Uploaded: 0
-   ⏭️  Skipped (already exists): 2
-   ❌ Errors: 0
-
-✨ All images already on Cloudinary!
-```
-
-### Step 2: Astro Build
-
-After prebuild, Astro builds normally and uses Cloudinary URLs.
 
 ## Commands
 
-### Standard Build (with upload)
 ```bash
-npm run build
-```
-- Uploads images (if needed)
-- Builds Astro site
-- **Use this for production**
-
-### Skip Upload (faster for testing)
-```bash
-npm run build:skip-upload
-```
-- Skips image upload
-- Only builds Astro site
-- Use when images are already uploaded
-
-### Manual Upload
-```bash
-npm run prebuild
-```
-- Only uploads images
-- Doesn't build
-- Useful for testing upload
-
-## CI/CD Integration
-
-### GitHub Actions Example
-
-```yaml
-name: Deploy to Cloudflare
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build (includes image upload)
-        env:
-          PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
-          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
-        run: npm run build
-
-      - name: Deploy to Cloudflare
-        run: npx wrangler deploy
+bun run prebuild
+bun run build
+bun run build:skip-upload
 ```
 
-### Cloudflare Pages
+- `bun run prebuild`: run only the Cloudinary sync.
+- `bun run build`: sync images, then run `astro build`.
+- `bun run build:skip-upload`: run `astro build` only.
 
-In Cloudflare Pages settings:
+## Environment Variables
 
-**Build command:**
+Required for uploads:
+
 ```bash
-npm run build
-```
-
-**Environment variables:**
-- `PUBLIC_CLOUDINARY_CLOUD_NAME`
-- `PUBLIC_CLOUDINARY_API_KEY`
-- `CLOUDINARY_API_SECRET`
-
-## Configuration
-
-### Environment Variables
-
-Create `.env` file:
-```bash
-PUBLIC_CLOUDINARY_CLOUD_NAME="dzeklj6tr"
+PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
 PUBLIC_CLOUDINARY_API_KEY="your-api-key"
 CLOUDINARY_API_SECRET="your-api-secret"
 ```
 
-**For CI/CD:** Set these as secrets in your deployment platform.
+The prebuild script reads `.env` first, then process environment variables.
 
-### Add New Images
+## Current Managed Images
 
-Edit `scripts/prebuild-upload-curl.js`:
+| Local path                 | Public ID             | Purpose               |
+| -------------------------- | --------------------- | --------------------- |
+| `src/assets/me-avatar.png` | `portfolio/me-avatar` | Profile avatar        |
+| `public/smc.jpg`           | `portfolio/smc-cover` | Portfolio cover image |
 
-```javascript
-const images = [
-  // Existing images
-  {
-    path: join(__dirname, "..", "src", "assets", "me-avatar.png"),
-    publicId: "portfolio/me-avatar",
-    folder: "",
-    name: "Avatar",
-  },
+## Script Behavior
 
-  // Add new image
-  {
-    path: join(__dirname, "..", "src", "assets", "new-image.jpg"),
-    publicId: "portfolio/new-image",
-    folder: "",
-    name: "New Image",
-  },
-];
+`scripts/prebuild-upload-curl.js`:
+
+- Uses `curl` through Node/Bun `execSync`.
+- Signs Cloudinary upload requests with `CLOUDINARY_API_SECRET`.
+- Checks existing assets by requesting their Cloudinary delivery URL.
+- Uploads only missing assets.
+- Logs detailed status for each asset.
+- Always exits with code 0 so image sync problems do not block unrelated builds.
+
+If credentials are missing, the script logs the missing values and continues without uploading.
+
+## CI Usage
+
+GitHub Actions should use Bun:
+
+```yaml
+- uses: actions/setup-node@v4
+  with:
+    node-version: "22"
+
+- uses: oven-sh/setup-bun@v2
+  with:
+    bun-version: "1.3.11"
+
+- run: bun install --frozen-lockfile
+- run: bun run build
+  env:
+    PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.PUBLIC_CLOUDINARY_CLOUD_NAME }}
+    PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.PUBLIC_CLOUDINARY_API_KEY }}
+    CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
 ```
 
-## Features
+Cloudinary secrets are optional for build success but required for upload parity.
 
-### 1. Duplicate Prevention
-- ✅ Checks if image exists before upload
-- ✅ Skips already uploaded images
-- ✅ Only uploads new or changed images
-- ✅ Saves bandwidth and time
+## When to Skip Upload
 
-### 2. Detailed Logging
-Each image shows:
-- ✅ Local file path and size
-- ✅ Cloudinary public ID
-- ✅ Check status (exists/not found)
-- ✅ Upload progress
-- ✅ Final URL and dimensions
-- ✅ Summary statistics
+Use `bun run build:skip-upload` when:
 
-### 3. Error Handling
-- ✅ Continues build even if upload fails
-- ✅ Detailed error messages
-- ✅ Graceful degradation
-- ✅ Never fails the build
+- You are validating TypeScript, routes, or layout changes.
+- Cloudinary credentials are unavailable.
+- Images are already uploaded and the change is unrelated to assets.
 
-### 4. Smart Upload
-- ✅ Uses curl (reliable in all environments)
-- ✅ Works behind proxies
-- ✅ Handles network issues
-- ✅ Retries on failure (built into curl)
+Use `bun run build` when:
+
+- Preparing a production deployment.
+- Adding or changing managed source images.
+- Testing CI/deployment parity.
+
+## Adding Managed Images
+
+1. Add the local source image.
+2. Add an entry to `scripts/prebuild-upload-curl.js`.
+3. Add an equivalent entry to `scripts/upload-to-cloudinary.js`.
+4. Update validation if needed.
+5. Update [ASSETS.md](./ASSETS.md) and [CLOUDINARY.md](./CLOUDINARY.md).
+6. Run:
+
+```bash
+bun run prebuild
+bun run build:skip-upload
+```
 
 ## Troubleshooting
 
-### Images not uploading
+### Upload fails but build continues
 
-**Check credentials:**
-```bash
-# Test upload manually
-npm run prebuild
-```
+This is expected. The prebuild script is non-blocking by design. Check credentials and rerun `bun run prebuild`.
 
-**Expected output:**
-- ✅ Shows cloud name and API key
-- ✅ Checks each image
-- ✅ Uploads or skips
+### Asset is not replaced
 
-### Build fails
+The scripts skip existing assets by default. Delete the Cloudinary asset or temporarily enable overwrite in the SDK upload script.
 
-**Skip upload to test:**
-```bash
-npm run build:skip-upload
-```
+### File not found
 
-If this works, the issue is with Cloudinary credentials.
+Check the local path in both upload scripts. Paths are resolved relative to the repository root through the `scripts/` directory.
 
-### Images uploaded to wrong path
+### Wrong Cloudinary folder
 
-Check the `publicId` in script matches what's used in code:
-- Script: `publicId: "portfolio/me-avatar"`
-- Code: `src="portfolio/me-avatar"`
-
-## Performance
-
-### First Build
-- Uploads all images (~2-5 seconds per image)
-- Total: ~10-20 seconds for typical site
-
-### Subsequent Builds
-- Checks all images (~1 second per image)
-- Skips uploaded images
-- Total: ~2-5 seconds
-
-### File Sizes
-- Avatar: 451 KB → CDN optimized
-- Cover: 25 KB → CDN optimized
-- Build output: No image files (CDN only)
-
-## Best Practices
-
-### 1. Always Use npm run build
-Don't use `astro build` directly. Use:
-```bash
-npm run build  # Includes image upload
-```
-
-### 2. Set Environment Variables in CI/CD
-Never commit credentials. Use:
-- GitHub Actions: Repository secrets
-- Cloudflare Pages: Environment variables
-- Vercel/Netlify: Environment variables
-
-### 3. Test Locally First
-Before pushing:
-```bash
-npm run prebuild  # Test upload
-npm run build     # Test full build
-```
-
-### 4. Monitor Cloudinary Usage
-Check your Cloudinary dashboard:
-- Storage used
-- Bandwidth used
-- Transformations used
-
-## FAQ
-
-### Q: Do I need to upload manually?
-**A:** No! The build process handles it automatically.
-
-### Q: What if upload fails?
-**A:** Build continues. Images fallback to local files.
-
-### Q: Can I skip upload during development?
-**A:** Yes! Use `npm run dev` or `npm run build:skip-upload`
-
-### Q: How do I update an image?
-**A:** Replace the local file and run `npm run build`. Same filename = automatic replacement.
-
-### Q: What if I want to force re-upload?
-**A:** Delete from Cloudinary dashboard, then run `npm run build`.
-
-## Summary
-
-✅ **Automatic**: Images upload during build
-✅ **Smart**: Only uploads new images
-✅ **Fast**: Duplicate prevention
-✅ **Reliable**: Error handling
-✅ **CI/CD Ready**: Works everywhere
-✅ **Detailed Logs**: Know what's happening
-
----
-
-**Next Steps:**
-1. Run `npm run build` locally to test
-2. Push to your repository
-3. CI/CD will handle the rest!
+Current `prebuild` entries use public IDs that already include `portfolio/`, with an empty `folder`. Keep this pattern unless deliberately changing all references.
