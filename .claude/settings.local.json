@@ -1,6 +1,18 @@
 {
   "permissions": {
-    "allow": ["WebFetch(domain:developers.cloudflare.com)"],
+    "allow": [
+      "WebFetch(domain:developers.cloudflare.com)",
+      "Bash(npm view *)",
+      "Bash(bun --version)",
+      "WebFetch(domain:github.com)",
+      "Bash(gh release *)",
+      "Bash(gh api *)",
+      "WebFetch(domain:docs.astro.build)",
+      "Bash(bun install *)",
+      "Bash(bun pm *)",
+      "Bash(bun run *)",
+      "Bash(bun x *)"
+    ],
     "deny": []
   }
 }

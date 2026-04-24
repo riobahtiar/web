@@ -1,33 +1,10 @@
-# Cloudinary Image Management Guide
+# Cloudinary Image Workflow
 
-This guide explains how to manage images and assets using Cloudinary in your Astro project.
+Cloudinary is used for optimized CDN image delivery. The repo keeps source images locally and provides scripts for uploading, listing, validating, and deleting Cloudinary assets.
 
-## Table of Contents
+## Environment
 
-- [Overview](#overview)
-- [Setup & Configuration](#setup--configuration)
-- [Uploading Images](#uploading-images)
-- [Using Images in Components](#using-images-in-components)
-- [Using Images in Blog Posts](#using-images-in-blog-posts)
-- [Image Optimization Best Practices](#image-optimization-best-practices)
-- [Managing Assets (CRUD)](#managing-assets-crud)
-- [Troubleshooting](#troubleshooting)
-
-## Overview
-
-We use Cloudinary as our CDN for all images and media assets. Benefits include:
-
-- ✅ **Automatic optimization** - Images are automatically converted to WebP/AVIF
-- ✅ **Responsive images** - Proper sizing for different devices
-- ✅ **Fast delivery** - Global CDN ensures fast loading times
-- ✅ **Transformations** - Resize, crop, and apply effects on-the-fly
-- ✅ **Reduced bundle size** - Images are served from CDN, not bundled
-
-## Setup & Configuration
-
-### Environment Variables
-
-1. **For Development:** Create a `.env` file in the project root:
+Create `.env` locally when running upload/list/validate/delete commands:
 
 ```bash
 PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
@@ -35,85 +12,67 @@ PUBLIC_CLOUDINARY_API_KEY="your-api-key"
 CLOUDINARY_API_SECRET="your-api-secret"
 ```
 
-2. **For Production (Cloudflare):** Set these environment variables in your Cloudflare Workers dashboard:
-   - Go to Workers & Pages → Your project → Settings → Environment Variables
-   - Add the three variables above
+Use GitHub Actions secrets or Cloudflare environment variables for CI/deployment environments.
 
-### Get Your Credentials
-
-1. Log in to [Cloudinary Dashboard](https://cloudinary.com/console)
-2. Find your credentials on the dashboard home page
-3. Copy the Cloud Name, API Key, and API Secret
-
-## Uploading Images
-
-### Method 1: Using the Upload Script (Recommended for Initial Setup)
-
-1. **Fill in your `.env` file** with your Cloudinary credentials
-
-2. **Add your images** to the appropriate folders:
-
-   - `src/assets/` - For component images (avatars, logos, etc.)
-   - `public/` - For static assets
-
-3. **Run the upload script:**
+## Commands
 
 ```bash
-npm run cloudinary:upload
+bun run cloudinary:upload
+bun run cloudinary:list
+bun run cloudinary:validate
+bun run cloudinary:delete portfolio/old-image
+bun run prebuild
 ```
 
-This will upload:
+`bun run build` runs `bun run prebuild` before `astro build`.
 
-- Profile avatar → `portfolio/me-avatar`
-- Cover image → `portfolio/smc-cover`
+## Managed Assets
 
-**Smart Sync Features:**
-- ✅ **Duplicate Prevention:** Won't re-upload existing assets
-- ✅ **Error Handling:** Continues if some uploads fail
-- ✅ **File Validation:** Checks if files exist before uploading
-- ✅ **Detailed Logging:** Shows upload progress and results
+The current upload scripts manage:
 
-**Force Update Existing Assets:**
+| Name        | Local path                 | Public ID             | Transform                                 |
+| ----------- | -------------------------- | --------------------- | ----------------------------------------- |
+| Avatar      | `src/assets/me-avatar.png` | `portfolio/me-avatar` | 400 x 400 face crop, auto quality/format  |
+| Cover image | `public/smc.jpg`           | `portfolio/smc-cover` | 1200 x 630 fill crop, auto quality/format |
 
-To overwrite existing images, edit `scripts/upload-to-cloudinary.js` and set `overwrite: true`:
+To add another managed asset, update:
 
-```javascript
-{
-  filePath: join(__dirname, "..", "src", "assets", "me-avatar.png"),
-  publicId: "portfolio/me-avatar",
-  overwrite: true, // Force update
-}
+- `scripts/upload-to-cloudinary.js` for SDK-based smart sync
+- `scripts/prebuild-upload-curl.js` for build-time upload
+- `scripts/validate-cloudinary-assets.js` if validation should cover it
+- This document and [ASSETS.md](./ASSETS.md)
+
+## Build-Time Upload
+
+`scripts/prebuild-upload-curl.js` is intentionally curl-based for CI portability.
+
+Behavior:
+
+- Reads `.env` or process environment.
+- Checks whether each configured asset exists in Cloudinary.
+- Uploads only missing assets.
+- Logs upload/skipped/error counts.
+- Exits with code 0 even if credentials are missing or an upload fails.
+
+This keeps normal builds from failing on image-upload issues, but production parity still requires valid Cloudinary credentials.
+
+## Manual Upload
+
+You can upload assets through the Cloudinary dashboard:
+
+1. Open the Media Library.
+2. Upload the image.
+3. Place it in a folder such as `portfolio/`, `blog/`, or `projects/`.
+4. Record the public ID.
+5. Reference it in code or content using a transformed URL.
+
+Example transformed URL:
+
+```text
+https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/w_1200,h_630,c_fill,f_auto,q_auto/blog/my-post-cover
 ```
 
-### Method 2: Manual Upload via Cloudinary Dashboard
-
-1. Go to [Cloudinary Media Library](https://cloudinary.com/console/media_library)
-2. Click "Upload" button
-3. Select your images
-4. **Organize in folders:**
-
-   - `portfolio/` - Personal/portfolio images
-   - `blog/` - Blog post images
-   - `projects/` - Project screenshots
-
-5. **Note the Public ID** (e.g., `portfolio/me-avatar`)
-
-### Method 3: Upload via CLI (Advanced)
-
-```bash
-# Install Cloudinary CLI
-npm install -g cloudinary-cli
-
-# Configure
-cloudinary config:set cloud_name=your-cloud-name api_key=your-api-key api_secret=your-api-secret
-
-# Upload
-cloudinary upload src/assets/my-image.jpg -public_id portfolio/my-image
-```
-
-## Using Images in Components
-
-### Basic Usage with CldImage
+## Astro Component Usage
 
 ```astro
 ---
@@ -122,7 +81,7 @@ import { CldImage } from "astro-cloudinary";
 
 <CldImage
   src="portfolio/me-avatar"
-  alt="Profile picture"
+  alt="Rio Bahtiar"
   width={400}
   height={400}
   crop="fill"
@@ -132,417 +91,90 @@ import { CldImage } from "astro-cloudinary";
 />
 ```
 
-### Component Props Explained
+## MDX Usage
 
-| Prop      | Description               | Example                        |
-| --------- | ------------------------- | ------------------------------ |
-| `src`     | Public ID from Cloudinary | `"portfolio/me-avatar"`        |
-| `width`   | Image width in pixels     | `400`                          |
-| `height`  | Image height in pixels    | `400`                          |
-| `crop`    | Crop mode                 | `"fill"`, `"fit"`, `"scale"`   |
-| `gravity` | Focus area                | `"face"`, `"center"`, `"auto"` |
-| `format`  | Output format             | `"auto"` (WebP/AVIF)           |
-| `quality` | Quality level             | `"auto"`, `80`, `90`           |
-| `loading` | Loading strategy          | `"lazy"`, `"eager"`            |
+Direct URL in frontmatter:
 
-### Advanced Transformations
-
-```astro
-<!-- Circular avatar with border -->
-<CldImage
-  src="portfolio/me-avatar"
-  width={200}
-  height={200}
-  crop="fill"
-  gravity="face"
-  radius="max"
-  border="5px_solid_rgb:3b82f6"
-  format="auto"
-  quality="auto"
-/>
-
-<!-- Background removal -->
-<CldImage
-  src="portfolio/product"
-  width={800}
-  height={600}
-  removeBackground
-  format="png"
-  quality="auto"
-/>
-```
-
-## Using Images in Blog Posts
-
-### Option 1: Direct URLs in Markdown
-
-In your `.mdx` blog posts, use Cloudinary URLs directly:
-
-```mdx
----
-title: "My Blog Post"
+```yaml
 image: "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/w_1200,h_630,c_fill,f_auto,q_auto/blog/my-post-cover"
----
-
-## My Post
-
-![Article Image](https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/w_800,h_600,c_fill,f_auto,q_auto/blog/article-image)
 ```
 
-### Option 2: Using CldImage in MDX
+Direct URL in Markdown:
+
+```md
+![Dashboard screenshot](https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/w_1000,c_fit,f_auto,q_auto/blog/dashboard-screenshot)
+```
+
+Component usage in MDX:
 
 ```mdx
----
-title: "My Blog Post"
----
-
 import { CldImage } from "astro-cloudinary";
 
 <CldImage
-  src="blog/article-image"
-  width={800}
-  height={600}
-  alt="Article illustration"
-  crop="fill"
+  src="blog/dashboard-screenshot"
+  alt="Dashboard screenshot"
+  width={1000}
+  height={625}
   format="auto"
   quality="auto"
 />
 ```
 
-### Option 3: Create a Reusable Component
+## Recommended Transformations
 
-Create `src/components/blog/BlogImage.astro`:
+| Use case          | Width     | Height   | Crop   | Quality | Format |
+| ----------------- | --------- | -------- | ------ | ------- | ------ |
+| Avatar            | 200-400   | 200-400  | `fill` | `auto`  | `auto` |
+| Blog cover        | 1200      | 630      | `fill` | `auto`  | `auto` |
+| Blog content      | 800-1200  | variable | `fit`  | `auto`  | `auto` |
+| Gallery thumbnail | 400       | 300      | `fill` | `auto`  | `auto` |
+| Full-width image  | 1600-1920 | variable | `fit`  | `auto`  | `auto` |
 
-```astro
----
-interface Props {
-  src: string;
-  alt: string;
-  width?: number;
-  height?: number;
-}
+Use PNG only when transparency is required. Keep SVG logos as SVGs.
 
-import { CldImage } from "astro-cloudinary";
+## Asset Maintenance
 
-const { src, alt, width = 800, height = 600 } = Astro.props;
----
-
-<figure class="my-8">
-  <CldImage
-    src={src}
-    alt={alt}
-    width={width}
-    height={height}
-    crop="fill"
-    format="auto"
-    quality="auto"
-    loading="lazy"
-    class="rounded-lg shadow-lg"
-  />
-  {
-    alt && (
-      <figcaption class="mt-2 text-center text-sm text-gray-600">
-        {alt}
-      </figcaption>
-    )
-  }
-</figure>
-```
-
-Then use it in your MDX:
-
-```mdx
-import BlogImage from "../../components/blog/BlogImage.astro";
-
-<BlogImage src="blog/my-image" alt="My amazing image" />
-```
-
-## Image Optimization Best Practices
-
-### Recommended Sizes
-
-| Use Case          | Width     | Height    | Crop   | Quality |
-| ----------------- | --------- | --------- | ------ | ------- |
-| Avatar            | 200-400px | 200-400px | `fill` | `auto`  |
-| Blog Cover (OG)   | 1200px    | 630px     | `fill` | `auto`  |
-| Blog Content      | 800px     | 600px     | `fill` | `auto`  |
-| Gallery Thumbnail | 400px     | 300px     | `fill` | `auto`  |
-| Full Width Image  | 1920px    | 1080px    | `fit`  | `auto`  |
-
-### Format Selection
-
-- **Always use `format="auto"`** - Cloudinary automatically serves WebP/AVIF to supported browsers
-- For transparency: Use `format="png"` only when needed
-- For logos: Use inline SVG components (see existing logo components)
-
-### Quality Settings
-
-- **Use `quality="auto"`** for most cases - Cloudinary optimizes automatically
-- For high-quality photos: `quality={90}`
-- For thumbnails: `quality={80}`
-
-### Loading Strategy
-
-- **Hero images**: `loading="eager"`
-- **Below the fold**: `loading="lazy"` (default)
-
-## Asset Management Utilities
-
-We provide several CLI scripts for managing Cloudinary assets:
-
-### List All Assets
-
-View all uploaded assets in a folder:
+List assets:
 
 ```bash
-# List all assets
-npm run cloudinary:list
-
-# List assets in a specific folder
-npm run cloudinary:list portfolio
-npm run cloudinary:list blog
+bun run cloudinary:list
+bun run cloudinary:list portfolio
 ```
 
-**Output includes:**
-- Public ID
-- URL
-- Format and dimensions
-- File size
-- Upload date
-
-### Validate Assets
-
-Check if all referenced assets exist in Cloudinary:
+Validate configured assets:
 
 ```bash
-npm run cloudinary:validate
+bun run cloudinary:validate
 ```
 
-This script:
-- ✅ Verifies all assets used in your code exist
-- ❌ Lists missing assets that need to be uploaded
-- 🔍 Prevents broken images in production
-
-**When to use:**
-- Before deploying to production
-- After adding new image references
-- To troubleshoot missing images
-
-### Delete Assets
-
-Remove assets from Cloudinary:
+Delete an asset:
 
 ```bash
-npm run cloudinary:delete portfolio/old-image
+bun run cloudinary:delete portfolio/old-image
 ```
 
-**Safety Features:**
-- ⚠️  5-second countdown before deletion
-- ✅ Confirms asset exists before deleting
-- 🔒 Prompts if asset is missing
-
-**Warning:** Deletion is permanent and cannot be undone!
-
-## Managing Assets (CRUD)
-
-### Create (Upload)
-
-**Via Dashboard:**
-
-1. Go to Cloudinary Media Library
-2. Click "Upload"
-3. Select files or drag & drop
-4. Set folder (e.g., `blog/`, `portfolio/`)
-5. Click "Upload"
-
-**Via Script:**
-
-```bash
-npm run cloudinary:upload
-```
-
-**Via Code:**
-
-```javascript
-// scripts/upload-custom.js
-import { v2 as cloudinary } from "cloudinary";
-
-cloudinary.uploader.upload("path/to/image.jpg", {
-  public_id: "blog/my-new-image",
-  folder: "blog",
-  transformation: [
-    { width: 1200, height: 630, crop: "fill" },
-    { quality: "auto", fetch_format: "auto" },
-  ],
-});
-```
-
-### Read (View/List)
-
-**Via Dashboard:**
-
-- Go to Media Library
-- Browse folders
-- Search by name/tag
-
-**Via Code:**
-
-```javascript
-// List all images in a folder
-const result = await cloudinary.api.resources({
-  type: "upload",
-  prefix: "blog/",
-  max_results: 100,
-});
-```
-
-### Update (Replace/Transform)
-
-**Replace Image:**
-
-1. Go to Media Library
-2. Find the image
-3. Click "Replace"
-4. Upload new file (keeps same Public ID)
-
-**Update Transformations:**
-Images are transformed on-the-fly via URL. No update needed.
-
-### Delete
-
-**Via Dashboard:**
-
-1. Go to Media Library
-2. Select image(s)
-3. Click "Delete"
-
-**Via Code:**
-
-```javascript
-await cloudinary.uploader.destroy("blog/old-image");
-```
-
-## Folder Structure
-
-Organize your Cloudinary assets in folders:
-
-```
-portfolio/
-  ├── me-avatar          # Profile picture
-  ├── smc-cover          # About page cover
-  └── ...
-
-blog/
-  ├── post-slug-1/
-  │   ├── cover          # Blog post cover image
-  │   ├── image-1        # Content images
-  │   └── image-2
-  └── post-slug-2/
-      └── ...
-
-projects/
-  ├── project-1-screenshot
-  ├── project-2-demo
-  └── ...
-```
-
-## For Content Creators
-
-### Quick Start: Adding Images to Blog Posts
-
-1. **Upload your image:**
-
-   - Go to [Cloudinary Media Library](https://cloudinary.com/console/media_library)
-   - Click "Upload"
-   - Put it in the `blog/` folder
-   - Give it a clear name (e.g., `my-post-cover`)
-
-2. **Get the Public ID:**
-
-   - After upload, note the path shown (e.g., `blog/my-post-cover`)
-
-3. **Add to your blog post:**
-
-   **For cover image (frontmatter):**
-
-   ```mdx
-   ---
-   title: "My Post"
-   image: "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/w_1200,h_630,c_fill,f_auto,q_auto/blog/my-post-cover"
-   ---
-   ```
-
-   **For content images:**
-
-   ```mdx
-   ![Description](https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/w_800,c_fill,f_auto,q_auto/blog/my-image)
-   ```
-
-4. **Replace `YOUR_CLOUD_NAME`** with your actual cloud name from `.env`
-
-### Image Size Guidelines for Blog Posts
-
-- **Cover images (OG):** 1200×630px (16:9 ratio)
-- **Content images:** 800-1200px wide
-- **Small images/icons:** 200-400px
+Deletion is permanent. The delete script has a countdown, but still verify the public ID before running it.
 
 ## Troubleshooting
 
-### Images Not Loading
+### Invalid credentials
 
-1. **Check environment variables:**
+- Check `.env` names exactly.
+- Confirm values in the Cloudinary dashboard.
+- Ensure CI secrets are available to the workflow.
 
-   ```bash
-   echo $PUBLIC_CLOUDINARY_CLOUD_NAME
-   ```
+### Asset already exists
 
-2. **Verify Public ID:**
+The default scripts skip existing assets. To force replacement, set `overwrite: true` in `scripts/upload-to-cloudinary.js` for the specific asset, run upload, then restore the safer default if needed.
 
-   - Check exact path in Cloudinary Media Library
-   - Public ID is case-sensitive
+### Build logs say credentials are missing
 
-3. **Check browser console:**
-   - Look for 404 errors
-   - Verify the generated URL is correct
-
-### Build Errors
-
-**Error: "Cloudinary environment variables not set"**
-
-- Ensure `.env` file exists and has correct values
-- For Cloudflare, check environment variables in dashboard
-
-**Error: "Cannot find module 'astro-cloudinary'"**
+Either set credentials or use:
 
 ```bash
-npm install astro-cloudinary
+bun run build:skip-upload
 ```
 
-### Upload Script Errors
+### Asset path is duplicated
 
-**Error: "Invalid credentials"**
-
-- Double-check `.env` file
-- Ensure no extra spaces or quotes in values
-
-**Error: "File not found"**
-
-- Verify file paths in upload script
-- Check that files exist in the specified locations
-
-## Additional Resources
-
-- [Cloudinary Documentation](https://cloudinary.com/documentation)
-- [astro-cloudinary Package](https://astro-cloudinary.dev/)
-- [Cloudinary Transformations](https://cloudinary.com/documentation/image_transformations)
-- [Cloudinary Media Library](https://cloudinary.com/console/media_library)
-
-## Need Help?
-
-- Check the [Cloudinary Community](https://community.cloudinary.com/)
-- Review [Astro Cloudinary Examples](https://github.com/cloudinary-community/astro-cloudinary)
-- Ask in the project's issue tracker
-
----
-
-**Last Updated:** November 2025
+If `folder` is set and `publicId` already includes the folder, Cloudinary paths can be duplicated. Current scripts use `publicId` values such as `portfolio/me-avatar`; keep folder handling consistent when adding assets.

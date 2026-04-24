@@ -11,11 +11,10 @@ export function getRelatedPosts<
   T extends CollectionEntry<"blog-en"> | CollectionEntry<"blog-id">,
 >(currentPost: T, allPosts: T[], limit: number = 3): T[] {
   const currentTags = currentPost.data.tags;
-  const currentSlug = currentPost.slug;
+  const currentId = currentPost.id;
 
-  // Calculate relevance score for each post
   const postsWithScore = allPosts
-    .filter((post) => post.slug !== currentSlug) // Exclude current post
+    .filter((post) => post.id !== currentId)
     .map((post) => {
       // Count shared tags
       const sharedTags = post.data.tags.filter((tag) =>
@@ -69,6 +68,6 @@ export async function getRelatedPostsWithReadingTime<
 
   return relatedPosts.map((post) => ({
     ...post,
-    readingTime: getReadingTimeI18n(post.body, lang),
+    readingTime: getReadingTimeI18n(post.body ?? "", lang),
   }));
 }

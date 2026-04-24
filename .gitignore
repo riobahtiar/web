@@ -2,6 +2,7 @@
 # Build output
 dist/
 .output/
+.wrangler/
 
 # Generated types
 .astro/
@@ -26,7 +27,7 @@ lerna-debug.log*
 # Bun
 .bunfig.toml
 bun.lockb
-bun.lock
+# bun.lock is committed as the reproducible lockfile
 
 # Editor directories and files
 .vscode/*

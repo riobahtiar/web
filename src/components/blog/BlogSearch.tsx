@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 
 interface BlogPost {
-  slug: string;
+  id: string;
   data: {
     title: string;
     description: string;
@@ -109,14 +109,13 @@ export default function BlogSearch({ posts, lang, baseUrl }: Props) {
       <div className="grid gap-12">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => {
-            // Clean the slug to remove category prefix if needed
-            let cleanSlug = post.slug;
+            let cleanSlug = post.id;
             if (cleanSlug.startsWith(post.data.category + "/")) {
               cleanSlug = cleanSlug.substring(post.data.category.length + 1);
             }
 
             return (
-              <article key={post.slug} className="grid gap-8 md:grid-cols-3">
+              <article key={post.id} className="grid gap-8 md:grid-cols-3">
                 {post.data.image && (
                   <a
                     href={`${baseUrl}/${post.data.category}/${cleanSlug}`}

@@ -1,312 +1,139 @@
-# Contributing to Astro Rio
+# Contributing
 
-Thank you for your interest in contributing to this project! This document provides guidelines and best practices for contributing.
+This repository is Bun-first and deploys to Cloudflare Workers. Keep code, docs, and CI aligned with that stack.
 
-## 🤝 How to Contribute
+## Setup
 
-### Reporting Issues
+Prerequisites:
 
-- Check existing issues before creating a new one
-- Use a clear, descriptive title
-- Provide detailed reproduction steps
-- Include environment information (browser, OS, Node version)
-- Add screenshots or error logs when applicable
-
-### Suggesting Features
-
-- Open an issue with the "feature request" label
-- Clearly describe the proposed feature and its benefits
-- Explain the use case and expected behavior
-- Be open to discussion and feedback
-
-## 🔧 Development Setup
-
-### Prerequisites
-
-- Node.js 22.x or higher
-- npm 10.x or higher
+- Bun 1.3.11 or newer
+- Node.js 22.x or newer
 - Git
-- Code editor (VS Code recommended)
-
-### Initial Setup
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/riobahtiar/web.git
 cd web
-
-# 2. Install dependencies
-npm install
-
-# 3. Start development server
-npm run dev
+bun install
+bun run dev
 ```
 
-### Recommended VS Code Extensions
+## Development Workflow
 
-- **Astro** - Astro language support
-- **Prettier** - Code formatting
-- **Tailwind CSS IntelliSense** - Tailwind autocomplete
-- **ESLint** - Code linting
-
-## 📝 Coding Guidelines
-
-### Code Style
-
-Follow the guidelines in [CLAUDE.md](./CLAUDE.md):
-
-- Use TypeScript strict mode
-- Follow naming conventions (PascalCase, camelCase, kebab-case)
-- Use path aliases (`@/`) for imports
-- Write self-documenting code with clear variable names
-
-### Commit Messages
-
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>(<scope>): <description>
-
-[optional body]
-
-[optional footer]
-```
-
-**Types:**
-
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes (formatting, etc.)
-- `refactor`: Code refactoring
-- `perf`: Performance improvements
-- `test`: Adding or updating tests
-- `chore`: Maintenance tasks
-
-**Examples:**
-
-```
-feat(blog): add pagination to blog posts
-fix(i18n): resolve language switcher redirect issue
-docs: update deployment guide with KV namespace setup
-style: format code with prettier
-refactor(components): simplify Header component logic
-```
-
-### Branch Naming
-
-Use descriptive branch names:
-
-```
-feature/add-search-functionality
-fix/navbar-mobile-menu
-docs/update-readme
-refactor/optimize-blog-queries
-```
-
-## 🧪 Testing
-
-### Before Submitting
-
-Run these commands to ensure code quality:
+1. Create a focused branch.
+2. Inspect existing patterns before editing.
+3. Make the smallest coherent change.
+4. Update docs when behavior, commands, config, routes, content schema, or deployment changes.
+5. Validate locally before opening a PR.
 
 ```bash
-# 1. Type checking
-npx astro check
-
-# 2. Code formatting
-npm run format
-
-# 3. Build test
-npm run build
-
-# 4. Security audit
-npm audit
+bun run typecheck
+bun run format:check
+bun run build:skip-upload
 ```
 
-### Manual Testing Checklist
-
-- [ ] Test on desktop and mobile
-- [ ] Check both English and Indonesian versions
-- [ ] Verify dark/light theme switching
-- [ ] Test all navigation links
-- [ ] Check for console errors
-- [ ] Verify responsive design
-
-## 📦 Pull Request Process
-
-### 1. Create a Branch
+For deployment-related changes, also run:
 
 ```bash
-git checkout -b feature/your-feature-name
+bun audit --audit-level high
+bun run build
 ```
 
-### 2. Make Changes
+## Code Guidelines
 
-- Follow coding guidelines
-- Write clean, documented code
-- Keep changes focused and atomic
-- Update documentation if needed
+- Follow [CLAUDE.md](./CLAUDE.md); it is the canonical developer and AI-agent guide.
+- Use TypeScript strict mode and avoid `any`.
+- Use `import type` for type-only imports.
+- Prefer internal aliases such as `@/components`, `@/utils`, and `@/lib`.
+- Preserve Astro SSR patterns for dynamic routes.
+- Use `entry.id` and `render(entry)` for Astro 6 content entries.
+- Keep i18n text in `src/i18n/en.ts` and `src/i18n/id.ts` when shared UI copy is involved.
+- Preserve the existing Tailwind CSS 4 and DaisyUI token system in `src/assets/global.css`.
 
-### 3. Test Thoroughly
+## Package Management
 
-```bash
-npm run dev          # Test locally
-npx astro check      # Type check
-npm run build        # Ensure build succeeds
+- Use Bun commands.
+- Commit `bun.lock`.
+- Do not add `package-lock.json`.
+- Use `bun install --frozen-lockfile` in clean environments.
+
+## Commit Messages
+
+Use Conventional Commits:
+
+```text
+feat(blog): add related post scoring
+fix(rss): use Astro 6 entry ids
+docs: sync deployment guide with wrangler jsonc
+chore(ci): migrate workflows to bun
 ```
 
-### 4. Commit Changes
+Common types:
 
-```bash
-git add .
-git commit -m "feat: add new feature"
-```
+- `feat`: new feature
+- `fix`: bug fix
+- `docs`: documentation only
+- `style`: formatting only
+- `refactor`: internal change without behavior change
+- `perf`: performance improvement
+- `test`: tests or validation updates
+- `chore`: maintenance
 
-### 5. Push to GitHub
+## Pull Request Requirements
 
-```bash
-git push -u origin feature/your-feature-name
-```
+- `bun run typecheck` passes.
+- `bun run format:check` passes or formatting changes are included.
+- `bun run build:skip-upload` passes for normal changes.
+- `bun run build` passes for deployment, Cloudinary, adapter, or config changes.
+- Docs are updated for changed commands, config, content schema, routes, or deployment behavior.
+- Both English and Indonesian routes are considered for user-facing changes.
+- No secrets or credentials are committed.
 
-### 6. Create Pull Request
+## Internationalization
 
-- Use a clear, descriptive title
-- Fill out the PR template completely
-- Link related issues
-- Request review from maintainers
-- Be responsive to feedback
+When adding user-facing copy:
 
-### PR Requirements
+- Add English text to `src/i18n/en.ts`.
+- Add Indonesian text to `src/i18n/id.ts`.
+- Keep both objects structurally aligned.
+- Avoid hard-coded shared UI strings unless the component is locale-specific.
 
-- [ ] Code follows project style guidelines
-- [ ] All tests pass (`npx astro check`, `npm run build`)
-- [ ] Documentation updated (if applicable)
-- [ ] No console errors or warnings
-- [ ] Tested on both languages (English & Indonesian)
-- [ ] No security vulnerabilities introduced
+Route conventions:
 
-## 🌍 Internationalization
+- English: `/about`, `/services`, `/contact`, `/blog/...`
+- Indonesian: `/id/about`, `/id/services`, `/id/contact`, `/id/blog/...`
 
-When adding new features with text:
+## Blog Content
 
-1. Add English translation to `src/i18n/en.ts`
-2. Add Indonesian translation to `src/i18n/id.ts`
-3. Ensure both have identical structure
-4. Use translations in components (not hard-coded strings)
+Blog files live in locale-specific folders:
 
-**Example:**
+- `src/content/blog-en/<category>/<slug>.mdx`
+- `src/content/blog-id/<category>/<slug>.mdx`
 
-```typescript
-// src/i18n/en.ts
-export const en = {
-  // ... existing translations
-  newFeature: {
-    title: "New Feature",
-    description: "Feature description",
-  },
-};
+Content schema is defined in `src/content.config.ts`. If frontmatter changes, update [BLOG.md](./BLOG.md), examples, and any route logic that depends on the schema.
 
-// src/i18n/id.ts
-export const id = {
-  // ... existing translations
-  newFeature: {
-    title: "Fitur Baru",
-    description: "Deskripsi fitur",
-  },
-};
-```
+## Documentation
 
-## 🐛 Bug Fixes
+Update docs when changing:
 
-### Reporting Bugs
+- Bun/package scripts or lockfile behavior
+- Astro, React, Tailwind, DaisyUI, Cloudflare, Wrangler, or Cloudinary setup
+- `wrangler.jsonc` bindings or compatibility flags
+- `src/content.config.ts` schema/loaders
+- Blog route structure or i18n route structure
+- CI workflows
 
-Include:
+Primary docs:
 
-- Clear description of the bug
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots/videos (if applicable)
-- Browser and OS information
-- Error messages or console logs
+- [README.md](./README.md): overview and quick start
+- [CLAUDE.md](./CLAUDE.md): developer and AI-agent rules
+- [DEPLOYMENT.md](./DEPLOYMENT.md): Cloudflare deployment
+- [BLOG.md](./BLOG.md): content authoring
+- [ASSETS.md](./ASSETS.md): static/blog asset conventions
+- [CLOUDINARY.md](./CLOUDINARY.md): Cloudinary workflow
 
-### Fixing Bugs
+## Security
 
-1. Create an issue (if not already exists)
-2. Reference the issue in your PR
-3. Include steps to verify the fix
-4. Add comments explaining the solution
-
-## 📚 Documentation
-
-### When to Update Documentation
-
-- Adding new features
-- Changing configuration
-- Modifying deployment process
-- Adding dependencies
-- Changing project structure
-
-### Documentation Files
-
-- `README.md` - Project overview and quick start
-- `CLAUDE.md` - Development guidelines
-- `DEPLOYMENT.md` - Deployment instructions
-- `CONTRIBUTING.md` - This file
-- Code comments - Complex logic explanations
-
-## 🔒 Security
-
-### Reporting Security Issues
-
-**DO NOT** create public issues for security vulnerabilities.
-
-Instead:
-
-1. Email security concerns privately
-2. Include detailed description
-3. Provide steps to reproduce
-4. Wait for response before public disclosure
-
-### Security Best Practices
-
-- Never commit sensitive data (API keys, secrets)
-- Validate all user input
-- Use environment variables for secrets
-- Keep dependencies up-to-date
-- Run `npm audit` regularly
-
-## ⚖️ Code of Conduct
-
-### Our Standards
-
-- Be respectful and inclusive
-- Welcome diverse perspectives
-- Give and receive constructive feedback gracefully
-- Focus on what's best for the project
-- Show empathy towards others
-
-### Unacceptable Behavior
-
-- Harassment or discriminatory language
-- Personal attacks or insults
-- Trolling or inflammatory comments
-- Publishing others' private information
-- Unprofessional conduct
-
-## 📞 Getting Help
-
-- Read the [README.md](./README.md) first
-- Check [CLAUDE.md](./CLAUDE.md) for development guidelines
-- Review [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment help
-- Search existing issues
-- Ask questions in discussions
-- Contact maintainers if needed
-
-## 📄 License
-
-By contributing, you agree that your contributions will be licensed under the same license as the project.
-
----
-
-Thank you for contributing to Astro Rio! 🎉
+- Never commit API keys, Cloudinary secrets, Cloudflare tokens, or account IDs that are not already intentional resource IDs.
+- Store deploy credentials as GitHub Actions secrets or local environment variables.
+- Run `bun audit --audit-level high` before deployment changes.
+- Report security issues privately rather than through public issues.

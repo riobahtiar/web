@@ -30,9 +30,9 @@ const heading = lang === "id" ? "Artikel Terkait" : "Related Posts";
   <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
     {
       posts.map((post) => {
-        const slug = post.slug.startsWith(post.data.category + "/")
-          ? post.slug.substring(post.data.category.length + 1)
-          : post.slug;
+        const slug = post.id.startsWith(post.data.category + "/")
+          ? post.id.substring(post.data.category.length + 1)
+          : post.id;
         const postUrl = `/${lang === "en" ? "" : "id/"}blog/${post.data.category}/${slug}`;
 
         return (

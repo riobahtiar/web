@@ -1,251 +1,205 @@
-# Deployment Guide for Astro Rio
+# Deployment Guide
 
-## Overview
-
-This project is an Astro SSR application configured for deployment to Cloudflare Workers.
+This project deploys an Astro 6 SSR application to Cloudflare Workers with Wrangler JSONC configuration.
 
 ## Prerequisites
 
-1. **Cloudflare Account** - Sign up at https://cloudflare.com
-2. **Wrangler CLI** - Already installed as dev dependency
-3. **Node.js** - Version 22.x or higher
-
-## Deployment Steps
-
-### 1. Authenticate with Cloudflare
-
-```bash
-npx wrangler login
-```
-
-This will open a browser window to authorize wrangler with your Cloudflare account.
-
-### 2. Create KV Namespace for Sessions
-
-The @astrojs/cloudflare adapter requires a KV namespace for session storage.
-
-```bash
-npx wrangler kv namespace create SESSION
-```
-
-You'll get output like:
-
-```
-⛅️ wrangler 4.46.0
--------------------
-🌀 Creating namespace with title "web-SESSION"
-✨ Success!
-Add the following to your configuration file:
-[[kv_namespaces]]
-binding = "SESSION"
-id = "abc123def456..."
-```
-
-### 3. Update wrangler.toml
-
-Copy the `id` from the previous step and update `wrangler.toml`:
-
-```toml
-[[kv_namespaces]]
-binding = "SESSION"
-id = "abc123def456..."  # Replace with your actual ID
-```
-
-### 4. Build the Project
-
-```bash
-npm run build
-```
-
-This creates the `dist/` directory with:
-
-- `dist/_worker.js/` - Server-side worker code
-- Static assets in `dist/` root
-
-### 5. Deploy to Cloudflare Workers
-
-```bash
-npx wrangler deploy
-```
-
-Your site will be deployed to: `https://web.riomyid.workers.dev`
-
-## Cloudflare Pages Alternative
-
-If you prefer Cloudflare Pages instead of Workers:
-
-### Setup
-
-1. Go to Cloudflare Dashboard → Pages
-2. Connect your GitHub repository
-3. Configure build settings:
-   - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-   - **Root directory**: `/`
-
-### Environment Variables (if needed)
-
-In Cloudflare Pages dashboard:
-
-- Settings → Environment Variables
-- Add any required variables
-
-### KV Namespace Binding (Pages)
-
-In Cloudflare Pages dashboard:
-
-1. Settings → Functions
-2. KV namespace bindings
-3. Add binding:
-   - Variable name: `SESSION`
-   - KV namespace: Select your created namespace
+- Bun 1.3.11 or newer
+- Node.js 22.x or newer
+- Cloudflare account
+- Wrangler access through the local dependency
+- Optional Cloudinary credentials when running production image upload sync
 
 ## Configuration Files
 
-### wrangler.toml
+- [astro.config.mjs](./astro.config.mjs): Astro integrations, SSR mode, Cloudflare adapter, React edge alias, Tailwind Vite plugin
+- [wrangler.jsonc](./wrangler.jsonc): Worker entrypoint, assets binding, KV binding, compatibility flags, observability
+- [package.json](./package.json): Bun scripts and dependency versions
+- [bun.lock](./bun.lock): reproducible dependency lockfile
 
-Current configuration for Cloudflare Workers:
+Cloudflare config is `wrangler.jsonc`; do not reintroduce `wrangler.toml`.
 
-```toml
-name = "web"
-compatibility_date = "2025-06-22"
-main = "dist/_worker.js"
-compatibility_flags = ["nodejs_compat_v2"]
+## Current Cloudflare Setup
 
-[[kv_namespaces]]
-binding = "SESSION"
-id = "YOUR_KV_NAMESPACE_ID"  # Update this!
+`wrangler.jsonc` currently defines:
 
-[observability.logs]
-enabled = true
-
-[images]
-binding = "IMAGES"
+```jsonc
+{
+  "name": "web",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-04-17",
+  "compatibility_flags": ["nodejs_compat_v2"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+  },
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "ab185a6610c74aa7bf7eaacfec22891f",
+    },
+  ],
+}
 ```
 
-### astro.config.mjs
+The Astro adapter uses:
 
-The project uses `@astrojs/cloudflare` adapter with SSR mode:
-
-```javascript
-export default defineConfig({
-  site: "https://web.riomyid.workers.dev",
-  output: "server", // SSR mode
-  adapter: cloudflare({
-    imageService: "cloudflare",
-    platformProxy: {
-      enabled: true,
-    },
-  }),
+```js
+adapter: cloudflare({
+  imageService: { build: "compile", runtime: "passthrough" },
 });
 ```
 
-## Troubleshooting
+This matches the current Cloudflare adapter API for build-time image compilation and safe SSR passthrough at runtime.
 
-### Error: "Invalid binding `SESSION`"
+## First-Time Setup
 
-**Solution**: Create the KV namespace and update wrangler.toml with the correct ID.
-
-### Error: "Uploading a Pages \_worker.js directory as an asset"
-
-**Solution**: This error has been fixed by removing the `[assets]` section from wrangler.toml. Astro handles static assets through the worker itself.
-
-### Build Warnings
-
-These warnings are normal and don't affect deployment:
-
-- **Node.js module externalization** - Vite automatically externalizes Node modules for Workers
-- **DaisyUI @property warning** - Harmless CSS optimization warning
-
-### Security Vulnerabilities
-
-Run `npm audit fix` to automatically fix known vulnerabilities:
+Authenticate Wrangler:
 
 ```bash
-npm audit fix
+bunx wrangler login
 ```
 
-## Development vs Production
-
-### Development
+Create a KV namespace only if the configured `SESSION` namespace does not exist in your Cloudflare account:
 
 ```bash
-npm run dev
+bunx wrangler kv namespace create SESSION
 ```
 
-Runs on http://localhost:4321
+Copy the generated ID into `wrangler.jsonc` under `kv_namespaces`.
 
-### Preview Production Build
+If bindings change, regenerate Cloudflare types:
 
 ```bash
-npm run build
-npm run preview
+bun run cf-typegen
 ```
 
-### Type Checking
+## Build
+
+Production-parity build:
 
 ```bash
-npx astro check
+bun run build
 ```
+
+This runs:
+
+1. `bun run prebuild`
+2. `astro build`
+
+The prebuild script uploads configured assets to Cloudinary when credentials are available. If credentials are missing, it logs the issue and continues.
+
+Fast local validation build:
+
+```bash
+bun run build:skip-upload
+```
+
+## Deploy
+
+```bash
+bun run deploy
+```
+
+Equivalent manual flow:
+
+```bash
+bun run build
+bunx wrangler deploy
+```
+
+Production URL:
+
+- https://web.riomyid.workers.dev
+
+## CI/CD
+
+GitHub Actions use Bun and Node 22:
+
+- `oven-sh/setup-bun@v2`
+- `bun install --frozen-lockfile`
+- `bun run typecheck`
+- `bun run build`
+- `cloudflare/wrangler-action@v3`
+
+Required repository secrets:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `PUBLIC_CLOUDINARY_CLOUD_NAME` if build-time uploads should run in CI
+- `PUBLIC_CLOUDINARY_API_KEY` if build-time uploads should run in CI
+- `CLOUDINARY_API_SECRET` if build-time uploads should run in CI
+
+Cloudinary secrets are optional for build success because the upload script degrades gracefully, but production parity requires them.
+
+## Local Preview
+
+```bash
+bun run build:skip-upload
+bun run preview
+```
+
+Open the preview URL printed by Astro.
 
 ## Deployment Checklist
 
-Before deploying to production:
+- `bun install --frozen-lockfile` succeeds
+- `bun run typecheck` has zero errors
+- `bun run format:check` passes or formatting is intentionally updated
+- `bun audit --audit-level high` reviewed
+- `bun run build` succeeds for deployment changes
+- `wrangler.jsonc` has the correct KV namespace IDs and compatibility date
+- Both `/` and `/id/` route families have been checked for routing/content changes
+- RSS feeds work at `/rss.xml` and `/id/rss.xml`
 
-- [ ] All tests pass
-- [ ] Build completes successfully (`npm run build`)
-- [ ] No security vulnerabilities (`npm audit`)
-- [ ] KV namespace created and configured
-- [ ] Environment variables set (if any)
-- [ ] wrangler.toml updated with correct IDs
-- [ ] Git changes committed and pushed
+## Troubleshooting
 
-## Continuous Deployment
+### `npm ci` fails in CI
 
-### Using GitHub Actions (optional)
+This repo no longer has `package-lock.json`. Use Bun:
 
-You can set up automatic deployments on push:
-
-1. Add secrets to GitHub repo:
-
-   - `CLOUDFLARE_API_TOKEN`
-   - `CLOUDFLARE_ACCOUNT_ID`
-
-2. Create `.github/workflows/deploy.yml`:
-
-```yaml
-name: Deploy to Cloudflare Workers
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - run: npm ci
-      - run: npm run build
-      - uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+```bash
+bun install --frozen-lockfile
 ```
 
-### Using Cloudflare Pages (automatic)
+### `SESSION` binding is missing
 
-Connect your GitHub repository to Cloudflare Pages for automatic deployments on every push.
+Create or bind the KV namespace and update `wrangler.jsonc`.
 
-## Support
+### Cloudinary upload credentials are missing
 
-- Astro Documentation: https://docs.astro.build
-- Cloudflare Workers: https://developers.cloudflare.com/workers
-- Wrangler CLI: https://developers.cloudflare.com/workers/wrangler
+Set these values locally or in CI:
 
-## License
+```bash
+PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
+PUBLIC_CLOUDINARY_API_KEY="your-api-key"
+CLOUDINARY_API_SECRET="your-api-secret"
+```
 
-See LICENSE file for details.
+Use `bun run build:skip-upload` when validating unrelated code.
+
+### React SSR fails on Workers
+
+Confirm `astro.config.mjs` still aliases production `react-dom/server` to `react-dom/server.edge`.
+
+### Asset serving fails
+
+Confirm `wrangler.jsonc` keeps:
+
+```jsonc
+"assets": {
+  "directory": "./dist",
+  "binding": "ASSETS"
+}
+```
+
+### Content collection warnings after Astro upgrades
+
+Confirm collections are defined in `src/content.config.ts`, use `glob()` loaders, and code references `entry.id` rather than legacy `entry.slug`.
+
+## References
+
+- Astro Cloudflare adapter: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
+- Astro 6 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v6/
+- Cloudflare Wrangler configuration: https://developers.cloudflare.com/workers/wrangler/configuration/
+- Bun install and lockfile: https://bun.com/docs/cli/install
