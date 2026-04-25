@@ -78,7 +78,7 @@ Frontmatter:
 ```yaml
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack developer"
 ```
 

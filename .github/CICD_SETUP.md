@@ -35,16 +35,6 @@ Minimum typical permissions:
 
 Cloudflare account ID used by `cloudflare/wrangler-action`.
 
-## Optional Cloudinary Secrets
-
-Set these if CI should perform production-parity image uploads during `bun run build`:
-
-- `PUBLIC_CLOUDINARY_CLOUD_NAME`
-- `PUBLIC_CLOUDINARY_API_KEY`
-- `CLOUDINARY_API_SECRET`
-
-If they are absent, the prebuild upload step logs a warning and the build continues.
-
 ## Local CI Parity
 
 ```bash
@@ -91,7 +81,7 @@ Confirm the workflow uses:
 
 - Check Bun version.
 - Check Node.js version.
-- Verify Cloudinary env vars if the change depends on uploaded assets.
+- Confirm referenced files exist under `public/` for static image paths.
 - Reproduce locally with `bun install --frozen-lockfile`.
 
 ### Deploy fails with invalid API token

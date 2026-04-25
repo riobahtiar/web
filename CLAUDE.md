@@ -176,12 +176,12 @@ title: "Post title"
 description: "Post description"
 created_at: 2026-04-25
 modified_at: 2026-04-25
-image: "/blog/covers/example.jpg"
+image: "/smc.jpg"
 category: "web-development"
 tags: ["astro", "cloudflare"]
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack developer"
 draft: false
 ```

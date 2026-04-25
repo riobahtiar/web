@@ -21,7 +21,7 @@ This directory contains profile images for blog post authors.
 title: "My Blog Post"
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack developer passionate about web technologies"
 ---
 ```
@@ -36,7 +36,7 @@ Create default author profiles that can be referenced across multiple posts.
 export const authors = {
   "rio-bahtiar": {
     name: "Rio Bahtiar",
-    image: "/authors/rio-bahtiar.jpg",
+    image: "/authors/rio-bahtiar.png",
     bio: "Full-stack developer passionate about web technologies",
     social: {
       twitter: "https://twitter.com/riobahtiar",

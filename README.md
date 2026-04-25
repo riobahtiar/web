@@ -40,7 +40,6 @@ Open `http://localhost:4321`.
 | `bun run format:check`         | Check formatting                  |
 | `bun audit --audit-level high` | Check dependency advisories       |
 | `bun run build`                | Build the site for production     |
-| `bun run build`    | Alias of `bun run build`          |
 | `bun run preview`              | Preview the built site locally    |
 | `bun run deploy`               | Build and deploy with Wrangler    |
 | `bun run cf-typegen`           | Generate Cloudflare binding types |
@@ -89,7 +88,7 @@ category: "web-development"
 tags: ["astro", "cloudflare"]
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack developer"
 draft: false
 ---

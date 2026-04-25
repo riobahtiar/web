@@ -81,7 +81,7 @@ Production build:
 bun run build
 ```
 
-This runs `astro build`. The legacy `bun run build` script is kept as an alias for compatibility.
+This runs `astro build`.
 
 ## Deploy
 
