@@ -8,7 +8,6 @@ This project deploys an Astro 6 SSR application to Cloudflare Workers with Wrang
 - Node.js 22.x or newer
 - Cloudflare account
 - Wrangler access through the local dependency
-- Optional Cloudinary credentials when running production image upload sync
 
 ## Configuration Files
 
@@ -76,24 +75,13 @@ bun run cf-typegen
 
 ## Build
 
-Production-parity build:
+Production build:
 
 ```bash
 bun run build
 ```
 
-This runs:
-
-1. `bun run prebuild`
-2. `astro build`
-
-The prebuild script uploads configured assets to Cloudinary when credentials are available. If credentials are missing, it logs the issue and continues.
-
-Fast local validation build:
-
-```bash
-bun run build:skip-upload
-```
+This runs `astro build`. The legacy `bun run build` script is kept as an alias for compatibility.
 
 ## Deploy
 
@@ -126,16 +114,11 @@ Required repository secrets:
 
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
-- `PUBLIC_CLOUDINARY_CLOUD_NAME` if build-time uploads should run in CI
-- `PUBLIC_CLOUDINARY_API_KEY` if build-time uploads should run in CI
-- `CLOUDINARY_API_SECRET` if build-time uploads should run in CI
-
-Cloudinary secrets are optional for build success because the upload script degrades gracefully, but production parity requires them.
 
 ## Local Preview
 
 ```bash
-bun run build:skip-upload
+bun run build
 bun run preview
 ```
 
@@ -165,18 +148,6 @@ bun install --frozen-lockfile
 ### `SESSION` binding is missing
 
 Create or bind the KV namespace and update `wrangler.jsonc`.
-
-### Cloudinary upload credentials are missing
-
-Set these values locally or in CI:
-
-```bash
-PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
-PUBLIC_CLOUDINARY_API_KEY="your-api-key"
-CLOUDINARY_API_SECRET="your-api-secret"
-```
-
-Use `bun run build:skip-upload` when validating unrelated code.
 
 ### React SSR fails on Workers
 

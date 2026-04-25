@@ -59,7 +59,7 @@ For faster non-deployment validation:
 
 ```bash
 bun run typecheck
-bun run build:skip-upload
+bun run build
 ```
 
 ## Deployment Target

@@ -53,4 +53,3 @@ export const authors = {
 3. Optimize images before uploading
 4. Consider using a transparent or solid background
 5. Keep file sizes under 100KB
-6. Use Cloudinary for author images that need CDN transformations

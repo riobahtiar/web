@@ -5,9 +5,7 @@
   "packageManager": "bun@1.3.11",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "bun scripts/prebuild-upload-curl.js",
-    "build": "bun run prebuild && astro build",
-    "build:skip-upload": "astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "deploy": "bun run build && wrangler deploy",
     "astro": "astro",
@@ -15,11 +13,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro",
-    "cf-typegen": "wrangler types",
-    "cloudinary:upload": "bun scripts/upload-to-cloudinary.js",
-    "cloudinary:list": "bun scripts/list-cloudinary-assets.js",
-    "cloudinary:validate": "bun scripts/validate-cloudinary-assets.js",
-    "cloudinary:delete": "bun scripts/delete-cloudinary-asset.js"
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.2.1",
@@ -36,7 +30,6 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "astro": "^6.1.9",
-    "astro-cloudinary": "^1.3.5",
     "astro-icon": "^1.1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -52,8 +45,6 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@tailwindcss/typography": "^0.5.19",
-    "cloudinary": "^2.9.0",
-    "form-data": "^4.0.5",
     "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.3",

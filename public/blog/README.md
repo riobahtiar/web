@@ -55,5 +55,4 @@ If you need Astro's `Image` component, place the source image under `src/assets/
 1. Use WebP format when possible for better compression
 2. Compress images before uploading (use tools like TinyPNG)
 3. Use descriptive alt text for accessibility
-4. Use Cloudinary URLs for images that need CDN transformations
-5. Keep local static images compressed before committing
+4. Keep local static images compressed before committing

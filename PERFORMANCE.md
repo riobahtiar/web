@@ -1,6 +1,6 @@
 # Performance Notes
 
-Current stack: Astro 6 SSR on Cloudflare Workers, React 19 islands, Tailwind CSS 4, Cloudinary image delivery, and Cloudflare static asset serving.
+Current stack: Astro 6 SSR on Cloudflare Workers, React 19 islands, Tailwind CSS 4, and Cloudflare static asset serving.
 
 ## Current Optimizations
 
@@ -9,28 +9,22 @@ Current stack: Astro 6 SSR on Cloudflare Workers, React 19 islands, Tailwind CSS
 - React server rendering uses `react-dom/server.edge` in production.
 - Tailwind CSS 4 is compiled through `@tailwindcss/vite`.
 - Shiki code highlighting uses configured light/dark themes with wrapping enabled.
-- Cloudinary delivers selected images with automatic quality and format transformations.
 - The Cloudflare adapter uses `imageService: { build: "compile", runtime: "passthrough" }` to avoid runtime image processing in Workers.
 - Blog related posts and reading time are computed server-side from content collection entries.
 
 ## Image Strategy
 
-Primary image CDN: Cloudinary.
+All images are served from local sources.
 
-Managed assets:
+- `public/smc.jpg` is the OG/cover image used in `src/layouts/Layout.astro` and the about pages.
+- `src/assets/me-avatar.png` is imported by `src/components/Welcome.astro` and processed through Astro's image service.
+- Static blog images live under `public/blog/` and should be compressed before commit.
 
-- `src/assets/me-avatar.png` -> `portfolio/me-avatar`
-- `public/smc.jpg` -> `portfolio/smc-cover`
+Authoring guidelines:
 
-Recommended Cloudinary transformations:
-
-- `f_auto` for modern formats such as WebP/AVIF where supported
-- `q_auto` for adaptive compression
-- Explicit width/height to reserve layout space
-- `loading="eager"` only for LCP candidates
-- `loading="lazy"` for below-fold images
-
-Static blog images under `public/blog/` should be compressed before commit.
+- Provide explicit `width`/`height` to reserve layout space and avoid CLS.
+- Use `loading="eager"` only for likely LCP images; keep below-fold images lazy.
+- Prefer WebP for photographic content; keep SVGs for logos and simple vector graphics.
 
 ## Worker Compatibility
 
@@ -58,7 +52,7 @@ Fast local performance sanity check:
 
 ```bash
 bun run typecheck
-bun run build:skip-upload
+bun run build
 bun run preview
 ```
 
@@ -77,17 +71,16 @@ Manual checks:
 
 ## Targets
 
-| Metric     | Target                                                         |
-| ---------- | -------------------------------------------------------------- |
-| LCP        | Under 2.5s on representative mobile network                    |
-| CLS        | Under 0.1                                                      |
-| INP        | Under 200ms                                                    |
-| Initial JS | Keep React islands isolated and intentional                    |
-| Images     | Use appropriately sized Cloudinary or compressed static assets |
+| Metric     | Target                                            |
+| ---------- | ------------------------------------------------- |
+| LCP        | Under 2.5s on representative mobile network       |
+| CLS        | Under 0.1                                         |
+| INP        | Under 200ms                                       |
+| Initial JS | Keep React islands isolated and intentional       |
+| Images     | Use appropriately sized, compressed static assets |
 
 ## Improvement Backlog
 
 - Add responsive `sizes` and width variants for any remaining image-heavy components.
 - Audit React islands for unnecessary hydration.
-- Keep Cloudinary asset validation in deployment checks when image references change.
 - Re-run Lighthouse after dependency or adapter upgrades.

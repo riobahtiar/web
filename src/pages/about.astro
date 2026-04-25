@@ -1,5 +1,4 @@
 ---
-import { CldImage } from "astro-cloudinary";
 import Layout from "../layouts/Layout.astro";
 
 // Get current language from URL
@@ -16,16 +15,11 @@ const lastModified = new Date().toLocaleDateString(
   },
 );
 
-// Page metadata
-// Cloudinary OG image URL with optimizations
-const cloudinaryBaseUrl = `https://res.cloudinary.com/${import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
-const ogImage = `${cloudinaryBaseUrl}/w_1200,h_630,c_fill,f_auto,q_auto/portfolio/smc-cover`;
-
 const meta = {
   title: "About Me",
   description:
     "Learn more about Rio Bahtiar, a software engineer specializing in modern web development, distributed systems, and enterprise solutions.",
-  image: ogImage,
+  image: "/smc.jpg",
 };
 ---
 
@@ -41,14 +35,11 @@ const meta = {
       <div
         class="bg-base-200 relative mb-8 h-auto w-full overflow-hidden rounded-lg"
       >
-        <CldImage
-          src="portfolio/smc-cover"
+        <img
+          src="/smc.jpg"
           alt="Cover Image"
-          width={900}
-          height={1000}
-          crop="fill"
-          format="auto"
-          quality="auto"
+          width={1200}
+          height={630}
           loading="eager"
           class="h-auto w-full object-fill"
         />
@@ -181,8 +172,8 @@ const meta = {
             code that stands the test of time.
           </li>
           <li>
-            <strong>User-Centric Design:</strong> Creating intuitive experiences
-            that solve real problems and deliver genuine value.
+            <strong>User-Centric Design:</strong> Creating intuitive experiences that
+            solve real problems and deliver genuine value.
           </li>
           <li>
             <strong>Continuous Growth:</strong> Staying current with technology trends
