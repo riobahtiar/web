@@ -1,11 +1,11 @@
 # Asset Management
 
-This repo uses two asset paths:
+This repo serves all images directly from local sources:
 
 - `public/` for static files served directly by Astro/Cloudflare assets
-- Cloudinary for optimized CDN delivery of selected portfolio and content images
+- `src/assets/` for assets imported through Astro components
 
-Cloudinary is the current primary image CDN workflow. Cloudflare Images is not configured as the primary pipeline in this repo.
+The Cloudflare adapter uses `imageService: { build: "compile", runtime: "passthrough" }`, so transformed images are produced at build time and served as static assets at runtime.
 
 ## Static Directory Structure
 
@@ -16,7 +16,7 @@ public/
 │   ├── content/      # Inline blog images
 │   └── featured/     # Featured blog images
 ├── authors/          # Author profile images
-├── smc.jpg           # Portfolio cover source used by upload scripts
+├── smc.jpg           # Portfolio cover used in OG tags and the about page
 └── site.webmanifest
 ```
 
@@ -25,7 +25,7 @@ public/
 ```text
 src/assets/
 ├── global.css        # Tailwind CSS 4, DaisyUI, and design tokens
-├── me-avatar.png     # Avatar source used by upload scripts
+├── me-avatar.png     # Avatar imported by Welcome.astro
 ├── logo-dark.svg
 ├── logo-light.svg
 └── background.svg
@@ -78,51 +78,12 @@ Frontmatter:
 ```yaml
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack developer"
 ```
 
-## Cloudinary Workflow
-
-Configured script sources:
-
-| Local file                 | Cloudinary public ID  |
-| -------------------------- | --------------------- |
-| `src/assets/me-avatar.png` | `portfolio/me-avatar` |
-| `public/smc.jpg`           | `portfolio/smc-cover` |
-
-Commands:
-
-```bash
-bun run cloudinary:upload
-bun run cloudinary:list
-bun run cloudinary:validate
-bun run cloudinary:delete portfolio/old-image
-```
-
-Production builds run:
-
-```bash
-bun run prebuild
-```
-
-`prebuild` uses `scripts/prebuild-upload-curl.js`, checks whether configured assets already exist, uploads missing assets, and exits successfully even when credentials are absent so unrelated builds can continue.
-
-## Environment Variables
-
-Required for upload operations:
-
-```bash
-PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
-PUBLIC_CLOUDINARY_API_KEY="your-api-key"
-CLOUDINARY_API_SECRET="your-api-secret"
-```
-
-Store them in `.env` locally and in CI/deployment secrets for production parity.
-
 ## Optimization Guidelines
 
-- Prefer Cloudinary `f_auto`/`q_auto` transformations for remote image URLs.
 - Compress local static images before committing.
 - Use WebP for photos when broad compatibility is acceptable.
 - Keep SVGs for logos and simple vector graphics.
@@ -138,27 +99,3 @@ Store them in `.env` locally and in CI/deployment secrets for production parity.
 - Confirm the file exists under `public/`.
 - Check filename case exactly.
 - Avoid spaces in filenames.
-
-### Cloudinary image does not load
-
-- Verify the public ID in the Cloudinary dashboard.
-- Check `PUBLIC_CLOUDINARY_CLOUD_NAME`.
-- Run `bun run cloudinary:validate`.
-- Confirm transformations are valid for the asset type.
-
-### Build should not upload images
-
-Use:
-
-```bash
-bun run build:skip-upload
-```
-
-### New upload source is needed
-
-Update both scripts if the image should be managed by the standard workflow:
-
-- `scripts/upload-to-cloudinary.js`
-- `scripts/prebuild-upload-curl.js`
-
-Then update this document and [CLOUDINARY.md](./CLOUDINARY.md).

@@ -12,7 +12,7 @@ This file is the canonical operating guide for AI assistants and developers. `AG
 - Tailwind CSS 4 plus DaisyUI 5 and shadcn-style React components
 - Astro content collections in `src/content.config.ts`
 - MDX and Markdoc enabled
-- Cloudinary-backed image workflow with local fallback
+- Local image workflow served via Cloudflare assets and Astro's image service (passthrough at runtime)
 - English default routes and Indonesian `/id/*` routes
 
 ## Required Context Before Editing
@@ -38,7 +38,7 @@ bun run format
 bun run format:check
 bun audit --audit-level high
 bun run build
-bun run build:skip-upload
+bun run build
 bun run preview
 bun run deploy
 bun run cf-typegen
@@ -48,7 +48,7 @@ Recommended fast validation while developing:
 
 ```bash
 bun run typecheck
-bun run build:skip-upload
+bun run build
 ```
 
 Recommended production-parity validation:
@@ -57,8 +57,6 @@ Recommended production-parity validation:
 bun audit --audit-level high
 bun run build
 ```
-
-`bun run build` executes the Cloudinary prebuild upload script. If Cloudinary credentials are missing, the script exits successfully and the Astro build continues.
 
 ## Package Management
 
@@ -178,12 +176,12 @@ title: "Post title"
 description: "Post description"
 created_at: 2026-04-25
 modified_at: 2026-04-25
-image: "/blog/covers/example.jpg"
+image: "/smc.jpg"
 category: "web-development"
 tags: ["astro", "cloudflare"]
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack developer"
 draft: false
 ```
@@ -192,13 +190,9 @@ draft: false
 
 ## Image Workflow
 
-- Source assets currently used by scripts:
-  - `src/assets/me-avatar.png` -> `portfolio/me-avatar`
-  - `public/smc.jpg` -> `portfolio/smc-cover`
-- `bun run cloudinary:upload` performs smart sync through the Cloudinary SDK.
-- `bun run prebuild` uses a curl-based uploader for production build compatibility.
-- `bun run cloudinary:validate` checks referenced configured assets.
-- Do not document Cloudflare Images as the primary image pipeline unless the implementation changes.
+- Static assets live under `public/` (e.g. `public/smc.jpg` for the OG/cover image) and are served as-is by Cloudflare assets.
+- Source assets under `src/assets/` (e.g. `src/assets/me-avatar.png`) are imported into components and processed by Astro's image service.
+- The Cloudflare adapter uses `imageService: { build: "compile", runtime: "passthrough" }`; prefer plain `<img>` tags or imported `ImageMetadata`. Do not introduce remote image CDNs without updating this guide.
 
 ## Documentation Rules
 
@@ -229,7 +223,7 @@ Prefer major-version descriptions in prose and exact versions only where they co
 ```bash
 bun run typecheck
 bun run format:check
-bun run build:skip-upload
+bun run build
 ```
 
 For production/deployment changes, also run:

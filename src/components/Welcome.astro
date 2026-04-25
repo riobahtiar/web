@@ -1,5 +1,5 @@
 ---
-import { CldImage } from "astro-cloudinary";
+import meAvatar from "../assets/me-avatar.png";
 
 interface Props {
   lang: string;
@@ -42,15 +42,11 @@ const alternateLanguage = lang === "en" ? "Bahasa Indonesia" : "English";
     <div class="hero-content flex-col lg:flex-row">
       <div class="avatar ring-primary ring-offset-base-100 ring ring-offset-2">
         <div class="w-24">
-          <CldImage
-            src="portfolio/me-avatar"
+          <img
+            src={meAvatar.src}
             alt="Profile"
-            width={200}
-            height={200}
-            crop="fill"
-            gravity="face"
-            format="auto"
-            quality="auto"
+            width={meAvatar.width}
+            height={meAvatar.height}
             loading="eager"
           />
         </div>

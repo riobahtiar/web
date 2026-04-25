@@ -1,6 +1,6 @@
 # Astro Rio
 
-Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Astro 6, React 19 islands, Tailwind CSS 4, DaisyUI 5, MDX/Markdoc content, Cloudinary image delivery, and Cloudflare Workers SSR.
+Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Astro 6, React 19 islands, Tailwind CSS 4, DaisyUI 5, MDX/Markdoc content, and Cloudflare Workers SSR.
 
 ## Stack
 
@@ -10,7 +10,7 @@ Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Ast
 - UI: Astro components, React 19 islands, Radix primitives, shadcn-style components
 - Styling: Tailwind CSS 4 Vite plugin, DaisyUI 5, shared CSS variables in `src/assets/global.css`
 - Content: Astro content collections in `src/content.config.ts` using `glob()` loaders
-- Media: local source assets plus Cloudinary upload/validation scripts
+- Media: local static assets served via Cloudflare assets and Astro image service (passthrough at runtime)
 - i18n: Astro i18n config with English default routes and Indonesian `/id/*` routes
 
 Check [package.json](./package.json) for exact dependency versions.
@@ -22,7 +22,6 @@ Prerequisites:
 - Bun 1.3.11 or newer
 - Node.js 22.x or newer for tooling compatibility
 - Cloudflare account for deploys
-- Cloudinary credentials only when uploading/syncing images
 
 ```bash
 bun install
@@ -33,20 +32,17 @@ Open `http://localhost:4321`.
 
 ## Commands
 
-| Command                        | Description                                     |
-| ------------------------------ | ----------------------------------------------- |
-| `bun run dev`                  | Start the Astro dev server                      |
-| `bun run typecheck`            | Run `astro check`                               |
-| `bun run format`               | Format with Prettier                            |
-| `bun run format:check`         | Check formatting                                |
-| `bun audit --audit-level high` | Check dependency advisories                     |
-| `bun run build`                | Upload configured Cloudinary assets, then build |
-| `bun run build:skip-upload`    | Build without the Cloudinary prebuild step      |
-| `bun run preview`              | Preview the built site locally                  |
-| `bun run deploy`               | Build and deploy with Wrangler                  |
-| `bun run cf-typegen`           | Generate Cloudflare binding types               |
-
-Use `bun run build:skip-upload` for fast local validation when image uploads are irrelevant. Use `bun run build` for production parity.
+| Command                        | Description                       |
+| ------------------------------ | --------------------------------- |
+| `bun run dev`                  | Start the Astro dev server        |
+| `bun run typecheck`            | Run `astro check`                 |
+| `bun run format`               | Format with Prettier              |
+| `bun run format:check`         | Check formatting                  |
+| `bun audit --audit-level high` | Check dependency advisories       |
+| `bun run build`                | Build the site for production     |
+| `bun run preview`              | Preview the built site locally    |
+| `bun run deploy`               | Build and deploy with Wrangler    |
+| `bun run cf-typegen`           | Generate Cloudflare binding types |
 
 ## Project Structure
 
@@ -65,7 +61,6 @@ Use `bun run build:skip-upload` for fast local validation when image uploads are
 │   ├── pages/               # File-based routes
 │   ├── styles/              # Theme helpers
 │   └── utils/               # Date, reading-time, related-post helpers
-├── scripts/                 # Cloudinary asset operations
 ├── public/                  # Static files served as-is
 ├── astro.config.mjs         # Astro, Vite, integrations, adapter
 ├── wrangler.jsonc           # Cloudflare Worker config
@@ -93,7 +88,7 @@ category: "web-development"
 tags: ["astro", "cloudflare"]
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack developer"
 draft: false
 ---
@@ -125,7 +120,7 @@ Core rules for agents:
 - Keep Bun as the package manager and preserve `bun.lock`.
 - Use SSR route patterns; do not add `getStaticPaths()` to dynamic blog routes.
 - Keep content collection definitions in `src/content.config.ts`.
-- Validate with `bun run typecheck` and `bun run build:skip-upload` unless production upload parity is required.
+- Validate with `bun run typecheck` and `bun run build` unless production upload parity is required.
 - Update docs whenever package manager, deployment config, content schema, routes, or image workflow changes.
 
 ## References Checked

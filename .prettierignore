@@ -1,0 +1,8 @@
+bun.lock
+dist/
+.astro/
+node_modules/
+
+# Tutorial templates: prettier mishandles YAML inside MDX code fences.
+src/content/blog-en/tutorial/_template.mdx
+src/content/blog-id/tutorial/_template.mdx

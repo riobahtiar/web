@@ -21,7 +21,7 @@ This directory contains profile images for blog post authors.
 title: "My Blog Post"
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack developer passionate about web technologies"
 ---
 ```
@@ -36,7 +36,7 @@ Create default author profiles that can be referenced across multiple posts.
 export const authors = {
   "rio-bahtiar": {
     name: "Rio Bahtiar",
-    image: "/authors/rio-bahtiar.jpg",
+    image: "/authors/rio-bahtiar.png",
     bio: "Full-stack developer passionate about web technologies",
     social: {
       twitter: "https://twitter.com/riobahtiar",
@@ -53,4 +53,3 @@ export const authors = {
 3. Optimize images before uploading
 4. Consider using a transparent or solid background
 5. Keep file sizes under 100KB
-6. Use Cloudinary for author images that need CDN transformations

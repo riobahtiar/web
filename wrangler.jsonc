@@ -7,15 +7,15 @@
 
   "assets": {
     "directory": "./dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
   },
 
   // KV namespace backing Astro's session store
   "kv_namespaces": [
     {
       "binding": "SESSION",
-      "id": "ab185a6610c74aa7bf7eaacfec22891f"
-    }
+      "id": "ab185a6610c74aa7bf7eaacfec22891f",
+    },
   ],
 
   "observability": {
@@ -23,12 +23,12 @@
       "enabled": true,
       "head_sampling_rate": 1,
       "persist": true,
-      "invocation_logs": true
+      "invocation_logs": true,
     },
     "traces": {
       "enabled": true,
       "head_sampling_rate": 1,
-      "persist": true
-    }
-  }
+      "persist": true,
+    },
+  },
 }

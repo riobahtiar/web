@@ -28,7 +28,7 @@ bun run dev
 ```bash
 bun run typecheck
 bun run format:check
-bun run build:skip-upload
+bun run build
 ```
 
 For deployment-related changes, also run:
@@ -82,8 +82,8 @@ Common types:
 
 - `bun run typecheck` passes.
 - `bun run format:check` passes or formatting changes are included.
-- `bun run build:skip-upload` passes for normal changes.
-- `bun run build` passes for deployment, Cloudinary, adapter, or config changes.
+- `bun run build` passes for normal changes.
+- `bun run build` passes for deployment, adapter, or config changes.
 - Docs are updated for changed commands, config, content schema, routes, or deployment behavior.
 - Both English and Indonesian routes are considered for user-facing changes.
 - No secrets or credentials are committed.
@@ -116,7 +116,7 @@ Content schema is defined in `src/content.config.ts`. If frontmatter changes, up
 Update docs when changing:
 
 - Bun/package scripts or lockfile behavior
-- Astro, React, Tailwind, DaisyUI, Cloudflare, Wrangler, or Cloudinary setup
+- Astro, React, Tailwind, DaisyUI, Cloudflare, or Wrangler setup
 - `wrangler.jsonc` bindings or compatibility flags
 - `src/content.config.ts` schema/loaders
 - Blog route structure or i18n route structure
@@ -129,11 +129,10 @@ Primary docs:
 - [DEPLOYMENT.md](./DEPLOYMENT.md): Cloudflare deployment
 - [BLOG.md](./BLOG.md): content authoring
 - [ASSETS.md](./ASSETS.md): static/blog asset conventions
-- [CLOUDINARY.md](./CLOUDINARY.md): Cloudinary workflow
 
 ## Security
 
-- Never commit API keys, Cloudinary secrets, Cloudflare tokens, or account IDs that are not already intentional resource IDs.
+- Never commit API keys, Cloudflare tokens, or account IDs that are not already intentional resource IDs.
 - Store deploy credentials as GitHub Actions secrets or local environment variables.
 - Run `bun audit --audit-level high` before deployment changes.
 - Report security issues privately rather than through public issues.

@@ -25,7 +25,7 @@ category: "web-development"
 tags: ["astro", "typescript", "cloudflare"]
 author:
   name: "Rio Bahtiar"
-  image: "/authors/rio-bahtiar.jpg"
+  image: "/authors/rio-bahtiar.png"
   bio: "Full-stack Developer"
 draft: false
 ---
@@ -59,7 +59,7 @@ Astro 6 loader-backed entries use `entry.id`, not legacy `entry.slug`. Keep file
 ```bash
 bun run dev
 bun run typecheck
-bun run build:skip-upload
+bun run build
 ```
 
 Use the browser to verify:
@@ -234,7 +234,7 @@ Author images:
 - Location: `public/authors/`
 - Frontmatter path: `/authors/<author>.jpg`
 
-Cloudinary may be used for optimized remote delivery. See [CLOUDINARY.md](./CLOUDINARY.md).
+Images are served from local sources (`public/` for static files and `src/assets/` for imported assets). See [ASSETS.md](./ASSETS.md).
 
 ## SEO Checklist
 
@@ -253,7 +253,7 @@ Cloudinary may be used for optimized remote delivery. See [CLOUDINARY.md](./CLOU
 - Links and code examples tested.
 - Both desktop and mobile layout checked.
 - `bun run typecheck` passes.
-- `bun run build:skip-upload` passes.
+- `bun run build` passes.
 - Production posts have `draft: false`.
 
 ## Automatic Features
