@@ -1,0 +1,57 @@
+---
+import { icons } from "@iconify-json/tabler";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"svg"> {
+  name: string;
+  title?: string;
+  desc?: string;
+  size?: number | string;
+}
+
+const {
+  name,
+  title,
+  desc,
+  size,
+  width,
+  height,
+  role,
+  "aria-hidden": ariaHidden,
+  ...attrs
+} = Astro.props;
+
+const [setName, iconName] = name.split(":");
+
+if (setName !== "tabler" || !iconName) {
+  throw new Error(`Unsupported icon name "${name}". Expected "tabler:<icon>".`);
+}
+
+const icon = icons.icons[iconName];
+
+if (!icon) {
+  throw new Error(`Unknown Tabler icon "${iconName}".`);
+}
+
+const iconWidth = icon.width ?? icons.width ?? 24;
+const iconHeight = icon.height ?? icons.height ?? 24;
+const svgWidth = width ?? size ?? iconWidth;
+const svgHeight = height ?? size ?? iconHeight;
+const accessibleRole = role ?? (title ? "img" : undefined);
+const hidden = ariaHidden ?? (title ? undefined : "true");
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={svgWidth}
+  height={svgHeight}
+  viewBox={`0 0 ${iconWidth} ${iconHeight}`}
+  role={accessibleRole}
+  aria-hidden={hidden}
+  data-icon={name}
+  {...attrs}
+>
+  {title && <title>{title}</title>}
+  {desc && <desc>{desc}</desc>}
+  <Fragment set:html={icon.body} />
+</svg>

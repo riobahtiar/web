@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import Icon from "@/components/Icon.astro";
 import LogoLight from "./LogoLight.astro";
 import LogoDark from "./LogoDark.astro";
 
@@ -26,9 +26,14 @@ const { lang, i18n } = Astro.props;
 // Language switcher
 const currentPath = new URL(Astro.request.url).pathname;
 const pagePath = currentPath.replace(/^\/id\/?/, "/");
-const alternateLanguageUrl = lang === "en" ? `/id${pagePath}` : pagePath;
 const languageLabel = lang === "en" ? "Language" : "Bahasa";
-const alternateLanguage = lang === "en" ? "Bahasa Indonesia" : "English";
+
+// Same page in the other locale
+const englishHref = pagePath === "" || pagePath === "/" ? "/" : pagePath;
+const indonesianHref =
+  pagePath === "" || pagePath === "/"
+    ? "/id/"
+    : `/id${pagePath.startsWith("/") ? pagePath : `/${pagePath}`}`;
 
 // Homepage URL based on language
 const homeUrl = lang === "en" ? "/" : "/id/";
@@ -107,23 +112,62 @@ const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
 
     <div class="navbar-end">
       <div class="flex items-center gap-4">
-        <!-- Language Switcher -->
-        <div class="dropdown dropdown-end">
-          <button class="btn btn-ghost btn-sm gap-1" aria-label={languageLabel}>
-            <Icon name="tabler:language" class="h-5 w-5" />
-            <span class="hidden sm:inline">{lang === "en" ? "EN" : "ID"}</span>
-          </button>
-          <ul
-            tabindex="0"
-            class="dropdown-content menu bg-base-200 rounded-box z-[1] p-2 shadow"
+        <!-- Language: details/summary (DaisyUI 5 — reliable vs focus-based + button) -->
+        <details class="lang-dropdown dropdown dropdown-end">
+          <summary
+            class="btn btn-ghost btn-sm min-h-8 cursor-pointer list-none gap-1.5 px-2 font-medium before:hidden [&::-webkit-details-marker]:hidden"
+            aria-label={languageLabel}
+            aria-haspopup="listbox"
           >
-            <li>
-              <a href={alternateLanguageUrl} class="whitespace-nowrap">
-                {alternateLanguage}
-              </a>
-            </li>
-          </ul>
-        </div>
+            <Icon name="tabler:language" class="text-base-content/80 h-5 w-5 shrink-0" />
+            <span class="text-sm tracking-tight">{lang === "en" ? "EN" : "ID"}</span>
+            <Icon
+              name="tabler:chevron-down"
+              class="lang-chevron text-base-content/45 h-4 w-4 shrink-0 transition-transform duration-200"
+            />
+          </summary>
+          <div
+            class="dropdown-content border-base-300/50 bg-base-100 text-base-content z-50 mt-1.5 min-w-52 rounded-box border p-1.5 shadow-lg"
+            role="listbox"
+            aria-label={languageLabel}
+          >
+            <p
+              class="text-base-content/55 border-base-200/80 mb-1 border-b px-2 py-1.5 text-xs font-medium tracking-wider uppercase"
+            >
+              {languageLabel}
+            </p>
+            <ul class="menu menu-sm w-full gap-0.5 p-0">
+              <li>
+                <a
+                  href={englishHref}
+                  class:list={[
+                    "flex w-full items-center rounded-lg py-2",
+                    { "active font-medium": lang === "en" },
+                  ]}
+                  hreflang="en"
+                  lang="en"
+                  aria-current={lang === "en" ? "true" : undefined}
+                >
+                  <span>English</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={indonesianHref}
+                  class:list={[
+                    "flex w-full items-center rounded-lg py-2",
+                    { "active font-medium": lang === "id" },
+                  ]}
+                  hreflang="id"
+                  lang="id"
+                  aria-current={lang === "id" ? "true" : undefined}
+                >
+                  <span>Bahasa Indonesia</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </details>
 
         <!-- Theme Toggle -->
         <label class="swap swap-rotate btn btn-ghost btn-sm btn-circle">
@@ -143,7 +187,7 @@ const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
           </button>
           <ul
             tabindex="0"
-            class="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow"
+            class="dropdown-content menu bg-base-200 rounded-box z-50 w-52 p-2 shadow"
           >
             <li>
               <a
@@ -184,6 +228,10 @@ const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
 <div id="header-spacer" class="h-16 transition-all duration-300"></div>
 
 <style>
+  .lang-dropdown[open] .lang-chevron {
+    transform: rotate(180deg);
+  }
+
   /* Active link styling */
   .menu a.active {
     background-color: hsl(var(--p) / 0.1);

@@ -2,7 +2,6 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
-import icon from "astro-icon";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import markdoc from "@astrojs/markdoc";
@@ -39,7 +38,7 @@ export default defineConfig({
     fallback: { id: "en" },
   },
 
-  integrations: [icon(), partytown(), sitemap(), markdoc(), mdx(), react()],
+  integrations: [partytown(), sitemap(), markdoc(), mdx(), react()],
 
   adapter: cloudflare({
     imageService: { build: "compile", runtime: "passthrough" },
