@@ -252,6 +252,29 @@ draft: false
 
 `image` is optional in the schema but strongly recommended for social previews.
 
+## Islands and React
+
+React islands are for genuine interactivity only, and there are currently none
+on any rendered page. `BlogSearch` is a plain `.astro` component with a small
+inline script: the post list is server-rendered and filtering is a `hidden`
+toggle over `data-haystack` attributes.
+
+Keep it that way unless an island truly earns its place. A React island here
+had two costs:
+
+- Astro server-renders islands, so React runs in the SSR pipeline. In dev, SSR
+  externalises CJS `node_modules`, so an island importing `react` resolved to
+  the raw CJS build while `react-dom/server` came from Vite's optimized bundle.
+  Two copies of React means a null hook dispatcher and "Invalid hook call" on
+  the first request after a cold cache, which rendered the blog with no posts.
+- Every post passed to the island was serialized into the HTML. Dropping it
+  took `/blog` from 268KB to 31KB.
+
+`@astrojs/react` stays registered for MDX components (`CodeTabs`, `CodeBlock`).
+The SSR `optimizeDeps.noDiscovery` and `resolve.noExternal` settings in
+`astro.config.mjs` exist to keep React on one instance if an island is ever
+rendered again; do not remove them.
+
 ## Blog Data Access
 
 Read posts through `@/utils/posts`, never `getCollection` directly:
