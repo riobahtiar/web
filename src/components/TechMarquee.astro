@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 
-import { stack } from "@/i18n/technology";
+import { shuffledStack, stack } from "@/i18n/technology";
 
 interface Props {
   label: string;
@@ -11,6 +11,10 @@ interface Props {
 
 const { label, secondsPerItem = 2.6 } = Astro.props;
 const duration = `${(stack.length * secondsPerItem).toFixed(0)}s`;
+
+// Shuffle once per render, then use that same order for both copies of the
+// track so the loop still meets seamlessly.
+const items = shuffledStack();
 ---
 
 <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
@@ -26,7 +30,7 @@ const duration = `${(stack.length * secondsPerItem).toFixed(0)}s`;
             aria-hidden={isClone ? "true" : undefined}
             aria-label={isClone ? undefined : label}
           >
-            {stack.map((tech) => (
+            {items.map((tech) => (
               <li class="marquee__item">
                 <Icon name={tech.icon} class="h-[18px] w-[18px] shrink-0" />
                 <span>{tech.name}</span>

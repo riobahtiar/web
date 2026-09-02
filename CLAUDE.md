@@ -279,14 +279,22 @@ Icons come from `astro-icon`, which inlines them as SVG at build time.
   (`<Icon name="typesense" />`). Keep local marks monochrome with
   `fill="currentColor"` so they match.
 
-A logo drawn for large sizes may not survive at 18px. Typesense's official mark
-is a constellation whose connectors are `stroke-width="0.12"`; those fall under
-a device pixel and vanish, leaving unconnected specks. `src/icons/typesense.svg`
-is their real geometry with the connectors thickened for icon size. Check any
-new local icon at its rendered size, not at 100%.
+A logo drawn for large sizes may not survive at 18px, so check every new local
+icon at its rendered size rather than at 100%. Three cases so far:
 
-Icons are inlined per use, and the marquee renders its list twice, so a heavy
-mark costs double. The homepage carries 40 inlined icons at ~23KB gzipped.
+- **Typesense** is a constellation whose connectors are `stroke-width="0.12"`.
+  Those fall under a device pixel and vanish, leaving unconnected specks, so
+  the local copy thickens them.
+- **Elysia** is a tonal character illustration. Its greys map to
+  `currentColor` opacities to keep some depth, but at 18px it still reduces to
+  a disc. That is the logo, not the conversion; widening the tonal range twice
+  did not help.
+- **WorkOS** was only in the coloured `logos` set, so the local copy is that
+  geometry recoloured to `currentColor`.
+
+Icons are inlined per use and the marquee renders its list twice, so a heavy
+mark costs double. Keep local marks lean: the homepage carries 56 inlined icons
+at ~27KB gzipped.
 
 ## Blog Data Access
 
