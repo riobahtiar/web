@@ -74,11 +74,6 @@ export const en = {
         description:
           "Retrieval, extraction and agent pipelines built around your own data and workflows, designed to be observable and cost-aware rather than a black box.",
       },
-      aiHardening: {
-        title: "AI Hardening & Evaluation",
-        description:
-          "Make AI features dependable: evaluation suites, guardrails, prompt-injection defence, fallbacks and monitoring, so behaviour is measured instead of assumed.",
-      },
       aiFeatures: {
         title: "AI-Assisted Product Features",
         description:

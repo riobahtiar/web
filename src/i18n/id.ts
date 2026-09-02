@@ -74,11 +74,6 @@ export const id = {
         description:
           "Pipeline retrieval, ekstraksi, dan agen yang dibangun di atas data dan alur kerja Anda sendiri, dirancang agar terpantau dan hemat biaya, bukan sekadar kotak hitam.",
       },
-      aiHardening: {
-        title: "Pengujian & Pengamanan AI",
-        description:
-          "Membuat fitur AI dapat diandalkan: rangkaian evaluasi, guardrail, pertahanan prompt injection, fallback, dan pemantauan, sehingga perilakunya terukur bukan diasumsikan.",
-      },
       aiFeatures: {
         title: "Fitur Produk Berbasis AI",
         description:
