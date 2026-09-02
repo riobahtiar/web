@@ -1,0 +1,54 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends Omit<HTMLAttributes<"a">, "size" | "type"> {
+  variant?: "primary" | "secondary" | "ghost" | "link";
+  size?: "sm" | "md" | "lg";
+  href?: string;
+  class?: string;
+  /** Narrowed so the props also satisfy <button> when no href is given. */
+  type?: "button" | "submit" | "reset";
+}
+
+const {
+  variant = "primary",
+  size = "md",
+  href,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 rounded-lg font-medium " +
+  "whitespace-nowrap transition-[background-color,border-color,color,box-shadow,transform] " +
+  "duration-150 active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
+
+const variants = {
+  primary:
+    "bg-accent-solid text-accent-on-solid hover:bg-accent-solid-hover " +
+    "shadow-[0_1px_0_0_rgba(255,255,255,0.14)_inset]",
+  secondary:
+    "border border-border-strong bg-surface text-foreground hover:bg-surface-hover",
+  ghost: "text-muted-foreground hover:bg-surface-2 hover:text-foreground",
+  link: "text-accent hover:text-accent-hover underline underline-offset-4 decoration-accent-solid/40 hover:decoration-accent",
+};
+
+const sizes = {
+  sm: "h-8 px-3 text-sm",
+  md: "h-10 px-4 text-sm",
+  lg: "h-12 px-6 text-base",
+};
+
+const classes = cn(
+  base,
+  variants[variant],
+  variant === "link" ? "h-auto p-0" : sizes[size],
+  className,
+);
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag class={classes} href={href} {...rest}><slot /></Tag>

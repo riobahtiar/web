@@ -1,0 +1,30 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"span"> {
+  variant?: "accent" | "neutral" | "outline";
+  href?: string;
+  class?: string;
+}
+
+const { variant = "neutral", href, class: className, ...rest } = Astro.props;
+
+const variants = {
+  accent: "bg-accent-wash text-accent border-transparent",
+  neutral: "bg-surface-2 text-muted-foreground border-border",
+  outline: "border-border text-muted-foreground bg-transparent",
+};
+
+const classes = cn(
+  "inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium",
+  variants[variant],
+  href && "hover:border-border-strong hover:text-foreground transition-colors",
+  className,
+);
+
+const Tag = href ? "a" : "span";
+---
+
+<Tag class={classes} href={href} {...rest}><slot /></Tag>

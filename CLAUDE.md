@@ -163,11 +163,39 @@ import { cn } from "@/lib/utils";
 
 ## Styling Rules
 
-- Tailwind CSS 4 is configured in CSS through `@import`, `@plugin`, and `@theme`, not through a traditional Tailwind config.
-- Shared tokens live in `src/assets/global.css`.
-- DaisyUI themes are disabled and mapped through CSS variables.
-- shadcn-style components use `components.json` aliases.
-- Preserve the existing visual system unless the task explicitly asks for a redesign.
+- Tailwind CSS 4 is configured in CSS through `@import`, `@plugin`, `@theme`
+  and `@utility`, not through a traditional Tailwind config.
+- All design tokens live in `src/assets/global.css`. Use the semantic classes
+  (`bg-background`, `bg-surface`, `text-foreground`, `text-muted-foreground`,
+  `border-border`, `text-accent`) rather than raw Tailwind palette colors.
+- Two accent roles, and they are not interchangeable:
+  - `--accent` is for text and lines, retuned per theme so it always passes AA.
+    In light mode it is deliberately darker than the brand mint.
+  - `--accent-solid` is for fills and keeps the brand mint in both themes.
+    Text on it must be `--accent-on-solid`.
+- Dark is the primary theme. `<html>` ships `data-theme="dark" class="dark"`,
+  and the inline script in `Layout.astro` resolves the real theme in `<head>`
+  before first paint. Never move that script out of the head.
+- Theme-dependent visuals should key off `[data-theme]` in CSS rather than a
+  script, so they are correct on the very first frame.
+- Structure comes from the hairline grid, not shadows: `.frame` bounds the
+  content column with vertical rules, and `Section` draws the divider between
+  sections. Cards are defined by a 1px border, not elevation.
+- `.eyebrow` is the small uppercase mono label used above headings.
+- Fonts are self-hosted through Astro's `fonts` config (Inter, JetBrains Mono).
+  Adding a family requires both an entry in `astro.config.mjs` **and** a
+  `<Font cssVariable="..." />` in the `Layout.astro` head, or the CSS variable
+  is undefined and the stack silently falls back to system fonts.
+- Do not add remote image CDNs for logos or icons; use `astro-icon` or local
+  assets.
+- Primitives live in `src/components/ui/` (`Button`, `Card`, `Badge`,
+  `Section`). Prefer them over ad-hoc markup. Radix/shadcn React components are
+  only for genuine interactivity, so static pages stay island-free.
+- DaisyUI is being retired. It is still installed and bridged onto the tokens
+  purely so unconverted pages keep rendering; do not write new DaisyUI markup
+  (`btn`, `card`, `badge`, `navbar`, `base-*`).
+- Preserve the existing visual system unless the task explicitly asks for a
+  redesign.
 
 ## Internationalization
 

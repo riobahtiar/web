@@ -1,4 +1,6 @@
 ---
+import { Font } from "astro:assets";
+
 import "../assets/global.css";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
@@ -54,11 +56,14 @@ const alternateID = toAbsolute(localizedPath("/id"));
 ---
 
 <!doctype html>
-<html lang={lang} class="transition-colors duration-300" data-theme="light">
+<html lang={lang} data-theme="dark" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-jetbrains-mono" />
 
     <script is:inline>
       // Initialize theme on page load
@@ -210,20 +215,13 @@ const alternateID = toAbsolute(localizedPath("/id"));
   <body>
     {showTopBanner && <Banner lang={lang} />}
     <Header lang={lang} i18n={i18n} />
-    <slot />
-    {showCTA && <CTA lang={lang} i18n={i18n} />}
+    <div class="frame">
+      <slot />
+      {showCTA && <CTA lang={lang} i18n={i18n} />}
+    </div>
     <Footer lang={lang} i18n={i18n} />
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
 
 <script>
   // Banner initialization

@@ -9,6 +9,9 @@ export const en = {
     comingSoon: "Coming Soon",
   },
   welcome: {
+    role: "Software Engineer & Tech Consultant",
+    available: "Available for new work",
+    stackLabel: "Tools I work with",
     title: "Welcome",
     description:
       "A software engineer and tech consultant specializing in modern web applications, system architecture, and digital strategy.",

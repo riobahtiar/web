@@ -1,4 +1,7 @@
 ---
+import Button from "@/components/ui/Button.astro";
+import Section from "@/components/ui/Section.astro";
+
 interface Props {
   lang: string;
   i18n: {
@@ -15,37 +18,38 @@ interface Props {
 }
 
 const { lang, i18n } = Astro.props;
+const prefix = lang === "en" ? "" : "id/";
 ---
 
-<section
-  class="bg-base-200 dark:bg-base-300 py-16 transition-colors duration-300"
->
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div
-      class="card bg-primary text-primary-foreground shadow-xl transition-colors duration-300"
-    >
-      <div class="card-body py-12 text-center">
-        <h2 class="card-title mb-3 justify-center text-3xl font-bold">
-          {i18n.work.title}
-        </h2>
-        <p class="mx-auto mb-8 max-w-2xl text-xl opacity-90">
-          {i18n.work.description}
-        </p>
-        <div class="card-actions justify-center gap-4">
-          <a
-            href={`/${lang === "en" ? "" : "id/"}services`}
-            class="btn btn-primary text-primary hover:text-primary/90 btn-lg bg-white transition-all duration-300 hover:bg-white/90"
-          >
-            {i18n.work.cta.viewServices}
-          </a>
-          <a
-            href={`/${lang === "en" ? "" : "id/"}contact?type=consultation`}
-            class="btn btn-outline btn-lg border-white text-white transition-all duration-300 hover:border-white hover:bg-white/20 hover:text-white"
-          >
-            {i18n.work.cta.consultation}
-          </a>
-        </div>
+<Section class="py-20">
+  <div
+    class="border-border bg-surface relative overflow-hidden rounded-2xl border px-6 py-14 text-center sm:px-14"
+  >
+    <div class="accent-glow pointer-events-none absolute inset-0"></div>
+
+    <div class="relative">
+      <p class="eyebrow">{i18n.work.subtitle}</p>
+      <h2 class="mt-4 text-3xl font-semibold sm:text-4xl">
+        {i18n.work.title}
+      </h2>
+      <p
+        class="text-muted-foreground mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-pretty"
+      >
+        {i18n.work.description}
+      </p>
+
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <Button href={`/${prefix}services`} size="lg">
+          {i18n.work.cta.viewServices}
+        </Button>
+        <Button
+          href={`/${prefix}contact?type=consultation`}
+          variant="secondary"
+          size="lg"
+        >
+          {i18n.work.cta.consultation}
+        </Button>
       </div>
     </div>
   </div>
-</section>
+</Section>

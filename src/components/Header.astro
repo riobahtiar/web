@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
-import LogoLight from "./LogoLight.astro";
-import LogoDark from "./LogoDark.astro";
+
+import Logo from "./Logo.astro";
 
 interface Props {
   lang: string;
@@ -23,324 +23,144 @@ interface Props {
 
 const { lang, i18n } = Astro.props;
 
-// Language switcher
 const currentPath = new URL(Astro.request.url).pathname;
 const pagePath = currentPath.replace(/^\/id\/?/, "/");
 const alternateLanguageUrl = lang === "en" ? `/id${pagePath}` : pagePath;
-const languageLabel = lang === "en" ? "Language" : "Bahasa";
 const alternateLanguage = lang === "en" ? "Bahasa Indonesia" : "English";
-
-// Homepage URL based on language
+const prefix = lang === "en" ? "" : "id/";
 const homeUrl = lang === "en" ? "/" : "/id/";
 
-// Check if current page is active
-const isActive = (path: string) => {
-  if (path === "#projects") return false; // Projects is an anchor, not a page
-  if (path === homeUrl) return currentPath === homeUrl;
-  return currentPath.startsWith(path);
-};
+const links = [
+  { href: `/${prefix}about`, label: i18n.nav.about },
+  { href: lang === "en" ? "/services" : "/id/services", label: i18n.nav.work },
+  { href: `/${prefix}blog`, label: i18n.nav.blog },
+  { href: `/${prefix}contact`, label: i18n.nav.contact },
+];
 
-// Define URLs for each page
-const aboutUrl = `/${lang === "en" ? "" : "id/"}about`;
-const servicesUrl = lang === "en" ? "/services" : "/id/services";
-const blogUrl = `/${lang === "en" ? "" : "id/"}blog`;
-const contactUrl = `/${lang === "en" ? "" : "id/"}contact`;
+const isActive = (path: string) =>
+  path === homeUrl ? currentPath === homeUrl : currentPath.startsWith(path);
 ---
 
 <header
   id="main-header"
-  class="bg-base-100/80 border-base-200 fixed top-0 right-0 left-0 z-40 border-b backdrop-blur-sm transition-all duration-300"
+  class="bg-background/80 border-rule fixed top-0 right-0 left-0 z-40 border-b backdrop-blur-md"
 >
-  <div class="navbar mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div class="navbar-start">
+  <div class="frame flex h-16 items-center gap-6 px-6 sm:px-10">
+    <a
+      href={homeUrl}
+      class="shrink-0 transition-opacity hover:opacity-70"
+      aria-label="Rio Bahtiar"
+    >
+      <Logo class="h-7 w-auto" width="58" height="32" />
+    </a>
+
+    <nav class="hidden flex-1 items-center gap-1 lg:flex">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            aria-current={isActive(link.href) ? "page" : undefined}
+            class:list={[
+              "rounded-md px-3 py-1.5 text-sm transition-colors",
+              isActive(link.href)
+                ? "text-foreground bg-surface-2 font-medium"
+                : "text-muted-foreground hover:text-foreground hover:bg-surface-2",
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="ml-auto flex items-center gap-1 lg:ml-0">
       <a
-        href={homeUrl}
-        class="flex items-center transition-opacity duration-300 hover:opacity-80"
+        href={alternateLanguageUrl}
+        class="text-muted-foreground hover:text-foreground hover:bg-surface-2 inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm transition-colors"
+        title={alternateLanguage}
       >
-        <div class="relative h-8 w-32">
-          <LogoLight
-            class="logo-light absolute top-0 left-0 h-full w-auto transform object-contain transition-all duration-300"
-            width="58"
-            height="32"
-          />
-          <LogoDark
-            class="logo-dark absolute top-0 left-0 h-full w-auto transform object-contain transition-all duration-300"
-            width="58"
-            height="32"
-          />
-        </div>
+        <Icon name="tabler:language" class="h-4 w-4" />
+        <span class="font-mono text-xs tracking-wider uppercase">
+          {lang === "en" ? "EN" : "ID"}
+        </span>
       </a>
+
+      <button
+        type="button"
+        id="theme-toggle"
+        class="text-muted-foreground hover:text-foreground hover:bg-surface-2 inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors"
+        aria-label={i18n.footer.darkMode}
+      >
+        <Icon name="tabler:sun" class="theme-icon-light h-[18px] w-[18px]" />
+        <Icon name="tabler:moon" class="theme-icon-dark h-[18px] w-[18px]" />
+      </button>
+
+      <button
+        type="button"
+        id="mobile-menu-button"
+        class="text-muted-foreground hover:text-foreground hover:bg-surface-2 inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors lg:hidden"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <Icon name="tabler:menu-2" class="h-[18px] w-[18px]" />
+      </button>
     </div>
+  </div>
 
-    <div class="navbar-center hidden lg:flex">
-      <ul class="menu menu-horizontal gap-2 px-1">
-        <li>
+  <div
+    id="mobile-menu"
+    class="border-rule bg-background border-b lg:hidden"
+    hidden
+  >
+    <nav class="frame flex flex-col px-6 py-3 sm:px-10">
+      {
+        links.map((link) => (
           <a
-            href={aboutUrl}
-            class={isActive(aboutUrl) ? "active font-medium" : ""}
-            >{i18n.nav.about}</a
+            href={link.href}
+            class:list={[
+              "rounded-md px-3 py-2.5 text-sm transition-colors",
+              isActive(link.href)
+                ? "text-foreground bg-surface-2 font-medium"
+                : "text-muted-foreground hover:text-foreground hover:bg-surface-2",
+            ]}
           >
-        </li>
-        <li>
-          <a
-            href={servicesUrl}
-            class={isActive(servicesUrl) ? "active font-medium" : ""}
-            >{i18n.nav.work}</a
-          >
-        </li>
-        <li>
-          <a
-            href={blogUrl}
-            class={isActive(blogUrl) ? "active font-medium" : ""}
-            >{i18n.nav.blog}</a
-          >
-        </li>
-        <li>
-          <a
-            href={contactUrl}
-            class={isActive(contactUrl) ? "active font-medium" : ""}
-            >{i18n.nav.contact}</a
-          >
-        </li>
-      </ul>
-    </div>
-
-    <div class="navbar-end">
-      <div class="flex items-center gap-4">
-        <!-- Language Switcher -->
-        <div class="dropdown dropdown-end">
-          <button class="btn btn-ghost btn-sm gap-1" aria-label={languageLabel}>
-            <Icon name="tabler:language" class="h-5 w-5" />
-            <span class="hidden sm:inline">{lang === "en" ? "EN" : "ID"}</span>
-          </button>
-          <ul
-            tabindex="0"
-            class="dropdown-content menu bg-base-200 rounded-box z-[1] p-2 shadow"
-          >
-            <li>
-              <a href={alternateLanguageUrl} class="whitespace-nowrap">
-                {alternateLanguage}
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Theme Toggle -->
-        <label class="swap swap-rotate btn btn-ghost btn-sm btn-circle">
-          <input
-            type="checkbox"
-            class="theme-controller"
-            aria-label={i18n.footer.darkMode}
-          />
-          <Icon name="tabler:sun" class="swap-on h-5 w-5" />
-          <Icon name="tabler:moon" class="swap-off h-5 w-5" />
-        </label>
-
-        <!-- Mobile Menu -->
-        <div class="dropdown dropdown-end lg:hidden">
-          <button class="btn btn-ghost btn-sm btn-circle" aria-label="Menu">
-            <Icon name="tabler:menu" class="h-5 w-5" />
-          </button>
-          <ul
-            tabindex="0"
-            class="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow"
-          >
-            <li>
-              <a
-                href={aboutUrl}
-                class={isActive(aboutUrl) ? "active font-medium" : ""}
-                >{i18n.nav.about}</a
-              >
-            </li>
-            <li>
-              <a
-                href={servicesUrl}
-                class={isActive(servicesUrl) ? "active font-medium" : ""}
-                >{i18n.nav.work}</a
-              >
-            </li>
-            <li>
-              <a
-                href={blogUrl}
-                class={isActive(blogUrl) ? "active font-medium" : ""}
-                >{i18n.nav.blog}</a
-              >
-            </li>
-            <li>
-              <a
-                href={contactUrl}
-                class={isActive(contactUrl) ? "active font-medium" : ""}
-                >{i18n.nav.contact}</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
   </div>
 </header>
 
-<!-- Spacer to prevent content from hiding under fixed header -->
-<div id="header-spacer" class="h-16 transition-all duration-300"></div>
-
-<style>
-  /* Active link styling */
-  .menu a.active {
-    background-color: hsl(var(--p) / 0.1);
-    color: hsl(var(--p));
-  }
-
-  /* Logo animations and theme-based visibility */
-  .logo-light,
-  .logo-dark {
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-  }
-
-  /* Light theme */
-  :root[data-theme="light"] .logo-light {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  :root[data-theme="light"] .logo-dark {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  /* Dark theme */
-  :root[data-theme="dark"] .logo-dark {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  :root[data-theme="dark"] .logo-light {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  /* Hover effect */
-  .navbar-start a:hover .logo-light:not([style*="visibility: hidden"]),
-  .navbar-start a:hover .logo-dark:not([style*="visibility: hidden"]) {
-    transform: scale(1.05);
-  }
-</style>
-
-<script is:inline>
-  // Adjust header position based on banner visibility
-  function adjustHeaderPosition() {
-    const banner = document.getElementById("announcement-banner");
-    const header = document.getElementById("main-header");
-    const spacer = document.getElementById("header-spacer");
-
-    if (banner && header && spacer) {
-      const bannerHeight = banner.offsetHeight;
-      header.style.top =
-        banner.style.display === "none" ? "0" : `${bannerHeight}px`;
-    }
-  }
-
-  // Direct theme toggle handler
-  function setupThemeToggle() {
-    const themeToggle = document.querySelector(".theme-controller");
-    if (!themeToggle) return;
-
-    // Set initial state based on current theme
-    const currentTheme =
-      document.documentElement.getAttribute("data-theme") || "light";
-    themeToggle.checked = currentTheme === "dark";
-
-    // Add click event listener
-    themeToggle.addEventListener("change", function (e) {
-      if (e.target && "checked" in e.target) {
-        const newTheme = e.target.checked ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-
-        // Also update dark class for Tailwind dark mode
-        if (newTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      }
-    });
-  }
-
-  // Run on page load
-  document.addEventListener("DOMContentLoaded", function () {
-    adjustHeaderPosition();
-    setupThemeToggle();
-  });
-
-  // Also run when Astro page loads (for client-side navigation)
-  document.addEventListener("astro:page-load", function () {
-    adjustHeaderPosition();
-    setupThemeToggle();
-  });
-
-  // Run when banner visibility changes
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (
-        mutation.type === "attributes" &&
-        mutation.attributeName === "style"
-      ) {
-        adjustHeaderPosition();
-      }
-    });
-  });
-
-  const banner = document.getElementById("announcement-banner");
-  if (banner) {
-    observer.observe(banner, { attributes: true });
-  }
-</script>
+<div class="h-16" aria-hidden="true"></div>
 
 <script>
-  function updateLogoVisibility() {
-    const theme =
-      document.documentElement.getAttribute("data-theme") || "light";
-    const lightLogo = document.querySelector(".logo-light");
-    const darkLogo = document.querySelector(".logo-dark");
+  function setupHeader() {
+    const toggle = document.getElementById("theme-toggle");
+    toggle?.addEventListener("click", () => {
+      const root = document.documentElement;
+      const next =
+        root.getAttribute("data-theme") === "dark" ? "light" : "dark";
 
-    if (!lightLogo || !darkLogo) return;
+      root.setAttribute("data-theme", next);
+      root.classList.toggle("dark", next === "dark");
+      localStorage.setItem("theme", next);
+    });
 
-    // Add display classes based on theme
-    if (theme === "dark") {
-      lightLogo.classList.remove("opacity-100", "visible");
-      lightLogo.classList.add("opacity-0", "invisible");
-      darkLogo.classList.remove("opacity-0", "invisible");
-      darkLogo.classList.add("opacity-100", "visible");
-    } else {
-      darkLogo.classList.remove("opacity-100", "visible");
-      darkLogo.classList.add("opacity-0", "invisible");
-      lightLogo.classList.remove("opacity-0", "invisible");
-      lightLogo.classList.add("opacity-100", "visible");
-    }
+    const menuButton = document.getElementById("mobile-menu-button");
+    const menu = document.getElementById("mobile-menu");
+    menuButton?.addEventListener("click", () => {
+      const open = menu?.hasAttribute("hidden");
+      if (open) {
+        menu?.removeAttribute("hidden");
+      } else {
+        menu?.setAttribute("hidden", "");
+      }
+      menuButton.setAttribute("aria-expanded", String(open));
+    });
   }
 
-  // Run on page load
-  document.addEventListener("DOMContentLoaded", updateLogoVisibility);
-
-  // Run on Astro page transitions
-  document.addEventListener("astro:page-load", updateLogoVisibility);
-
-  // Watch for theme changes
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === "data-theme") {
-        updateLogoVisibility();
-      }
-    });
-  });
-
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
-
-  // Initial update
-  updateLogoVisibility();
+  setupHeader();
+  document.addEventListener("astro:page-load", setupHeader);
 </script>

@@ -9,6 +9,9 @@ export const id = {
     comingSoon: "Segera Hadir",
   },
   welcome: {
+    role: "Software Engineer & Konsultan Teknologi",
+    available: "Tersedia untuk proyek baru",
+    stackLabel: "Teknologi yang saya gunakan",
     title: "Selamat Datang",
     description:
       "Seorang software engineer dan konsultan teknologi yang mengkhususkan diri dalam aplikasi web modern, arsitektur sistem, dan strategi digital.",

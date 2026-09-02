@@ -1,0 +1,27 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"section"> {
+  /** Draw the hairline that separates this section from the next. */
+  divided?: boolean;
+  /** Horizontal padding inside the framed column. */
+  padded?: boolean;
+  class?: string;
+}
+
+const {
+  divided = true,
+  padded = true,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<section
+  class={cn(divided && "rule-b", padded && "px-6 sm:px-10", className)}
+  {...rest}
+>
+  <slot />
+</section>
