@@ -12,8 +12,14 @@ const requestedPage = parsePageParam(Astro.params.page);
 const allPosts = await getPublishedPosts("blog-en");
 const { posts, pagination } = paginatePosts(allPosts, requestedPage, "/blog");
 
-// Page 1 is canonical at /blog, and anything past the last page has no posts.
-if (requestedPage === 1 || requestedPage > pagination.totalPages) {
+// Page 1 is permanently canonical at /blog.
+if (requestedPage === 1) {
+  return Astro.redirect("/blog", 301);
+}
+
+// Past the last page there is nothing to show yet, but more posts may fill it
+// in later, so this stays a temporary redirect.
+if (requestedPage > pagination.totalPages) {
   return Astro.redirect("/blog");
 }
 
@@ -27,6 +33,7 @@ const description =
   description={description}
   lang="en"
   posts={posts}
+  allPosts={allPosts}
   categories={getCategoryCounts(allPosts)}
   pagination={pagination}
 />

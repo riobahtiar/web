@@ -16,14 +16,35 @@ interface BlogPost {
   };
 }
 
-interface Props {
-  posts: BlogPost[];
-  lang: string;
-  baseUrl: string;
+interface Pagination {
+  currentPage: number;
+  totalPages: number;
+  url: {
+    prev?: string;
+    next?: string;
+  };
 }
 
-export default function BlogSearch({ posts, lang, baseUrl }: Props) {
+interface Props {
+  posts: BlogPost[];
+  /** The full archive to search. Defaults to the posts on this page. */
+  allPosts?: BlogPost[];
+  lang: string;
+  baseUrl: string;
+  pagination?: Pagination;
+}
+
+export default function BlogSearch({
+  posts,
+  allPosts,
+  lang,
+  baseUrl,
+  pagination,
+}: Props) {
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Searching spans the whole archive; browsing shows one page at a time.
+  const searchPool = allPosts ?? posts;
 
   const filteredPosts = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -31,7 +52,7 @@ export default function BlogSearch({ posts, lang, baseUrl }: Props) {
     }
 
     const query = searchQuery.toLowerCase();
-    return posts.filter((post) => {
+    return searchPool.filter((post) => {
       const titleMatch = post.data.title.toLowerCase().includes(query);
       const descriptionMatch = post.data.description
         .toLowerCase()
@@ -43,7 +64,7 @@ export default function BlogSearch({ posts, lang, baseUrl }: Props) {
 
       return titleMatch || descriptionMatch || categoryMatch || tagsMatch;
     });
-  }, [searchQuery, posts]);
+  }, [searchQuery, posts, searchPool]);
 
   const formatDate = (date: Date): string => {
     return new Date(date).toLocaleDateString(
@@ -99,8 +120,8 @@ export default function BlogSearch({ posts, lang, baseUrl }: Props) {
         {searchQuery && (
           <p className="mt-2 text-sm opacity-70">
             {lang === "id"
-              ? `Menampilkan ${filteredPosts.length} dari ${posts.length} artikel`
-              : `Showing ${filteredPosts.length} of ${posts.length} articles`}
+              ? `Menampilkan ${filteredPosts.length} dari ${searchPool.length} artikel`
+              : `Showing ${filteredPosts.length} of ${searchPool.length} articles`}
           </p>
         )}
       </div>
@@ -211,6 +232,24 @@ export default function BlogSearch({ posts, lang, baseUrl }: Props) {
           </div>
         )}
       </div>
+
+      {!searchQuery.trim() && pagination && pagination.totalPages > 1 && (
+        <div className="mt-12 flex justify-center gap-2">
+          {pagination.url.prev && (
+            <a href={pagination.url.prev} className="btn btn-ghost">
+              ← {lang === "en" ? "Previous" : "Sebelumnya"}
+            </a>
+          )}
+          <span className="btn btn-ghost">
+            {pagination.currentPage} / {pagination.totalPages}
+          </span>
+          {pagination.url.next && (
+            <a href={pagination.url.next} className="btn btn-ghost">
+              {lang === "en" ? "Next" : "Selanjutnya"} →
+            </a>
+          )}
+        </div>
+      )}
     </div>
   );
 }

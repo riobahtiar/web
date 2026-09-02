@@ -16,8 +16,14 @@ const { posts, pagination } = paginatePosts(
   "/id/blog",
 );
 
-// Halaman 1 kanonis di /id/blog, dan di atas halaman terakhir tidak ada artikel.
-if (requestedPage === 1 || requestedPage > pagination.totalPages) {
+// Page 1 is permanently canonical at /id/blog.
+if (requestedPage === 1) {
+  return Astro.redirect("/id/blog", 301);
+}
+
+// Past the last page there is nothing to show yet, but more posts may fill it
+// in later, so this stays a temporary redirect.
+if (requestedPage > pagination.totalPages) {
   return Astro.redirect("/id/blog");
 }
 
@@ -31,6 +37,7 @@ const description =
   description={description}
   lang="id"
   posts={posts}
+  allPosts={allPosts}
   categories={getCategoryCounts(allPosts)}
   pagination={pagination}
 />

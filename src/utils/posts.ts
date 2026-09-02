@@ -53,11 +53,15 @@ export function getCategoryCounts(
   return [...counts].map(([name, count]) => ({ name, count }));
 }
 
-/** Parse a `[page]` route param into a positive integer, defaulting to 1. */
+/**
+ * Parse a `[page]` route param into a positive integer, defaulting to 1.
+ * Only bare digits are accepted: `parseInt` would read "2abc" as page 2 and
+ * serve real content on a URL that should not exist.
+ */
 export function parsePageParam(value: string | undefined): number {
-  const page = Number.parseInt(value ?? "1", 10);
+  if (value === undefined) return 1;
 
-  return Number.isInteger(page) && page > 0 ? page : 1;
+  return /^[1-9]\d*$/.test(value) ? Number.parseInt(value, 10) : 1;
 }
 
 /**
@@ -100,7 +104,9 @@ const IMAGE_MIME_TYPES: Record<string, string> = {
 
 /** MIME type for an RSS `<enclosure>`, guessed from the file extension. */
 export function getImageMimeType(path: string): string {
-  const extension = path.split(".").pop()?.toLowerCase() ?? "";
+  // Strip any query string or fragment first, so "/cover.jpg?v=2" is still a jpeg.
+  const filename = path.split(/[?#]/)[0] ?? "";
+  const extension = filename.split(".").pop()?.toLowerCase() ?? "";
 
   return IMAGE_MIME_TYPES[extension] ?? "application/octet-stream";
 }

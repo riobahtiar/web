@@ -25,6 +25,8 @@ interface Props {
   description: string;
   lang: string;
   posts: BlogPost[];
+  /** The full archive, so client-side search is not limited to this page. */
+  allPosts?: BlogPost[];
   categories?: { name: string; count: number }[];
   currentCategory?: string;
   pagination?: Pagination;
@@ -35,6 +37,7 @@ const {
   description,
   lang,
   posts,
+  allPosts,
   categories,
   currentCategory,
   pagination = { currentPage: 1, totalPages: 1, url: {} },
@@ -55,28 +58,14 @@ const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
           </header>
 
           <!-- Search and Posts -->
-          <BlogSearch posts={posts} lang={lang} baseUrl={baseUrl} client:load />
-
-          <!-- Pagination -->
-          {
-            pagination.totalPages > 1 && (
-              <div class="mt-12 flex justify-center gap-2">
-                {pagination.url.prev && (
-                  <a href={pagination.url.prev} class="btn btn-ghost">
-                    ← {lang === "en" ? "Previous" : "Sebelumnya"}
-                  </a>
-                )}
-                <span class="btn btn-ghost">
-                  {pagination.currentPage} / {pagination.totalPages}
-                </span>
-                {pagination.url.next && (
-                  <a href={pagination.url.next} class="btn btn-ghost">
-                    {lang === "en" ? "Next" : "Selanjutnya"} →
-                  </a>
-                )}
-              </div>
-            )
-          }
+          <BlogSearch
+            posts={posts}
+            allPosts={allPosts ?? posts}
+            lang={lang}
+            baseUrl={baseUrl}
+            pagination={pagination}
+            client:load
+          />
         </div>
 
         <!-- Sidebar -->
