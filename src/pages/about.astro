@@ -5,8 +5,11 @@ import Layout from "../layouts/Layout.astro";
 const pathname = Astro.url.pathname;
 const lang = pathname.startsWith("/id/") ? "id" : "en";
 
-// Last modified date
-const lastModified = new Date().toLocaleDateString(
+// Bump when the content below actually changes. Using new Date() here claimed
+// the page was updated today, every day.
+const CONTENT_UPDATED = new Date("2026-09-03");
+
+const lastModified = CONTENT_UPDATED.toLocaleDateString(
   lang === "en" ? "en-US" : "id-ID",
   {
     year: "numeric",
@@ -18,7 +21,7 @@ const lastModified = new Date().toLocaleDateString(
 const meta = {
   title: "About Me",
   description:
-    "Learn more about Rio Bahtiar, a software engineer specializing in modern web development, distributed systems, and enterprise solutions.",
+    "Learn more about Rio Bahtiar \u2014 software engineer working across modern web development, system architecture and AI engineering.",
   image: "/smc.jpg",
 };
 ---
@@ -158,6 +161,15 @@ const meta = {
               <li>AWS Services</li>
               <li>CI/CD Pipelines</li>
               <li>Infrastructure as Code</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">AI Engineering</h3>
+            <ul>
+              <li>Custom AI & retrieval pipelines</li>
+              <li>Evaluation, guardrails & monitoring</li>
+              <li>LLM integration in production systems</li>
+              <li>AI-assisted product features</li>
             </ul>
           </div>
         </div>
