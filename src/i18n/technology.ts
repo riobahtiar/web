@@ -27,6 +27,12 @@ export const technology = {
     { name: "Laravel", icon: "simple-icons:laravel" },
     { name: "WordPress", icon: "simple-icons:wordpress" },
   ],
+  mobile: [
+    { name: "Flutter", icon: "simple-icons:flutter" },
+    // React Native's brand mark is the React atom; simple-icons has no separate
+    // entry, and tabler's is stroke-based so it would read thin beside these.
+    { name: "React Native", icon: "simple-icons:react" },
+  ],
   database: [
     { name: "PostgreSQL", icon: "simple-icons:postgresql" },
     { name: "MySQL", icon: "simple-icons:mysql" },
@@ -56,6 +62,7 @@ export const technology = {
 export const stack: Tech[] = [
   ...technology.backend,
   ...technology.frontend,
+  ...technology.mobile,
   ...technology.database,
   ...technology.cloud,
   ...technology.ai,
