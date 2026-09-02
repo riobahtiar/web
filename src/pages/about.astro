@@ -5,8 +5,11 @@ import Layout from "../layouts/Layout.astro";
 const pathname = Astro.url.pathname;
 const lang = pathname.startsWith("/id/") ? "id" : "en";
 
-// Last modified date
-const lastModified = new Date().toLocaleDateString(
+// Bump when the content below actually changes. Using new Date() here claimed
+// the page was updated today, every day.
+const CONTENT_UPDATED = new Date("2026-09-03");
+
+const lastModified = CONTENT_UPDATED.toLocaleDateString(
   lang === "en" ? "en-US" : "id-ID",
   {
     year: "numeric",
@@ -18,7 +21,7 @@ const lastModified = new Date().toLocaleDateString(
 const meta = {
   title: "About Me",
   description:
-    "Learn more about Rio Bahtiar, a software engineer specializing in modern web development, distributed systems, and enterprise solutions.",
+    "Learn more about Rio Bahtiar \u2014 software engineer, founder of Ciptalogi, working across modern web development, system architecture and AI engineering.",
   image: "/smc.jpg",
 };
 ---
@@ -59,9 +62,10 @@ const meta = {
         <h2>Introduction</h2>
         <p>
           Hello! I'm Rio Bahtiar, a software engineer passionate about creating
-          innovative solutions through technology. In my free time, I enjoy
-          reading technical literature, staying active with swimming, and
-          exploring the possibilities of technology through science fiction.
+          innovative solutions through technology, and the founder of Ciptalogi.
+          In my free time, I enjoy reading technical literature, staying active
+          with swimming, and exploring the possibilities of technology through
+          science fiction.
         </p>
 
         <h2>Education & Background</h2>
@@ -74,11 +78,38 @@ const meta = {
         </p>
 
         <h2>Professional Experience</h2>
-        <h3>Sekolah.mu (2022-Present) - Senior Software Engineer</h3>
+        <h3>Ciptalogi (2026-Present) - Founder</h3>
         <p>
-          Currently leading frontend development initiatives at an innovative
-          EdTech company, focusing on creating engaging and accessible learning
-          experiences. Key responsibilities include:
+          In 2026 I founded <a
+            href="https://ciptalogi.com"
+            target="_blank"
+            rel="noopener noreferrer">Ciptalogi</a
+          > (PT. Ciptalogi Integrasi Digital), a software house building custom systems
+          across web, cloud infrastructure and AI. Alongside client work, we are developing
+          our own product in-house, launching later in 2026. What I focus on:
+        </p>
+        <ul>
+          <li>
+            Technical direction, architecture and delivery across projects
+          </li>
+          <li>
+            Custom AI pipelines built around a client's own data and workflows
+          </li>
+          <li>
+            Hardening AI features for production: evaluation, guardrails and
+            sensible failure behaviour
+          </li>
+          <li>
+            Applying AI inside existing products where it measurably improves
+            them, rather than as a bolt-on
+          </li>
+        </ul>
+
+        <h3>Sekolah.mu (2022-2026) - Senior Software Engineer</h3>
+        <p>
+          Led frontend development initiatives at an EdTech company, focusing on
+          engaging and accessible learning experiences. Key responsibilities
+          included:
         </p>
         <ul>
           <li>
@@ -158,6 +189,15 @@ const meta = {
               <li>AWS Services</li>
               <li>CI/CD Pipelines</li>
               <li>Infrastructure as Code</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">AI Engineering</h3>
+            <ul>
+              <li>Custom AI & retrieval pipelines</li>
+              <li>Evaluation, guardrails & monitoring</li>
+              <li>LLM integration in production systems</li>
+              <li>AI-assisted product features</li>
             </ul>
           </div>
         </div>

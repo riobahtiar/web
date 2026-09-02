@@ -22,7 +22,7 @@ export const id = {
     stackLabel: "Teknologi yang saya gunakan",
     title: "Selamat Datang",
     description:
-      "Seorang software engineer dan konsultan teknologi yang mengkhususkan diri dalam aplikasi web modern, arsitektur sistem, dan strategi digital.",
+      "Seorang software engineer dan konsultan teknologi yang mengkhususkan diri dalam aplikasi web modern, sistem AI, dan arsitektur sistem.",
     viewWork: "Lihat Layanan",
     contactMe: "Hubungi Saya",
     clients: "Klien Kami",
@@ -37,7 +37,7 @@ export const id = {
     title: "Bekerja Sama",
     subtitle: "Layanan Profesional",
     description:
-      "Saya menawarkan layanan konsultasi dan pengembangan komprehensif untuk membantu Anda membangun solusi yang dapat diskalakan, mengoptimalkan kinerja, dan mengembangkan kehadiran digital melalui keahlian teknis dan panduan strategis.",
+      "Saya menawarkan layanan konsultasi dan pengembangan di bidang web, infrastruktur, dan AI \u2014 membantu Anda membangun sistem yang dapat diskalakan, merilis fitur AI yang andal di produksi, dan mengembangkan kehadiran digital Anda. Proyek berskala besar dikerjakan melalui perusahaan saya, Ciptalogi.",
     services: {
       consultation: {
         title: "Konsultasi Teknis",
@@ -68,6 +68,21 @@ export const id = {
         title: "Migrasi & Modernisasi Platform",
         description:
           "Migrasi platform Anda ke teknologi modern, infrastruktur cloud, dan tingkatkan proses deployment dengan mulus.",
+      },
+      aiPipelines: {
+        title: "Pipeline AI Kustom",
+        description:
+          "Pipeline retrieval, ekstraksi, dan agen yang dibangun di atas data dan alur kerja Anda sendiri, dirancang agar terpantau dan hemat biaya, bukan sekadar kotak hitam.",
+      },
+      aiHardening: {
+        title: "Pengujian & Pengamanan AI",
+        description:
+          "Membuat fitur AI dapat diandalkan: rangkaian evaluasi, guardrail, pertahanan prompt injection, fallback, dan pemantauan, sehingga perilakunya terukur bukan diasumsikan.",
+      },
+      aiFeatures: {
+        title: "Fitur Produk Berbasis AI",
+        description:
+          "Menambahkan AI pada bagian yang benar-benar bermanfaat dalam produk yang sudah berjalan \u2014 pencarian, ringkasan, klasifikasi, dan asistensi \u2014 tanpa mengganggu yang sudah bekerja.",
       },
     },
     cta: {

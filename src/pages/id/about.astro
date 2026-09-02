@@ -1,8 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-// Last modified date
-const lastModified = new Date().toLocaleDateString("id-ID", {
+// Perbarui saat konten di bawah benar-benar berubah. new Date() membuat halaman
+// ini mengaku diperbarui hari ini, setiap hari.
+const CONTENT_UPDATED = new Date("2026-09-03");
+
+const lastModified = CONTENT_UPDATED.toLocaleDateString("id-ID", {
   year: "numeric",
   month: "long",
   day: "numeric",
@@ -11,7 +14,7 @@ const lastModified = new Date().toLocaleDateString("id-ID", {
 const meta = {
   title: "Tentang Saya",
   description:
-    "Pelajari lebih lanjut tentang Rio Bahtiar, seorang software engineer yang mengkhususkan diri dalam pengembangan web modern, sistem terdistribusi, dan solusi enterprise.",
+    "Pelajari lebih lanjut tentang Rio Bahtiar \u2014 software engineer, pendiri Ciptalogi, yang bekerja di bidang pengembangan web modern, arsitektur sistem, dan AI engineering.",
   image: "/smc.jpg",
 };
 ---
@@ -52,10 +55,10 @@ const meta = {
         <h2>Perkenalan</h2>
         <p>
           Halo! Saya Rio Bahtiar, seorang software engineer yang bersemangat
-          dalam menciptakan solusi inovatif melalui teknologi. Di waktu luang,
-          saya gemar membaca literatur teknis, menjaga kebugaran dengan
-          berenang, dan mengeksplorasi kemungkinan teknologi melalui fiksi
-          ilmiah.
+          dalam menciptakan solusi inovatif melalui teknologi, sekaligus pendiri
+          Ciptalogi. Di waktu luang, saya gemar membaca literatur teknis,
+          menjaga kebugaran dengan berenang, dan mengeksplorasi kemungkinan
+          teknologi melalui fiksi ilmiah.
         </p>
 
         <h2>Pendidikan & Latar Belakang</h2>
@@ -69,11 +72,37 @@ const meta = {
         </p>
 
         <h2>Pengalaman Profesional</h2>
-        <h3>Sekolah.mu (2022-Sekarang) - Senior Software Engineer</h3>
+        <h3>Ciptalogi (2026-Sekarang) - Founder</h3>
         <p>
-          Saat ini memimpin inisiatif pengembangan frontend di perusahaan EdTech
-          yang inovatif, fokus pada menciptakan pengalaman belajar yang menarik
-          dan mudah diakses. Tanggung jawab utama meliputi:
+          Pada 2026 saya mendirikan <a
+            href="https://ciptalogi.com"
+            target="_blank"
+            rel="noopener noreferrer">Ciptalogi</a
+          > (PT. Ciptalogi Integrasi Digital), sebuah software house yang membangun
+          sistem kustom di bidang web, infrastruktur cloud, dan AI. Selain pekerjaan
+          klien, kami sedang mengembangkan produk sendiri secara internal yang akan
+          diluncurkan pada akhir 2026. Fokus saya:
+        </p>
+        <ul>
+          <li>Arahan teknis, arsitektur, dan eksekusi lintas proyek</li>
+          <li>
+            Pipeline AI kustom yang dibangun di atas data dan alur kerja klien
+          </li>
+          <li>
+            Mengamankan fitur AI untuk produksi: evaluasi, guardrail, dan
+            penanganan kegagalan yang wajar
+          </li>
+          <li>
+            Menerapkan AI di dalam produk yang sudah ada ketika benar-benar
+            meningkatkan kualitasnya, bukan sekadar tempelan
+          </li>
+        </ul>
+
+        <h3>Sekolah.mu (2022-2026) - Senior Software Engineer</h3>
+        <p>
+          Memimpin inisiatif pengembangan frontend di perusahaan EdTech, fokus
+          pada menciptakan pengalaman belajar yang menarik dan mudah diakses.
+          Tanggung jawab utama meliputi:
         </p>
         <ul>
           <li>
@@ -158,6 +187,15 @@ const meta = {
               <li>Layanan AWS</li>
               <li>Pipeline CI/CD</li>
               <li>Infrastructure as Code</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">AI Engineering</h3>
+            <ul>
+              <li>Pipeline AI & retrieval kustom</li>
+              <li>Evaluasi, guardrail & pemantauan</li>
+              <li>Integrasi LLM di sistem produksi</li>
+              <li>Fitur produk berbasis AI</li>
             </ul>
           </div>
         </div>

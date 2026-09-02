@@ -22,7 +22,7 @@ export const en = {
     stackLabel: "Tools I work with",
     title: "Welcome",
     description:
-      "A software engineer and tech consultant specializing in modern web applications, system architecture, and digital strategy.",
+      "A software engineer and tech consultant specializing in modern web applications, AI systems, and system architecture.",
     viewWork: "View Services",
     contactMe: "Contact Me",
     clients: "Happy Clients",
@@ -37,7 +37,7 @@ export const en = {
     title: "Work With Me",
     subtitle: "Professional Services",
     description:
-      "I offer comprehensive consulting and development services to help you build scalable solutions, optimize performance, and grow your digital presence through technical expertise and strategic guidance.",
+      "I offer consulting and development services across web, infrastructure and AI \u2014 helping you build scalable systems, ship AI features that hold up in production, and grow your digital presence. Larger engagements are delivered through my company, Ciptalogi.",
     services: {
       consultation: {
         title: "Technical Consultation",
@@ -68,6 +68,21 @@ export const en = {
         title: "Platform Migration & Modernization",
         description:
           "Seamlessly migrate your platform to modern technologies, cloud infrastructure, and improve deployment processes.",
+      },
+      aiPipelines: {
+        title: "Custom AI Pipelines",
+        description:
+          "Retrieval, extraction and agent pipelines built around your own data and workflows, designed to be observable and cost-aware rather than a black box.",
+      },
+      aiHardening: {
+        title: "AI Hardening & Evaluation",
+        description:
+          "Make AI features dependable: evaluation suites, guardrails, prompt-injection defence, fallbacks and monitoring, so behaviour is measured instead of assumed.",
+      },
+      aiFeatures: {
+        title: "AI-Assisted Product Features",
+        description:
+          "Add AI where it earns its place in an existing product \u2014 search, summarisation, classification and assistance \u2014 integrated without destabilising what already works.",
       },
     },
     cta: {
