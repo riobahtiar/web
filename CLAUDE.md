@@ -279,16 +279,19 @@ Icons come from `astro-icon`, which inlines them as SVG at build time.
   (`<Icon name="typesense" />`). Keep local marks monochrome with
   `fill="currentColor"` so they match.
 
-A logo drawn for large sizes may not survive at 18px, so check every new local
-icon at its rendered size rather than at 100%. Three cases so far:
+A logo drawn for large sizes may not survive at 18px, so open the source at
+full size before converting it, then check the result at its rendered size.
+Transforming one blind is how the Elysia mark below went wrong. Three cases so far:
 
 - **Typesense** is a constellation whose connectors are `stroke-width="0.12"`.
   Those fall under a device pixel and vanish, leaving unconnected specks, so
   the local copy thickens them.
-- **Elysia** is a tonal character illustration. Its greys map to
-  `currentColor` opacities to keep some depth, but at 18px it still reduces to
-  a disc. That is the logo, not the conversion; widening the tonal range twice
-  did not help.
+- **Elysia** is a curled fox on a dark disc. Mapping its greys to
+  `currentColor` opacities inverted the design: the disc became the solid
+  shape and the fox, being near-white, dropped out, leaving a featureless
+  circle. The local copy drops the disc and renders the fox paths as one
+  silhouette. When a mark is artwork _on_ a shape, the subject is the icon,
+  not the backdrop.
 - **WorkOS** was only in the coloured `logos` set, so the local copy is that
   geometry recoloured to `currentColor`.
 
