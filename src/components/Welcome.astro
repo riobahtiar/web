@@ -1,7 +1,7 @@
 ---
 import Button from "@/components/ui/Button.astro";
 import Section from "@/components/ui/Section.astro";
-import { technology } from "@/i18n/technology";
+import TechMarquee from "@/components/TechMarquee.astro";
 
 import meAvatar from "../assets/me-avatar.png";
 
@@ -42,13 +42,6 @@ const profileHtml = [
   `  ${prop("stack")}${pun(":")} ${pun("[")}${str("TypeScript")}${pun(",")} ${str("Vue")}${pun(",")} ${str("Nuxt")}${pun(",")} ${str("Astro")}${pun("]")}${pun(",")}`,
   `${pun("}")} ${kw("satisfies")} <span class="tok-type">Profile</span>${pun(";")}`,
 ].join("\n");
-
-// A representative slice of the stack, used as the logo-wall equivalent.
-const stack = [
-  ...technology.frontend.slice(0, 4),
-  ...technology.backend.slice(0, 2),
-  ...technology.database.slice(0, 2),
-];
 ---
 
 <Section class="relative overflow-hidden py-20 sm:py-28">
@@ -127,19 +120,5 @@ const stack = [
 </Section>
 
 <Section class="py-10">
-  <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
-    <p class="eyebrow shrink-0">{i18n.welcome.stackLabel}</p>
-    <ul
-      class="flex flex-wrap items-center gap-x-8 gap-y-4 sm:gap-x-10"
-      role="list"
-    >
-      {
-        stack.map((tech) => (
-          <li class="text-muted-foreground hover:text-foreground font-mono text-sm transition-colors">
-            {tech.name}
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+  <TechMarquee label={i18n.welcome.stackLabel} />
 </Section>

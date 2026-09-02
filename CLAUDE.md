@@ -268,6 +268,26 @@ Solid components live in `.tsx` files and need `jsxImportSource: "solid-js"`
 with `jsx: "preserve"` in `tsconfig.json`. Solid has no hook dispatcher, so
 none of the duplicate-React SSR hazards apply.
 
+## Icons
+
+Icons come from `astro-icon`, which inlines them as SVG at build time.
+
+- `simple-icons` for brand and product marks. It is monochrome and inherits
+  `currentColor`, so a logo row stays on the site's palette in both themes.
+- `tabler` for UI glyphs.
+- `src/icons/*.svg` for anything Iconify lacks, referenced by bare filename
+  (`<Icon name="typesense" />`). Keep local marks monochrome with
+  `fill="currentColor"` so they match.
+
+A logo drawn for large sizes may not survive at 18px. Typesense's official mark
+is a constellation whose connectors are `stroke-width="0.12"`; those fall under
+a device pixel and vanish, leaving unconnected specks. `src/icons/typesense.svg`
+is their real geometry with the connectors thickened for icon size. Check any
+new local icon at its rendered size, not at 100%.
+
+Icons are inlined per use, and the marquee renders its list twice, so a heavy
+mark costs double. The homepage carries 40 inlined icons at ~23KB gzipped.
+
 ## Blog Data Access
 
 Read posts through `@/utils/posts`, never `getCollection` directly:
