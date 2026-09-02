@@ -15,6 +15,17 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+
+    // Every astro command defaults to the same node_modules/.vite. Running
+    // `build` or `check` while a dev server is live rewrites the shared SSR dep
+    // cache, and the Cloudflare workerd module runner goes on requesting the
+    // old hash:
+    //   The file does not exist at ".../deps_ssr/<mod>.js?v=<hash>"
+    // The dev server never recovers from that, so only `dev` gets that cache
+    // and every other command works in its own.
+    cacheDir: process.argv.includes("dev")
+      ? "node_modules/.vite"
+      : "node_modules/.vite-cli",
   },
 
   // Self-hosted and subset by Astro, so no third-party font request at runtime.

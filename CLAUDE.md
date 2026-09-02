@@ -50,20 +50,26 @@ Astro 7 runs `astro dev` as a **background daemon** that outlives the terminal.
 Manage it with `astro dev status`, `astro dev logs`, and `astro dev stop`;
 errors after startup go to the log, not the terminal you launched from.
 
-Vite's dependency cache lives in the shared `node_modules/.vite`. Deleting it,
-or letting a second dev server rewrite it, while a server is live invalidates
-module URLs that have already been served and produces:
+Every astro command defaults to the same Vite cache at `node_modules/.vite`.
+Rewriting it while a dev server is live invalidates module URLs that have
+already been served, and the Cloudflare workerd module runner keeps requesting
+the old hash, so the server 500s on **every** request and never recovers:
 
 ```
 The file does not exist at ".../node_modules/.vite/deps_ssr/<mod>.js?v=<hash>"
 ```
 
-It means a stale optimizer cache, not a broken dependency. Recover with
-`bun run dev:clean`, which stops any running daemon before clearing the cache.
-Always `astro dev stop` before removing `node_modules/.vite`.
+`astro.config.mjs` sets `vite.cacheDir` so only `dev` uses that directory and
+every other command works in `node_modules/.vite-cli`. Running `build`,
+`typecheck` or `format:check` alongside a live dev server is therefore safe —
+that is verified behaviour, not an assumption. Do not remove that setting.
 
-Also note `bun run build` writes to `dist/`, so stop any `wrangler dev`
-serving that directory first or the build fails on a locked file.
+What still breaks a running server: deleting `node_modules/.vite` by hand, or
+starting a second dev server against the same project. Recover with
+`bun run dev:clean`, which stops the daemon before clearing the cache.
+
+`bun run build` writes to `dist/`, so stop any `wrangler dev` serving that
+directory first or the build fails on a locked file.
 
 Recommended fast validation while developing:
 
