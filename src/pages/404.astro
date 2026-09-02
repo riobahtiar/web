@@ -14,25 +14,22 @@ const copy = i18n.notFound;
   description={copy.description}
   lang="en"
   showCTA={false}
+  localized={false}
 >
-  <main>
-    <Section class="relative overflow-hidden py-28 text-center sm:py-36">
-      <div class="accent-glow pointer-events-none absolute inset-0 -z-10"></div>
+  <Section class="relative overflow-hidden py-28 text-center sm:py-36">
+    <div class="accent-glow pointer-events-none absolute inset-0 -z-10"></div>
 
-      <p class="eyebrow">{copy.eyebrow}</p>
-      <h1 class="mt-5 text-4xl font-semibold sm:text-5xl">{copy.title}</h1>
-      <p
-        class="text-muted-foreground mx-auto mt-5 max-w-md text-lg text-pretty"
-      >
-        {copy.description}
-      </p>
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1 class="mt-5 text-4xl font-semibold sm:text-5xl">{copy.title}</h1>
+    <p class="text-muted-foreground mx-auto mt-5 max-w-md text-lg text-pretty">
+      {copy.description}
+    </p>
 
-      <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <Button href="/" size="lg">{copy.home}</Button>
-        <Button href="/blog" variant="secondary" size="lg">
-          {copy.blog}
-        </Button>
-      </div>
-    </Section>
-  </main>
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <Button href="/" size="lg">{copy.home}</Button>
+      <Button href="/blog" variant="secondary" size="lg">
+        {copy.blog}
+      </Button>
+    </div>
+  </Section>
 </Layout>

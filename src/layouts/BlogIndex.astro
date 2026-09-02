@@ -29,6 +29,7 @@ interface Props {
   allPosts?: BlogPost[];
   categories?: { name: string; count: number }[];
   currentCategory?: string;
+  localized?: boolean;
   pagination?: Pagination;
 }
 
@@ -40,73 +41,75 @@ const {
   allPosts,
   categories,
   currentCategory,
+  localized = true,
   pagination = { currentPage: 1, totalPages: 1, url: {} },
 } = Astro.props;
 
 const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
 ---
 
-<Layout title={title} description={description} lang={lang}>
+<Layout
+  title={title}
+  description={description}
+  lang={lang}
+  localized={localized}
+>
   <div class="px-6 py-16 sm:px-10">
-    <main>
-      <div class="flex flex-col gap-12 lg:flex-row">
-        <!-- Main Content -->
-        <div class="min-w-0 flex-1">
-          <header class="mb-10">
-            <h1 class="text-4xl font-semibold sm:text-5xl">{title}</h1>
-            <p class="text-muted-foreground mt-4 max-w-2xl text-lg text-pretty">
-              {description}
-            </p>
-          </header>
+    <div class="flex flex-col gap-12 lg:flex-row">
+      <!-- Main Content -->
+      <div class="min-w-0 flex-1">
+        <header class="mb-10">
+          <h1 class="text-4xl font-semibold sm:text-5xl">{title}</h1>
+          <p class="text-muted-foreground mt-4 max-w-2xl text-lg text-pretty">
+            {description}
+          </p>
+        </header>
 
-          <!-- Search and Posts -->
-          <BlogSearch
-            posts={posts}
-            allPosts={allPosts ?? posts}
-            lang={lang}
-            baseUrl={baseUrl}
-            pagination={pagination}
-          />
-        </div>
+        <!-- Search and Posts -->
+        <BlogSearch
+          posts={posts}
+          allPosts={allPosts ?? posts}
+          lang={lang}
+          baseUrl={baseUrl}
+          pagination={pagination}
+        />
+      </div>
 
-        <!-- Sidebar -->
-        <aside class="space-y-8 lg:w-72">
-          <!-- Categories -->
-          {
-            categories && (
-              <div class="border-border bg-surface rounded-xl border p-6">
-                <p class="eyebrow">
-                  {lang === "en" ? "Categories" : "Kategori"}
-                </p>
-                <ul class="mt-4 space-y-2" role="list">
+      <!-- Sidebar -->
+      <aside class="space-y-8 lg:w-72">
+        <!-- Categories -->
+        {
+          categories && (
+            <div class="border-border bg-surface rounded-xl border p-6">
+              <p class="eyebrow">{lang === "en" ? "Categories" : "Kategori"}</p>
+              <ul class="mt-4 space-y-2" role="list">
+                <li>
+                  <a
+                    href={baseUrl}
+                    class={`hover:text-foreground block text-sm transition-colors ${!currentCategory ? "text-accent" : "text-muted-foreground"}`}
+                  >
+                    {lang === "en" ? "All Posts" : "Semua Artikel"}
+                  </a>
+                </li>
+                {categories.map((category) => (
                   <li>
                     <a
-                      href={baseUrl}
-                      class={`hover:text-foreground block text-sm transition-colors ${!currentCategory ? "text-accent" : "text-muted-foreground"}`}
+                      href={`${baseUrl}/${category.name}`}
+                      class={`hover:text-foreground block text-sm transition-colors ${currentCategory === category.name ? "text-accent" : "text-muted-foreground"}`}
                     >
-                      {lang === "en" ? "All Posts" : "Semua Artikel"}
+                      {category.name}
+                      <span class="text-subtle-foreground">
+                        {" "}
+                        ({category.count})
+                      </span>
                     </a>
                   </li>
-                  {categories.map((category) => (
-                    <li>
-                      <a
-                        href={`${baseUrl}/${category.name}`}
-                        class={`hover:text-foreground block text-sm transition-colors ${currentCategory === category.name ? "text-accent" : "text-muted-foreground"}`}
-                      >
-                        {category.name}
-                        <span class="text-subtle-foreground">
-                          {" "}
-                          ({category.count})
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          }
-        </aside>
-      </div>
-    </main>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </aside>
+    </div>
   </div>
 </Layout>

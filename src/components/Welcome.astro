@@ -51,97 +51,95 @@ const stack = [
 ];
 ---
 
-<main>
-  <Section class="relative overflow-hidden py-20 sm:py-28">
-    <div class="accent-glow pointer-events-none absolute inset-0 -z-10"></div>
-    <div
-      class="dot-grid pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000,transparent)] opacity-60"
-    >
-    </div>
+<Section class="relative overflow-hidden py-20 sm:py-28">
+  <div class="accent-glow pointer-events-none absolute inset-0 -z-10"></div>
+  <div
+    class="dot-grid pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000,transparent)] opacity-60"
+  >
+  </div>
 
-    <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-      <div>
-        <span
-          class="border-border bg-surface/60 inline-flex items-center gap-2 rounded-full border px-3 py-1"
-        >
-          <span class="relative flex h-1.5 w-1.5">
-            <span
-              class="bg-accent-solid absolute inline-flex h-full w-full animate-ping rounded-full opacity-70"
-            ></span>
-            <span
-              class="bg-accent-solid relative inline-flex h-1.5 w-1.5 rounded-full"
-            ></span>
-          </span>
-          <span class="eyebrow">{i18n.welcome.available}</span>
-        </span>
-
-        <h1
-          class="mt-6 text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl"
-        >
-          {greeting}{" "}
-          <span class="text-accent">Rio</span>
-        </h1>
-
-        <p class="eyebrow mt-4">{i18n.welcome.role}</p>
-
-        <p
-          class="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed text-pretty"
-        >
-          {i18n.welcome.description}
-        </p>
-
-        <div class="mt-9 flex flex-wrap items-center gap-3">
-          <Button href={`/${prefix}services`} size="lg">
-            {i18n.welcome.viewWork}
-          </Button>
-          <Button href={`/${prefix}contact`} variant="secondary" size="lg">
-            {i18n.welcome.contactMe}
-          </Button>
-        </div>
-      </div>
-
-      <div class="relative">
-        <div
-          class="border-border bg-surface/80 overflow-hidden rounded-xl border shadow-2xl backdrop-blur-sm"
-        >
-          <div class="border-rule flex items-center gap-3 border-b px-4 py-2.5">
-            <img
-              src={meAvatar.src}
-              alt=""
-              width="24"
-              height="24"
-              loading="eager"
-              class="border-border h-6 w-6 rounded-full border object-cover"
-            />
-            <span class="text-subtle-foreground font-mono text-xs">rio.ts</span>
-            <span class="ml-auto flex gap-1.5" aria-hidden="true">
-              <span class="bg-border-strong h-2 w-2 rounded-full"></span>
-              <span class="bg-border-strong h-2 w-2 rounded-full"></span>
-              <span class="bg-accent-solid/60 h-2 w-2 rounded-full"></span>
-            </span>
-          </div>
-          <pre
-            class="overflow-x-auto px-4 py-4 font-mono text-[13px] leading-relaxed"><code set:html={profileHtml} /></pre>
-        </div>
-      </div>
-    </div>
-  </Section>
-
-  <Section class="py-10">
-    <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
-      <p class="eyebrow shrink-0">{i18n.welcome.stackLabel}</p>
-      <ul
-        class="flex flex-wrap items-center gap-x-8 gap-y-4 sm:gap-x-10"
-        role="list"
+  <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+    <div>
+      <span
+        class="border-border bg-surface/60 inline-flex items-center gap-2 rounded-full border px-3 py-1"
       >
-        {
-          stack.map((tech) => (
-            <li class="text-muted-foreground hover:text-foreground font-mono text-sm transition-colors">
-              {tech.name}
-            </li>
-          ))
-        }
-      </ul>
+        <span class="relative flex h-1.5 w-1.5">
+          <span
+            class="bg-accent-solid absolute inline-flex h-full w-full animate-ping rounded-full opacity-70"
+          ></span>
+          <span
+            class="bg-accent-solid relative inline-flex h-1.5 w-1.5 rounded-full"
+          ></span>
+        </span>
+        <span class="eyebrow">{i18n.welcome.available}</span>
+      </span>
+
+      <h1
+        class="mt-6 text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl"
+      >
+        {greeting}{" "}
+        <span class="text-accent">Rio</span>
+      </h1>
+
+      <p class="eyebrow mt-4">{i18n.welcome.role}</p>
+
+      <p
+        class="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed text-pretty"
+      >
+        {i18n.welcome.description}
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-3">
+        <Button href={`/${prefix}services`} size="lg">
+          {i18n.welcome.viewWork}
+        </Button>
+        <Button href={`/${prefix}contact`} variant="secondary" size="lg">
+          {i18n.welcome.contactMe}
+        </Button>
+      </div>
     </div>
-  </Section>
-</main>
+
+    <div class="relative">
+      <div
+        class="border-border bg-surface/80 overflow-hidden rounded-xl border shadow-2xl backdrop-blur-sm"
+      >
+        <div class="border-rule flex items-center gap-3 border-b px-4 py-2.5">
+          <img
+            src={meAvatar.src}
+            alt=""
+            width="24"
+            height="24"
+            loading="eager"
+            class="border-border h-6 w-6 rounded-full border object-cover"
+          />
+          <span class="text-subtle-foreground font-mono text-xs">rio.ts</span>
+          <span class="ml-auto flex gap-1.5" aria-hidden="true">
+            <span class="bg-border-strong h-2 w-2 rounded-full"></span>
+            <span class="bg-border-strong h-2 w-2 rounded-full"></span>
+            <span class="bg-accent-solid/60 h-2 w-2 rounded-full"></span>
+          </span>
+        </div>
+        <pre
+          class="overflow-x-auto px-4 py-4 font-mono text-[13px] leading-relaxed"><code set:html={profileHtml} /></pre>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<Section class="py-10">
+  <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
+    <p class="eyebrow shrink-0">{i18n.welcome.stackLabel}</p>
+    <ul
+      class="flex flex-wrap items-center gap-x-8 gap-y-4 sm:gap-x-10"
+      role="list"
+    >
+      {
+        stack.map((tech) => (
+          <li class="text-muted-foreground hover:text-foreground font-mono text-sm transition-colors">
+            {tech.name}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Section>

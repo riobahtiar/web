@@ -19,6 +19,7 @@ interface Props {
   category: string;
   tags: string[];
   lang: "en" | "id";
+  localized?: boolean;
   readingTime?: string;
   headings?: Heading[];
   author: {
@@ -37,6 +38,7 @@ const {
   category,
   tags,
   lang,
+  localized = false,
   readingTime,
   headings = [],
   author,
@@ -50,6 +52,7 @@ const formattedModifiedDate = formatDate(modified_at, lang);
   title={`${title} | Rio Bahtiar`}
   description={description}
   lang={lang}
+  localized={localized}
   image={image}
   type="article"
   publishedTime={created_at.toISOString()}

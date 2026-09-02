@@ -31,6 +31,10 @@ const {
     ? new URL(Astro.url.pathname, Astro.site).toString()
     : "",
   showCTA = true, // Control CTA visibility
+  // Blog categories, tags and posts have different slugs per locale, so a
+  // path-derived alternate would point at a URL that 404s or merely redirects.
+  // hreflang must be reciprocal and resolve, so those pages opt out.
+  localized = true,
   showTopBanner = false, // Control Banner visibility
   // Article-specific metadata
   type = "website", // or "article" for blog posts
@@ -53,6 +57,16 @@ const toAbsolute = (path: string) =>
 
 const alternateEN = toAbsolute(localizedPath(""));
 const alternateID = toAbsolute(localizedPath("/id"));
+
+// The language switcher target. Where the two locales do not share a URL the
+// mapped path would 404 (an Indonesian-only post has no English twin), so send
+// visitors to the nearest real page instead of a dead end.
+const otherPrefix = lang === "en" ? "/id" : "";
+const languageUrl = localized
+  ? localizedPath(otherPrefix)
+  : basePath.startsWith("/blog")
+    ? `${otherPrefix}/blog`
+    : `${otherPrefix}/`;
 ---
 
 <!doctype html>
@@ -113,9 +127,15 @@ const alternateID = toAbsolute(localizedPath("/id"));
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" href={alternateEN} hreflang="en" />
-    <link rel="alternate" href={alternateID} hreflang="id" />
-    <link rel="alternate" href={alternateEN} hreflang="x-default" />
+    {
+      localized && (
+        <>
+          <link rel="alternate" href={alternateEN} hreflang="en" />
+          <link rel="alternate" href={alternateID} hreflang="id" />
+          <link rel="alternate" href={alternateEN} hreflang="x-default" />
+        </>
+      )
+    }
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
@@ -214,9 +234,9 @@ const alternateID = toAbsolute(localizedPath("/id"));
   </head>
   <body>
     {showTopBanner && <Banner lang={lang} />}
-    <Header lang={lang} i18n={i18n} />
+    <Header lang={lang} i18n={i18n} languageUrl={languageUrl} />
     <div class="frame">
-      <slot />
+      <main id="main"><slot /></main>
       {showCTA && <CTA lang={lang} i18n={i18n} />}
     </div>
     <Footer lang={lang} i18n={i18n} />
