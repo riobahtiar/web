@@ -49,6 +49,11 @@ export const en = {
         description:
           "Custom website development using modern technologies and best practices, optimized for performance and scalability.",
       },
+      mobileDevelopment: {
+        title: "Mobile App Development",
+        description:
+          "Cross-platform mobile apps built with Flutter and React Native \u2014 one codebase across iOS and Android, without giving up a native feel.",
+      },
       maintenance: {
         title: "Website Maintenance",
         description:

@@ -49,6 +49,11 @@ export const id = {
         description:
           "Pengembangan website kustom menggunakan teknologi modern dan praktik terbaik, dioptimalkan untuk kinerja dan skalabilitas.",
       },
+      mobileDevelopment: {
+        title: "Pengembangan Aplikasi Mobile",
+        description:
+          "Aplikasi mobile lintas platform dengan Flutter dan React Native \u2014 satu basis kode untuk iOS dan Android, tanpa mengorbankan nuansa native.",
+      },
       maintenance: {
         title: "Pemeliharaan Website",
         description:
