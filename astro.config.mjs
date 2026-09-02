@@ -5,7 +5,6 @@ import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
-import markdoc from "@astrojs/markdoc";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
@@ -39,7 +38,7 @@ export default defineConfig({
     fallback: { id: "en" },
   },
 
-  integrations: [icon(), partytown(), sitemap(), markdoc(), mdx(), react()],
+  integrations: [icon(), partytown(), sitemap(), mdx(), react()],
 
   adapter: cloudflare({
     imageService: { build: "compile", runtime: "passthrough" },

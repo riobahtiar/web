@@ -6,7 +6,7 @@ This repository is Bun-first and deploys to Cloudflare Workers. Keep code, docs,
 
 Prerequisites:
 
-- Bun 1.3.11 or newer
+- Bun 1.4.0 or newer
 - Node.js 22.x or newer
 - Git
 
@@ -45,7 +45,7 @@ bun run build
 - Use `import type` for type-only imports.
 - Prefer internal aliases such as `@/components`, `@/utils`, and `@/lib`.
 - Preserve Astro SSR patterns for dynamic routes.
-- Use `entry.id` and `render(entry)` for Astro 6 content entries.
+- Use `entry.id` and `render(entry)` for Astro 7 content entries.
 - Keep i18n text in `src/i18n/en.ts` and `src/i18n/id.ts` when shared UI copy is involved.
 - Preserve the existing Tailwind CSS 4 and DaisyUI token system in `src/assets/global.css`.
 
@@ -62,7 +62,7 @@ Use Conventional Commits:
 
 ```text
 feat(blog): add related post scoring
-fix(rss): use Astro 6 entry ids
+fix(rss): use Astro 7 entry ids
 docs: sync deployment guide with wrangler jsonc
 chore(ci): migrate workflows to bun
 ```

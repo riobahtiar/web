@@ -52,7 +52,7 @@ URLs are generated from locale, category, and filename:
 - `src/content/blog-en/web-development/getting-started.mdx` -> `/blog/web-development/getting-started`
 - `src/content/blog-id/pengembangan-web/memulai.mdx` -> `/id/blog/pengembangan-web/memulai`
 
-Astro 6 loader-backed entries use `entry.id`, not legacy `entry.slug`. Keep filenames and category folders in kebab-case.
+Astro 7 loader-backed entries use `entry.id`, not legacy `entry.slug`. Keep filenames and category folders in kebab-case.
 
 ## Local Authoring Flow
 

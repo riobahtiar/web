@@ -1,35 +1,35 @@
-import rss from "@astrojs/rss";
-import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async (context) => {
-  const posts = await getCollection("blog-en");
+import rss from "@astrojs/rss";
 
-  // Sort posts by date (newest first)
-  const sortedPosts = posts.sort(
-    (a, b) => b.data.created_at.getTime() - a.data.created_at.getTime(),
-  );
+import {
+  getImageMimeType,
+  getPostSlug,
+  getPublishedPosts,
+} from "@/utils/posts";
+
+export const GET: APIRoute = async (context) => {
+  const posts = await getPublishedPosts("blog-en");
+  const site = context.site;
 
   return rss({
     title: "Rio Bahtiar | Blog",
     description:
       "Full-stack developer sharing insights about web development, programming, and technology.",
-    site: context.site?.toString() || "https://rio.my.id",
-    items: sortedPosts.map((post) => {
-      // Clean slug
-      const slug = post.id.startsWith(post.data.category + "/")
-        ? post.id.substring(post.data.category.length + 1)
-        : post.id;
+    site: site?.toString() || "https://rio.my.id",
+    items: posts.map((post) => {
+      const image = post.data.image;
+      const imageUrl = image && site ? new URL(image, site).toString() : image;
 
       return {
         title: post.data.title,
         description: post.data.description,
         pubDate: post.data.created_at,
-        link: `/blog/${post.data.category}/${slug}`,
+        link: `/blog/${post.data.category}/${getPostSlug(post)}`,
         categories: [post.data.category, ...post.data.tags],
         author: post.data.author.name,
-        customData: post.data.image
-          ? `<enclosure url="${context.site ? new URL(post.data.image, context.site).toString() : post.data.image}" type="image/jpeg" />`
+        customData: imageUrl
+          ? `<enclosure url="${imageUrl}" type="${getImageMimeType(imageUrl)}" />`
           : "",
       };
     }),

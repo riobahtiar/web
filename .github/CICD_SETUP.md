@@ -14,7 +14,7 @@ Workflows use:
 
 - Node.js 22
 - `oven-sh/setup-bun@v2`
-- Bun 1.3.11
+- Bun 1.4.0
 - `bun install --frozen-lockfile`
 
 Do not switch workflows back to `npm ci`; this repo uses `bun.lock` and no `package-lock.json`.

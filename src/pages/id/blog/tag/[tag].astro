@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getPostSlug, getPublishedPosts } from "@/utils/posts";
 import Layout from "../../../../layouts/Layout.astro";
 import { formatDate } from "../../../../utils/date";
 import { getReadingTimeI18n } from "../../../../utils/readingTime";
@@ -12,10 +12,8 @@ if (!tag) {
 }
 
 // Get all Indonesian blog posts with this tag
-const allPosts = await getCollection("blog-id");
-const filteredPosts = allPosts
-  .filter((post) => post.data.tags.includes(tag))
-  .sort((a, b) => b.data.created_at.getTime() - a.data.created_at.getTime());
+const allPosts = await getPublishedPosts("blog-id");
+const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
 
 if (filteredPosts.length === 0) {
   return Astro.redirect("/id/blog");
@@ -53,9 +51,7 @@ const pageDescription = `Telusuri semua artikel blog dengan tag "${tag}". ${filt
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {
         postsWithReadingTime.map((post) => {
-          const slug = post.id.startsWith(post.data.category + "/")
-            ? post.id.substring(post.data.category.length + 1)
-            : post.id;
+          const slug = getPostSlug(post);
 
           return (
             <article class="card bg-base-200 shadow-lg transition-shadow hover:shadow-xl">

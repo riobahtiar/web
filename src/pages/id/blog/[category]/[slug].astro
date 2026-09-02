@@ -1,5 +1,7 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
+
+import { getPostSlug, getPublishedPosts } from "@/utils/posts";
 import BlogPost from "../../../../layouts/BlogPost.astro";
 import { getReadingTimeI18n } from "../../../../utils/readingTime";
 import { getRelatedPostsWithReadingTime } from "../../../../utils/relatedPosts";
@@ -7,14 +9,10 @@ import RelatedPosts from "../../../../components/blog/RelatedPosts.astro";
 
 const { category, slug } = Astro.params;
 
-const posts = await getCollection("blog-id");
-const post = posts.find((p) => {
-  let cleanSlug = p.id;
-  if (cleanSlug.startsWith(p.data.category + "/")) {
-    cleanSlug = cleanSlug.substring(p.data.category.length + 1);
-  }
-  return p.data.category === category && cleanSlug === slug;
-});
+const posts = await getPublishedPosts("blog-id");
+const post = posts.find(
+  (p) => p.data.category === category && getPostSlug(p) === slug,
+);
 
 if (!post) {
   return Astro.redirect("/id/404");

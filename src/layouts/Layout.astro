@@ -39,13 +39,18 @@ const {
   readingTime,
 } = Astro.props;
 
-// Generate alternate language URLs
-const alternateEN = canonicalURL ? canonicalURL.replace("/id/", "/") : "/";
-const alternateID = canonicalURL
-  ? canonicalURL === "/"
-    ? "/id/"
-    : canonicalURL.replace("/", "/id/")
-  : "/id/";
+// Alternate language URLs. These are built from the pathname rather than from
+// canonicalURL, whose leading "https://" would otherwise be the first match for
+// a naive replace().
+const basePath = pathname.replace(/^\/id(?=\/|$)/, "") || "/";
+const localizedPath = (prefix: string) =>
+  basePath === "/" ? `${prefix}/` : `${prefix}${basePath}`;
+
+const toAbsolute = (path: string) =>
+  Astro.site ? new URL(path, Astro.site).toString() : path;
+
+const alternateEN = toAbsolute(localizedPath(""));
+const alternateID = toAbsolute(localizedPath("/id"));
 ---
 
 <!doctype html>
@@ -54,6 +59,28 @@ const alternateID = canonicalURL
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+
+    <script is:inline>
+      // Initialize theme on page load
+      (function () {
+        // Get theme from localStorage or system preference
+        const savedTheme = localStorage.getItem("theme");
+        const systemDarkMode = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const theme = savedTheme || (systemDarkMode ? "dark" : "light");
+
+        // Apply theme
+        document.documentElement.setAttribute("data-theme", theme);
+
+        // Also add dark class for Tailwind dark mode
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    </script>
 
     <!-- Favicon and Web Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -83,6 +110,7 @@ const alternateID = canonicalURL
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" href={alternateEN} hreflang="en" />
     <link rel="alternate" href={alternateID} hreflang="id" />
+    <link rel="alternate" href={alternateEN} hreflang="x-default" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
@@ -196,28 +224,6 @@ const alternateID = canonicalURL
     height: 100%;
   }
 </style>
-
-<script is:inline>
-  // Initialize theme on page load
-  (function () {
-    // Get theme from localStorage or system preference
-    const savedTheme = localStorage.getItem("theme");
-    const systemDarkMode = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    const theme = savedTheme || (systemDarkMode ? "dark" : "light");
-
-    // Apply theme
-    document.documentElement.setAttribute("data-theme", theme);
-
-    // Also add dark class for Tailwind dark mode
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  })();
-</script>
 
 <script>
   // Banner initialization

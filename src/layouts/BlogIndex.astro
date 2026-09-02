@@ -1,6 +1,7 @@
 ---
+import type { Pagination } from "@/utils/posts";
+
 import Layout from "./Layout.astro";
-import { formatDate } from "../utils/date";
 import BlogSearch from "../components/blog/BlogSearch";
 
 interface BlogPost {
@@ -26,14 +27,7 @@ interface Props {
   posts: BlogPost[];
   categories?: { name: string; count: number }[];
   currentCategory?: string;
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    url: {
-      prev?: string;
-      next?: string;
-    };
-  };
+  pagination?: Pagination;
 }
 
 const {
@@ -43,7 +37,7 @@ const {
   posts,
   categories,
   currentCategory,
-  pagination,
+  pagination = { currentPage: 1, totalPages: 1, url: {} },
 } = Astro.props;
 
 const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;

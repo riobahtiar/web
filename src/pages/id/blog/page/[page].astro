@@ -4,12 +4,24 @@ import {
   getCategoryCounts,
   getPublishedPosts,
   paginatePosts,
+  parsePageParam,
 } from "@/utils/posts";
 
-const allPosts = await getPublishedPosts("blog-id");
-const { posts, pagination } = paginatePosts(allPosts, 1, "/id/blog");
+const requestedPage = parsePageParam(Astro.params.page);
 
-const title = "Blog";
+const allPosts = await getPublishedPosts("blog-id");
+const { posts, pagination } = paginatePosts(
+  allPosts,
+  requestedPage,
+  "/id/blog",
+);
+
+// Halaman 1 kanonis di /id/blog, dan di atas halaman terakhir tidak ada artikel.
+if (requestedPage === 1 || requestedPage > pagination.totalPages) {
+  return Astro.redirect("/id/blog");
+}
+
+const title = `Blog — Halaman ${pagination.currentPage}`;
 const description =
   "Jelajahi pemikiran, pengalaman, dan wawasan saya tentang pengembangan perangkat lunak, teknologi, dan lainnya.";
 ---

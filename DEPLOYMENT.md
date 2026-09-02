@@ -1,10 +1,10 @@
 # Deployment Guide
 
-This project deploys an Astro 6 SSR application to Cloudflare Workers with Wrangler JSONC configuration.
+This project deploys an Astro 7 SSR application to Cloudflare Workers with Wrangler JSONC configuration.
 
 ## Prerequisites
 
-- Bun 1.3.11 or newer
+- Bun 1.4.0 or newer
 - Node.js 22.x or newer
 - Cloudflare account
 - Wrangler access through the local dependency
@@ -171,6 +171,6 @@ Confirm collections are defined in `src/content.config.ts`, use `glob()` loaders
 ## References
 
 - Astro Cloudflare adapter: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
-- Astro 6 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v6/
+- Astro 7 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v7/
 - Cloudflare Wrangler configuration: https://developers.cloudflare.com/workers/wrangler/configuration/
 - Bun install and lockfile: https://bun.com/docs/cli/install

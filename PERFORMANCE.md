@@ -1,6 +1,6 @@
 # Performance Notes
 
-Current stack: Astro 6 SSR on Cloudflare Workers, React 19 islands, Tailwind CSS 4, and Cloudflare static asset serving.
+Current stack: Astro 7 SSR on Cloudflare Workers, React 19 islands, Tailwind CSS 4, and Cloudflare static asset serving.
 
 ## Current Optimizations
 

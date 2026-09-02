@@ -6,12 +6,12 @@ This file is the canonical operating guide for AI assistants and developers. `AG
 
 `astro-rio` is a production portfolio and bilingual blog.
 
-- Astro 6 SSR app deployed to Cloudflare Workers
+- Astro 7 SSR app deployed to Cloudflare Workers
 - Bun-first project with committed `bun.lock`
 - React 19 islands for interactive UI
 - Tailwind CSS 4 plus DaisyUI 5 and shadcn-style React components
 - Astro content collections in `src/content.config.ts`
-- MDX and Markdoc enabled
+- MDX enabled
 - Local image workflow served via Cloudflare assets and Astro's image service (passthrough at runtime)
 - English default routes and Indonesian `/id/*` routes
 
@@ -94,7 +94,7 @@ const { Content, headings } = await render(post);
 
 Do not add `getStaticPaths()` to SSR dynamic routes unless the route is intentionally changed to prerendered output and docs are updated.
 
-### Astro 6 Content Collections
+### Astro 7 Content Collections
 
 - Collection config belongs in `src/content.config.ts`.
 - Use `glob()` from `astro/loaders`.
@@ -102,6 +102,19 @@ Do not add `getStaticPaths()` to SSR dynamic routes unless the route is intentio
 - Use `entry.id` for route identity; legacy `entry.slug` is not the current API for loader-backed collections.
 - Use `render(entry)` from `astro:content`; do not use `entry.render()`.
 - `entry.body` may be undefined, so reading-time helpers should receive `entry.body ?? ""`.
+
+### Astro 7 Rendering Constraints
+
+- `compressHTML` defaults to `"jsx"`. Whitespace that spans a newline
+  _between two expressions or elements_ is deleted, not collapsed. Write
+  `{count}{" "}` when a space must survive; prose that merely wraps is fine.
+- The Rust compiler rejects unclosed tags and no longer auto-corrects invalid
+  HTML nesting. Both are build errors, not warnings.
+- Markdown and MDX are rendered by Sätteri, Astro's native pipeline. There are
+  no remark/rehype plugins in this project, and `@astrojs/markdown-remark` is
+  not installed. Adding a unified plugin means installing that package and
+  setting `markdown.processor` explicitly.
+- `markdown.shikiConfig` still applies under Sätteri.
 
 ### Cloudflare Workers
 
@@ -129,6 +142,8 @@ This avoids server-rendering paths that require `MessageChannel` from `node:work
 ## Code Style
 
 - TypeScript strict mode is enabled via `astro/tsconfigs/strict`.
+- TypeScript stays on 6.x. `@astrojs/check` peers on `^5.0.0 || ^6.0.0`, so
+  TypeScript 7 would break `bun run typecheck`.
 - Use `import type` for type-only imports.
 - Prefer `unknown` and precise types over `any`.
 - Use path alias imports for internal modules when practical: `@/components`, `@/utils`, `@/lib`.
@@ -188,6 +203,29 @@ draft: false
 
 `image` is optional in the schema but strongly recommended for social previews.
 
+## Blog Data Access
+
+Read posts through `@/utils/posts`, never `getCollection` directly:
+
+- `getPublishedPosts(collection)` filters drafts and sorts newest-first. Drafts
+  stay visible under `astro dev` and are dropped from production builds, so any
+  new listing, feed, or detail route must go through it.
+- `getPostSlug(post)` strips the leading `<category>/` the glob loader keeps in
+  `entry.id`.
+- `getCategoryCounts(posts)` builds the sidebar counts.
+- `paginatePosts(posts, page, baseUrl)` slices a page and builds prev/next URLs.
+
+Blog route shape, per locale (`/blog` and `/id/blog`):
+
+- `index.astro` — page 1, canonical
+- `page/[page].astro` — pages 2+; page 1 and out-of-range redirect to the index
+- `[category].astro` — one category; unknown categories redirect to the index
+- `[category]/[slug].astro` — a post
+- `tag/[tag].astro` — one tag
+
+Do not add a `[...page].astro` rest route under `blog/`: it collides with
+`[category].astro`, which silently wins and renders page numbers as categories.
+
 ## Image Workflow
 
 - Static assets live under `public/` (e.g. `public/smc.jpg` for the OG/cover image) and are served as-is by Cloudflare assets.
@@ -236,7 +274,7 @@ bun run build
 ## Reference Links
 
 - Astro content loaders: https://docs.astro.build/en/reference/content-loader-reference/
-- Astro 6 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v6/
+- Astro 7 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v7/
 - Astro Cloudflare adapter: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
 - Cloudflare Wrangler config: https://developers.cloudflare.com/workers/wrangler/configuration/
 - Bun lockfile: https://bun.sh/docs/pm/lockfile

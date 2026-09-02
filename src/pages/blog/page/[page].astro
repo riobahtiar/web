@@ -4,12 +4,20 @@ import {
   getCategoryCounts,
   getPublishedPosts,
   paginatePosts,
+  parsePageParam,
 } from "@/utils/posts";
 
-const allPosts = await getPublishedPosts("blog-en");
-const { posts, pagination } = paginatePosts(allPosts, 1, "/blog");
+const requestedPage = parsePageParam(Astro.params.page);
 
-const title = "Blog";
+const allPosts = await getPublishedPosts("blog-en");
+const { posts, pagination } = paginatePosts(allPosts, requestedPage, "/blog");
+
+// Page 1 is canonical at /blog, and anything past the last page has no posts.
+if (requestedPage === 1 || requestedPage > pagination.totalPages) {
+  return Astro.redirect("/blog");
+}
+
+const title = `Blog — Page ${pagination.currentPage}`;
 const description =
   "Explore my thoughts, experiences, and insights on software development, technology, and more.";
 ---
