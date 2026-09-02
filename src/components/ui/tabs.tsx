@@ -1,64 +1,64 @@
-import * as React from "react";
-import * as TabsPrimitive from "@radix-ui/react-tabs";
+import type { ComponentProps, ParentProps } from "solid-js";
+
+import { Tabs as KobalteTabs } from "@kobalte/core/tabs";
+import { splitProps } from "solid-js";
 
 import { cn } from "@/lib/utils";
 
-function Tabs({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
-  return (
-    <TabsPrimitive.Root
-      data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
-      {...props}
-    />
-  );
+/**
+ * Accessible tabs built on Kobalte, Solid's equivalent of Radix. Keyboard
+ * navigation and the aria wiring come from the primitive.
+ */
+export function Tabs(props: ComponentProps<typeof KobalteTabs>) {
+  return <KobalteTabs {...props} />;
 }
 
-function TabsList({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.List>) {
+export function TabsList(
+  props: ParentProps<ComponentProps<typeof KobalteTabs.List>>,
+) {
+  const [local, rest] = splitProps(props, ["class", "children"]);
+
   return (
-    <TabsPrimitive.List
-      data-slot="tabs-list"
-      className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
-        className,
+    <KobalteTabs.List
+      class={cn(
+        "border-border relative flex items-center gap-1 border-b",
+        local.class,
       )}
-      {...props}
-    />
+      {...rest}
+    >
+      {local.children}
+      <KobalteTabs.Indicator class="bg-accent-solid absolute bottom-0 h-px transition-all duration-200" />
+    </KobalteTabs.List>
   );
 }
 
-function TabsTrigger({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+export function TabsTrigger(
+  props: ParentProps<ComponentProps<typeof KobalteTabs.Trigger>>,
+) {
+  const [local, rest] = splitProps(props, ["class", "children"]);
+
   return (
-    <TabsPrimitive.Trigger
-      data-slot="tabs-trigger"
-      className={cn(
-        "data-[state=active]:bg-background data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/50 inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
+    <KobalteTabs.Trigger
+      class={cn(
+        "text-muted-foreground hover:text-foreground -mb-px inline-flex h-9 items-center px-3 text-sm font-medium transition-colors outline-none",
+        "ui-selected:text-foreground focus-visible:ring-ring focus-visible:ring-2",
+        local.class,
       )}
-      {...props}
-    />
+      {...rest}
+    >
+      {local.children}
+    </KobalteTabs.Trigger>
   );
 }
 
-function TabsContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+export function TabsContent(
+  props: ParentProps<ComponentProps<typeof KobalteTabs.Content>>,
+) {
+  const [local, rest] = splitProps(props, ["class", "children"]);
+
   return (
-    <TabsPrimitive.Content
-      data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
-      {...props}
-    />
+    <KobalteTabs.Content class={cn("pt-4 outline-none", local.class)} {...rest}>
+      {local.children}
+    </KobalteTabs.Content>
   );
 }
-
-export { Tabs, TabsList, TabsTrigger, TabsContent };

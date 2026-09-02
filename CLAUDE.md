@@ -8,8 +8,8 @@ This file is the canonical operating guide for AI assistants and developers. `AG
 
 - Astro 7 SSR app deployed to Cloudflare Workers
 - Bun-first project with committed `bun.lock`
-- React 19 islands for interactive UI
-- Tailwind CSS 4 plus DaisyUI 5 and shadcn-style React components
+- Solid islands for interactive UI
+- Tailwind CSS 4, with Kobalte for accessible Solid primitives
 - Astro content collections in `src/content.config.ts`
 - MDX enabled
 - Local image workflow served via Cloudflare assets and Astro's image service (passthrough at runtime)
@@ -141,24 +141,10 @@ Do not add `getStaticPaths()` to SSR dynamic routes unless the route is intentio
 
 - Cloudflare config belongs in `wrangler.jsonc`.
 - `main` should remain `@astrojs/cloudflare/entrypoints/server`.
-- Keep `compatibility_flags: ["nodejs_compat_v2"]` while React 19 server rendering and current dependencies need Node compatibility.
+- Keep `compatibility_flags: ["nodejs_compat_v2"]` while current dependencies need Node compatibility.
 - The Cloudflare adapter image mode is `imageService: { build: "compile", runtime: "passthrough" }`.
 - Static assets are configured through the `assets` block in `wrangler.jsonc`.
 - Use `bun run cf-typegen` after binding changes.
-
-### React on Cloudflare
-
-Keep the production Vite alias:
-
-```js
-resolve: {
-  alias: import.meta.env.PROD
-    ? { "react-dom/server": "react-dom/server.edge" }
-    : undefined,
-}
-```
-
-This avoids server-rendering paths that require `MessageChannel` from `node:worker_threads`.
 
 ## Code Style
 
@@ -168,7 +154,7 @@ This avoids server-rendering paths that require `MessageChannel` from `node:work
 - Use `import type` for type-only imports.
 - Prefer `unknown` and precise types over `any`.
 - Use path alias imports for internal modules when practical: `@/components`, `@/utils`, `@/lib`.
-- Keep Astro components in `PascalCase.astro`, React components in `PascalCase.tsx`, utilities in `camelCase.ts`, content in `kebab-case.mdx`.
+- Keep Astro components in `PascalCase.astro`, Solid components in `PascalCase.tsx`, utilities in `camelCase.ts`, content in `kebab-case.mdx`.
 - Keep comments rare and only explain non-obvious behavior or platform constraints.
 
 Import order:
@@ -210,8 +196,8 @@ import { cn } from "@/lib/utils";
 - Do not add remote image CDNs for logos or icons; use `astro-icon` or local
   assets.
 - Primitives live in `src/components/ui/` (`Button`, `Card`, `Badge`,
-  `Section`). Prefer them over ad-hoc markup. Radix/shadcn React components are
-  only for genuine interactivity, so static pages stay island-free.
+  `Section`). Prefer them over ad-hoc markup. Solid islands are only for
+  genuine interactivity, so static pages stay island-free.
 - DaisyUI is being retired. It is still installed and bridged onto the tokens
   purely so unconverted pages keep rendering; do not write new DaisyUI markup
   (`btn`, `card`, `badge`, `navbar`, `base-*`).
@@ -252,28 +238,29 @@ draft: false
 
 `image` is optional in the schema but strongly recommended for social previews.
 
-## Islands and React
+## Islands and Solid
 
-React islands are for genuine interactivity only, and there are currently none
-on any rendered page. `BlogSearch` is a plain `.astro` component with a small
-inline script: the post list is server-rendered and filtering is a `hidden`
-toggle over `data-haystack` attributes.
+Interactive islands use Solid (`@astrojs/solid-js`), with Kobalte for
+accessible primitives — it is Solid's equivalent of Radix. Icons come from
+`lucide-solid`. There are currently no islands on any rendered page:
+`BlogSearch` is a plain `.astro` component whose list is server-rendered and
+filtered by toggling `hidden` over `data-haystack` attributes.
 
-Keep it that way unless an island truly earns its place. A React island here
-had two costs:
+Keep it that way unless an island genuinely earns its place. Astro
+server-renders islands, so a framework in the SSR path is a real cost, and
+every prop passed to an island is serialized into the HTML — dropping the old
+React `BlogSearch` took `/blog` from 268KB to 31KB.
 
-- Astro server-renders islands, so React runs in the SSR pipeline. In dev, SSR
-  externalises CJS `node_modules`, so an island importing `react` resolved to
-  the raw CJS build while `react-dom/server` came from Vite's optimized bundle.
-  Two copies of React means a null hook dispatcher and "Invalid hook call" on
-  the first request after a cold cache, which rendered the blog with no posts.
-- Every post passed to the island was serialized into the HTML. Dropping it
-  took `/blog` from 268KB to 31KB.
+**Pass island data as serializable props, never as slotted children.** Astro
+renders a component's children outside the island, so nested primitives cannot
+reach their parent's context: `<CodeTabs>` with slotted `<TabsTrigger>` /
+`<TabsContent>` rendered completely empty. `CodeTabs` and `BlogTabs` therefore
+take a `tabs` array, which keeps the whole group inside one island. The types
+enforce this.
 
-`@astrojs/react` stays registered for MDX components (`CodeTabs`, `CodeBlock`).
-The SSR `optimizeDeps.noDiscovery` and `resolve.noExternal` settings in
-`astro.config.mjs` exist to keep React on one instance if an island is ever
-rendered again; do not remove them.
+Solid components live in `.tsx` files and need `jsxImportSource: "solid-js"`
+with `jsx: "preserve"` in `tsconfig.json`. Solid has no hook dispatcher, so
+none of the duplicate-React SSR hazards apply.
 
 ## Blog Data Access
 
@@ -322,7 +309,7 @@ Prefer major-version descriptions in prose and exact versions only where they co
 
 - Read this file first and treat it as project-local policy.
 - Prefer `rg` and `rg --files` for exploration.
-- Use official docs when checking modern Astro, Cloudflare, Bun, React, or Tailwind behavior.
+- Use official docs when checking modern Astro, Cloudflare, Bun, Solid, or Tailwind behavior.
 - Keep changes small and focused unless the user asks for a broad modernization.
 - If docs and code disagree, make the code the source of truth and update docs.
 - If a migration creates CI breakage, fix the workflow instead of documenting a broken state.

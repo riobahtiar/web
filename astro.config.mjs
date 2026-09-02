@@ -6,7 +6,7 @@ import icon from "astro-icon";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
-import react from "@astrojs/react";
+import solid from "@astrojs/solid-js";
 import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
@@ -15,37 +15,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-
-    environments: {
-      ssr: {
-        optimizeDeps: {
-          // @astrojs/react only pre-bundles react, react-dom and
-          // react-dom/server for the SSR environment when noDiscovery is
-          // explicitly false (see its configEnvironment hook). Left on the
-          // default, React is discovered lazily instead.
-          noDiscovery: false,
-        },
-        resolve: {
-          // SSR externalises CJS node_modules by default, so an island
-          // importing "react" resolved to the raw CJS build while
-          // react-dom/server came from the optimized bundle. Two copies of
-          // React means a null hook dispatcher, i.e. "Invalid hook call" as
-          // soon as an island renders on the server. Vite 8 reads these per
-          // environment, so a top-level `ssr.noExternal` never applies.
-          noExternal: ["react", "react-dom"],
-          dedupe: ["react", "react-dom"],
-        },
-      },
-    },
-
-    resolve: {
-      dedupe: ["react", "react-dom"],
-      // React 19 on Cloudflare Workers: use the edge server bundle so
-      // MessageChannel from node:worker_threads doesn't need polyfilling.
-      alias: import.meta.env.PROD
-        ? { "react-dom/server": "react-dom/server.edge" }
-        : undefined,
-    },
   },
 
   // Self-hosted and subset by Astro, so no third-party font request at runtime.
@@ -88,7 +57,7 @@ export default defineConfig({
     fallback: { id: "en" },
   },
 
-  integrations: [icon(), partytown(), sitemap(), mdx(), react()],
+  integrations: [icon(), partytown(), sitemap(), mdx(), solid()],
 
   adapter: cloudflare({
     imageService: { build: "compile", runtime: "passthrough" },

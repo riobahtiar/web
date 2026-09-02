@@ -20,7 +20,7 @@ import Quote from "@/components/blog/Quote.astro";
 import Accordion from "@/components/blog/Accordion.astro";
 import ImageGrid from "@/components/blog/ImageGrid.astro";
 import YouTubeEmbed from "@/components/blog/YouTubeEmbed.astro";
-import { CodeTabs, TabsList, TabsTrigger, TabsContent } from "@/components/blog/BlogTabs.tsx";
+import { CodeTabs } from "@/components/blog/BlogTabs.tsx";
 
 ## Pendahuluan
 
@@ -125,31 +125,26 @@ const post: BlogPost = {
 
 ### Menggunakan Code Tabs
 
-<CodeTabs defaultValue="js" client:load>
-  <TabsList>
-    <TabsTrigger value="js">JavaScript</TabsTrigger>
-    <TabsTrigger value="ts">TypeScript</TabsTrigger>
-    <TabsTrigger value="python">Python</TabsTrigger>
-  </TabsList>
-  <TabsContent value="js">
-  \`\`\`javascript
-  const salam = "Halo, Dunia!";
-  console.log(salam);
-  \`\`\`
-  </TabsContent>
-  <TabsContent value="ts">
-  \`\`\`typescript
-  const salam: string = "Halo, Dunia!";
-  console.log(salam);
-  \`\`\`
-  </TabsContent>
-  <TabsContent value="python">
-  \`\`\`python
-  salam = "Halo, Dunia!"
-  print(salam)
-  \`\`\`
-  </TabsContent>
-</CodeTabs>
+<CodeTabs
+  client:load
+  tabs={[
+    {
+      label: "JavaScript",
+      language: "javascript",
+      code: 'const greeting = "Hello, World!";\nconsole.log(greeting);',
+    },
+    {
+      label: "TypeScript",
+      language: "typescript",
+      code: 'const greeting: string = "Hello, World!";\nconsole.log(greeting);',
+    },
+    {
+      label: "Python",
+      language: "python",
+      code: 'greeting = "Hello, World!"\nprint(greeting)',
+    },
+  ]}
+/>
 
 ## Menambahkan Kutipan
 
