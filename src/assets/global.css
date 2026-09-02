@@ -44,6 +44,8 @@
   --accent-ring: oklch(0.6 0.15 162 / 0.4);
 
   --danger: oklch(0.55 0.2 27);
+  --code-keyword: oklch(0.52 0.19 292);
+  --code-type: oklch(0.55 0.15 232);
   --shadow-color: 165 20% 12%;
 }
 
@@ -73,6 +75,8 @@
   --accent-ring: oklch(0.78 0.17 162 / 0.45);
 
   --danger: oklch(0.7 0.19 22);
+  --code-keyword: oklch(0.78 0.13 292);
+  --code-type: oklch(0.79 0.11 232);
   --shadow-color: 165 30% 2%;
 }
 
@@ -351,4 +355,22 @@
 :root[data-theme="dark"] .theme-icon-dark,
 :root:not([data-theme="dark"]) .theme-icon-light {
   display: none;
+}
+
+/* Hero code panel. Deliberately narrow palette so it reads as part of the
+   design system rather than as an embedded editor screenshot. */
+.tok-kw {
+  color: var(--code-keyword);
+}
+.tok-str {
+  color: var(--accent);
+}
+.tok-prop {
+  color: var(--foreground);
+}
+.tok-type {
+  color: var(--code-type);
+}
+.tok-pun {
+  color: var(--subtle-foreground);
 }

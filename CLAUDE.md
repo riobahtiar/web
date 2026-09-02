@@ -44,6 +44,27 @@ bun run deploy
 bun run cf-typegen
 ```
 
+### Dev server
+
+Astro 7 runs `astro dev` as a **background daemon** that outlives the terminal.
+Manage it with `astro dev status`, `astro dev logs`, and `astro dev stop`;
+errors after startup go to the log, not the terminal you launched from.
+
+Vite's dependency cache lives in the shared `node_modules/.vite`. Deleting it,
+or letting a second dev server rewrite it, while a server is live invalidates
+module URLs that have already been served and produces:
+
+```
+The file does not exist at ".../node_modules/.vite/deps_ssr/<mod>.js?v=<hash>"
+```
+
+It means a stale optimizer cache, not a broken dependency. Recover with
+`bun run dev:clean`, which stops any running daemon before clearing the cache.
+Always `astro dev stop` before removing `node_modules/.vite`.
+
+Also note `bun run build` writes to `dist/`, so stop any `wrangler dev`
+serving that directory first or the build fails on a locked file.
+
 Recommended fast validation while developing:
 
 ```bash

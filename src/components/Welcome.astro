@@ -1,6 +1,4 @@
 ---
-import { Code } from "astro:components";
-
 import Button from "@/components/ui/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import { technology } from "@/i18n/technology";
@@ -27,12 +25,23 @@ const { lang, i18n } = Astro.props;
 const prefix = lang === "en" ? "" : "id/";
 const greeting = lang === "en" ? "Hello, I'm" : "Halo, Saya";
 
-const profile = `export const rio = {
-  role: "Software Engineer & Tech Consultant",
-  based: "Indonesia",
-  focus: ["Web applications", "System architecture"],
-  stack: ["TypeScript", "Vue", "Nuxt", "Astro"],
-} satisfies Profile;`;
+// Hand-marked rather than rendered with <Code />: it keeps the panel on the
+// site's own palette instead of Shiki's github themes, and keeps
+// `astro:components` out of the SSR graph, where a lazily discovered dep
+// forces Vite to re-optimize mid-session.
+const kw = (t: string) => `<span class="tok-kw">${t}</span>`;
+const str = (t: string) => `<span class="tok-str">"${t}"</span>`;
+const prop = (t: string) => `<span class="tok-prop">${t}</span>`;
+const pun = (t: string) => `<span class="tok-pun">${t}</span>`;
+
+const profileHtml = [
+  `${kw("export")} ${kw("const")} rio ${pun("=")} ${pun("{")}`,
+  `  ${prop("role")}${pun(":")} ${str("Software Engineer &amp; Tech Consultant")}${pun(",")}`,
+  `  ${prop("based")}${pun(":")} ${str("Indonesia")}${pun(",")}`,
+  `  ${prop("focus")}${pun(":")} ${pun("[")}${str("Web applications")}${pun(",")} ${str("System architecture")}${pun("]")}${pun(",")}`,
+  `  ${prop("stack")}${pun(":")} ${pun("[")}${str("TypeScript")}${pun(",")} ${str("Vue")}${pun(",")} ${str("Nuxt")}${pun(",")} ${str("Astro")}${pun("]")}${pun(",")}`,
+  `${pun("}")} ${kw("satisfies")} <span class="tok-type">Profile</span>${pun(";")}`,
+].join("\n");
 
 // A representative slice of the stack, used as the logo-wall equivalent.
 const stack = [
@@ -111,9 +120,8 @@ const stack = [
               <span class="bg-accent-solid/60 h-2 w-2 rounded-full"></span>
             </span>
           </div>
-          <div class="[&_.astro-code]:!my-0 [&_.astro-code]:!border-0">
-            <Code code={profile} lang="ts" />
-          </div>
+          <pre
+            class="overflow-x-auto px-4 py-4 font-mono text-[13px] leading-relaxed"><code set:html={profileHtml} /></pre>
         </div>
       </div>
     </div>

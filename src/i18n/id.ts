@@ -8,6 +8,14 @@ export const id = {
     blog: "Blog",
     comingSoon: "Segera Hadir",
   },
+  notFound: {
+    eyebrow: "Error 404",
+    title: "Halaman ini tidak ada",
+    description:
+      "Halaman yang Anda cari mungkin telah dipindahkan, diganti nama, atau memang tidak pernah ada.",
+    home: "Kembali ke beranda",
+    blog: "Lihat blog",
+  },
   welcome: {
     role: "Software Engineer & Konsultan Teknologi",
     available: "Tersedia untuk proyek baru",

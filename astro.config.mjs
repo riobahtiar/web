@@ -15,6 +15,7 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+
     resolve: {
       // React 19 on Cloudflare Workers: use the edge server bundle so
       // MessageChannel from node:worker_threads doesn't need polyfilling.
@@ -57,6 +58,10 @@ export default defineConfig({
     defaultLocale: "en",
     locales: ["en", "id"],
     routing: { prefixDefaultLocale: false },
+    // Falls back to the English route when an Indonesian one is missing, which
+    // is what serves untranslated blog posts. The side effect is that every
+    // Indonesian 404 redirects to its English URL, so a localized 404 page can
+    // never render; `src/pages/404.astro` covers both locales.
     fallback: { id: "en" },
   },
 

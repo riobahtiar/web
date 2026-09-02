@@ -8,6 +8,14 @@ export const en = {
     blog: "Blog",
     comingSoon: "Coming Soon",
   },
+  notFound: {
+    eyebrow: "Error 404",
+    title: "This page does not exist",
+    description:
+      "The page you are looking for may have been moved, renamed, or never existed.",
+    home: "Back to home",
+    blog: "Browse the blog",
+  },
   welcome: {
     role: "Software Engineer & Tech Consultant",
     available: "Available for new work",

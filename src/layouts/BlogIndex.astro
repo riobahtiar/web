@@ -47,14 +47,16 @@ const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
 ---
 
 <Layout title={title} description={description} lang={lang}>
-  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-    <main class="prose prose-lg max-w-none">
-      <div class="not-prose flex flex-col gap-12 lg:flex-row">
+  <div class="px-6 py-16 sm:px-10">
+    <main>
+      <div class="flex flex-col gap-12 lg:flex-row">
         <!-- Main Content -->
-        <div class="flex-1">
-          <header>
-            <h1>{title}</h1>
-            <p class="lead">{description}</p>
+        <div class="min-w-0 flex-1">
+          <header class="mb-10">
+            <h1 class="text-4xl font-semibold sm:text-5xl">{title}</h1>
+            <p class="text-muted-foreground mt-4 max-w-2xl text-lg text-pretty">
+              {description}
+            </p>
           </header>
 
           <!-- Search and Posts -->
@@ -73,15 +75,15 @@ const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
           <!-- Categories -->
           {
             categories && (
-              <div class="bg-base-200 rounded-xl p-6">
-                <h2 class="!mt-0 !mb-4">
+              <div class="border-border bg-surface rounded-xl border p-6">
+                <p class="eyebrow">
                   {lang === "en" ? "Categories" : "Kategori"}
-                </h2>
-                <ul class="!mt-0 space-y-2">
+                </p>
+                <ul class="mt-4 space-y-2" role="list">
                   <li>
                     <a
                       href={baseUrl}
-                      class={`hover:text-primary block transition-colors ${!currentCategory ? "text-primary" : ""}`}
+                      class={`hover:text-foreground block text-sm transition-colors ${!currentCategory ? "text-accent" : "text-muted-foreground"}`}
                     >
                       {lang === "en" ? "All Posts" : "Semua Artikel"}
                     </a>
@@ -90,10 +92,13 @@ const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
                     <li>
                       <a
                         href={`${baseUrl}/${category.name}`}
-                        class={`hover:text-primary block transition-colors ${currentCategory === category.name ? "text-primary" : ""}`}
+                        class={`hover:text-foreground block text-sm transition-colors ${currentCategory === category.name ? "text-accent" : "text-muted-foreground"}`}
                       >
                         {category.name}
-                        <span> ({category.count})</span>
+                        <span class="text-subtle-foreground">
+                          {" "}
+                          ({category.count})
+                        </span>
                       </a>
                     </li>
                   ))}
