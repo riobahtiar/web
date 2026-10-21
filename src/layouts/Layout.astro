@@ -11,7 +11,7 @@ import { id } from "../i18n/id";
 
 // Get current language from URL or default to English
 const pathname = Astro.url.pathname;
-const lang = pathname.startsWith("/id/") ? "id" : "en";
+const lang = pathname === "/id" || pathname.startsWith("/id/") ? "id" : "en";
 const i18n = lang === "id" ? id : en;
 
 // Ensure translations are loaded

@@ -13,58 +13,59 @@ export interface Tech {
 
 export const technology = {
   frontend: [
-    { name: "Astro", icon: "simple-icons:astro" },
+    { name: "TypeScript", icon: "simple-icons:typescript" },
     { name: "Vue.js", icon: "simple-icons:vuedotjs" },
-    { name: "Nuxt.js", icon: "simple-icons:nuxtdotjs" },
+    { name: "Nuxt", icon: "simple-icons:nuxtdotjs" },
     { name: "React", icon: "simple-icons:react" },
+    { name: "Next.js", icon: "simple-icons:nextdotjs" },
     { name: "Tailwind CSS", icon: "simple-icons:tailwindcss" },
   ],
   backend: [
     { name: "Bun", icon: "simple-icons:bun" },
+    { name: "Elysia.js", icon: "elysiajs" },
+    { name: "Better Auth", icon: "simple-icons:betterauth" },
+    { name: "Go", icon: "simple-icons:go" },
     { name: "Node.js", icon: "simple-icons:nodedotjs" },
     { name: "Hono", icon: "simple-icons:hono" },
-    { name: "Elysia.js", icon: "elysiajs" },
     { name: "Laravel", icon: "simple-icons:laravel" },
     { name: "WordPress", icon: "simple-icons:wordpress" },
   ],
-  mobile: [
-    { name: "Flutter", icon: "simple-icons:flutter" },
-    // React Native's brand mark is the React atom; simple-icons has no separate
-    // entry, and tabler's is stroke-based so it would read thin beside these.
-    { name: "React Native", icon: "simple-icons:react" },
-  ],
-  database: [
+  data: [
     { name: "PostgreSQL", icon: "simple-icons:postgresql" },
     { name: "MySQL", icon: "simple-icons:mysql" },
+    { name: "Drizzle", icon: "simple-icons:drizzle" },
     { name: "Redis", icon: "simple-icons:redis" },
-    { name: "Elasticsearch", icon: "simple-icons:elasticsearch" },
     { name: "Typesense", icon: "typesense" },
-    { name: "Supabase", icon: "simple-icons:supabase" },
+    { name: "BigQuery", icon: "simple-icons:googlebigquery" },
+    { name: "MongoDB", icon: "simple-icons:mongodb" },
   ],
-  cloud: [
+  infrastructure: [
+    { name: "Docker", icon: "simple-icons:docker" },
+    { name: "Kubernetes", icon: "simple-icons:kubernetes" },
     { name: "AWS", icon: "simple-icons:amazonwebservices" },
-    { name: "Google Cloud", icon: "simple-icons:googlecloud" },
-    { name: "Alibaba Cloud", icon: "simple-icons:alibabacloud" },
     { name: "Cloudflare", icon: "simple-icons:cloudflare" },
     { name: "DigitalOcean", icon: "simple-icons:digitalocean" },
-    { name: "Vercel", icon: "simple-icons:vercel" },
-    { name: "Railway", icon: "simple-icons:railway" },
-    { name: "WorkOS", icon: "workos" },
+    { name: "Grafana", icon: "simple-icons:grafana" },
+    { name: "Sentry", icon: "simple-icons:sentry" },
+  ],
+  delivery: [
+    { name: "GitHub Actions", icon: "simple-icons:githubactions" },
+    { name: "Turborepo", icon: "simple-icons:turborepo" },
+    { name: "Vitest", icon: "simple-icons:vitest" },
   ],
   ai: [
-    { name: "Anthropic", icon: "simple-icons:anthropic" },
-    { name: "OpenAI", icon: "simple-icons:openai" },
-    { name: "OpenRouter", icon: "simple-icons:openrouter" },
+    { name: "Claude Code", icon: "simple-icons:claude" },
+    { name: "Codex", icon: "simple-icons:openai" },
   ],
 } satisfies Record<string, Tech[]>;
 
 /** Every tool, in declaration order. */
 export const stack: Tech[] = [
-  ...technology.backend,
   ...technology.frontend,
-  ...technology.mobile,
-  ...technology.database,
-  ...technology.cloud,
+  ...technology.backend,
+  ...technology.data,
+  ...technology.infrastructure,
+  ...technology.delivery,
   ...technology.ai,
 ];
 

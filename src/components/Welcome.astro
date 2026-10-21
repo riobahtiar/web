@@ -34,12 +34,20 @@ const str = (t: string) => `<span class="tok-str">"${t}"</span>`;
 const prop = (t: string) => `<span class="tok-prop">${t}</span>`;
 const pun = (t: string) => `<span class="tok-pun">${t}</span>`;
 
+// Arrays are one item per line so the widest line stays short enough to fit
+// a 360px phone without the panel scrolling sideways.
+const list = (key: string, items: string[]) => [
+  `  ${prop(key)}${pun(":")} ${pun("[")}`,
+  ...items.map((item) => `    ${str(item)}${pun(",")}`),
+  `  ${pun("]")}${pun(",")}`,
+];
+
 const profileHtml = [
   `${kw("export")} ${kw("const")} rio ${pun("=")} ${pun("{")}`,
-  `  ${prop("role")}${pun(":")} ${str("Software Engineer &amp; Tech Consultant")}${pun(",")}`,
-  `  ${prop("based")}${pun(":")} ${str("Indonesia")}${pun(",")}`,
-  `  ${prop("focus")}${pun(":")} ${pun("[")}${str("Web applications")}${pun(",")} ${str("AI pipelines")}${pun("]")}${pun(",")}`,
-  `  ${prop("stack")}${pun(":")} ${pun("[")}${str("TypeScript")}${pun(",")} ${str("Vue")}${pun(",")} ${str("Nuxt")}${pun(",")} ${str("Astro")}${pun("]")}${pun(",")}`,
+  `  ${prop("role")}${pun(":")} ${str("Full Stack Software Engineer")}${pun(",")}`,
+  `  ${prop("based")}${pun(":")} ${str("Yogyakarta, Indonesia")}${pun(",")}`,
+  ...list("focus", ["Web applications", "Modernization", "Integrations"]),
+  ...list("stack", ["TypeScript", "Vue", "Nuxt", "Bun", "Go"]),
   `${pun("}")} ${kw("satisfies")} <span class="tok-type">Profile</span>${pun(";")}`,
 ].join("\n");
 ---
@@ -51,8 +59,10 @@ const profileHtml = [
   >
   </div>
 
-  <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-    <div>
+  <div
+    class="grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16"
+  >
+    <div class="min-w-0">
       <span
         class="border-border bg-surface/60 inline-flex items-center gap-2 rounded-full border px-3 py-1"
       >
@@ -92,7 +102,7 @@ const profileHtml = [
       </div>
     </div>
 
-    <div class="relative">
+    <div class="relative min-w-0">
       <div
         class="border-border bg-surface/80 overflow-hidden rounded-xl border shadow-2xl backdrop-blur-sm"
       >
@@ -113,7 +123,7 @@ const profileHtml = [
           </span>
         </div>
         <pre
-          class="overflow-x-auto px-4 py-4 font-mono text-[13px] leading-relaxed"><code set:html={profileHtml} /></pre>
+          class="overflow-x-auto px-4 py-4 font-mono text-[11.5px] leading-relaxed whitespace-pre-wrap sm:text-[13px] sm:whitespace-pre"><code set:html={profileHtml} /></pre>
       </div>
     </div>
   </div>

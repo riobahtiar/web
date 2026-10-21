@@ -21,7 +21,7 @@ const lastModified = CONTENT_UPDATED.toLocaleDateString(
 const meta = {
   title: "About Me",
   description:
-    "Learn more about Rio Bahtiar \u2014 software engineer working across modern web development, system architecture and AI engineering.",
+    "Learn more about Rio Bahtiar \u2014 full stack software engineer building web applications, modernizing existing systems and integrating services.",
   image: "/smc.jpg",
 };
 ---
@@ -36,7 +36,7 @@ const meta = {
     <article class="prose prose-lg md:prose-xl mx-auto max-w-3xl">
       <!-- Cover Image -->
       <div
-        class="bg-base-200 relative mb-8 aspect-[21/9] w-full overflow-hidden rounded-lg"
+        class="not-prose bg-base-200 relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-lg sm:aspect-[21/9]"
       >
         <img
           src="/smc.jpg"
@@ -61,132 +61,169 @@ const meta = {
       <div class="space-y-6">
         <h2>Introduction</h2>
         <p>
-          Hello! I'm Rio Bahtiar, a software engineer passionate about creating
-          innovative solutions through technology. In my free time, I enjoy
-          reading technical literature, staying active with swimming, and
-          exploring the possibilities of technology through science fiction.
+          Hello! I'm Rio Bahtiar, a full stack software engineer based in
+          Yogyakarta, Indonesia. I build and maintain web applications,
+          modernize existing systems, and integrate services, with experience at
+          Sekolah.mu and Tokopedia alongside independent client work. In my free
+          time, I enjoy reading technical literature, staying active with
+          swimming, and exploring the possibilities of technology through
+          science fiction.
         </p>
 
         <h2>Education & Background</h2>
         <p>
-          I hold a degree in Computer Engineering from Amikom University
-          Yogyakarta. My academic foundation, combined with continuous
-          self-learning and professional development, has enabled me to stay at
-          the forefront of modern software development practices and emerging
-          technologies.
+          I hold a Bachelor of Computer Science (S.Kom.) in Information Systems
+          from Universitas AMIKOM Yogyakarta (2010-2014). My academic
+          foundation, combined with continuous self-learning and professional
+          development, has kept me close to modern software development
+          practices and emerging technologies.
         </p>
 
         <h2>Professional Experience</h2>
-        <h3>Sekolah.mu (2022-Present) - Senior Software Engineer</h3>
+        <h3>Sekolah.mu (2022-Present) - Senior Web Engineer</h3>
         <p>
-          Currently leading frontend development initiatives at an innovative
-          EdTech company, focusing on creating engaging and accessible learning
-          experiences. Key responsibilities include:
+          Leading web product development across the Sekolah.mu learning and
+          career ecosystem:
         </p>
         <ul>
+          <li>Developing web applications with Vue.js and Nuxt.js</li>
           <li>
-            Architecting and implementing scalable frontend solutions using
-            Vue.js and Nuxt.js
+            Supporting products including Sekolah.mu, Karier.mu, Talentics.id
+            and Rencanamu.id
           </li>
-          <li>Leading technical decisions and establishing best practices</li>
-          <li>Mentoring team members and promoting code quality standards</li>
         </ul>
 
-        <h3>Independent Consulting (2019-2022)</h3>
-        <p>
-          Provided technical consulting and development services to various
-          clients, specializing in:
-        </p>
+        <h3>Independent Software Engineer, Upwork (2019-2022)</h3>
+        <p>Independent web development and ongoing client collaborations:</p>
         <ul>
-          <li>Custom enterprise solutions and system architecture design</li>
-          <li>Performance optimization and system modernization</li>
-          <li>Technical leadership and team augmentation</li>
-          <li>Cloud infrastructure and DevOps implementation</li>
+          <li>
+            <strong>Lifepal:</strong> frontend and backend work on the WordPress site,
+            decoupling it through the WP JSON API and migrating the frontend to Next.js,
+            then converting it into a Multisite network for Lifepal's microsites
+          </li>
+          <li>
+            <strong>Aisconverse:</strong> early development of Treweler, a commercial
+            WordPress mapping plugin built on Mapbox GL JS, including its admin settings
+            interface
+          </li>
+          <li>
+            <strong>Lingble:</strong> building and maintaining WordPress microsites,
+            Ghost sites, and Klipfolio dashboards for data and metrics
+          </li>
         </ul>
 
-        <h3>Tokopedia (2016-2019) - Senior Software Engineer</h3>
+        <h3>
+          Tokopedia (2016-2019) - Software Engineer → Senior Software Engineer
+        </h3>
         <p>
-          Led a dynamic team at one of Southeast Asia's largest technology
-          companies, focusing on high-impact web applications and distributed
-          systems. Key achievements include:
+          Developed web products and distributed services, progressing to lead
+          the Microsites team and manage WordPress infrastructure. Selected
+          projects:
         </p>
         <ul>
           <li>
-            Architected and implemented scalable microservices handling millions
-            of daily transactions
+            <strong>Promo Code Engine:</strong> distributed backend work with Golang,
+            gRPC, Redis and PostgreSQL (2018-2019)
           </li>
           <li>
-            Led development of critical business applications using React.js and
-            Golang
+            <strong>Tokopoints Desktop:</strong> migrating the desktop application
+            from Perl to React (2018)
           </li>
           <li>
-            Optimized system performance and reduced infrastructure costs by 40%
+            <strong>WordPress to Go microservices:</strong> rewriting several WordPress
+            services as Golang microservices
           </li>
-          <li>Mentored junior developers and established coding standards</li>
+          <li>
+            <strong>Careers page:</strong> moving from Workable to Workday through
+            Workday's SOAP API
+          </li>
+          <li>
+            <strong>Help Center:</strong> migrating from Zendesk to Salesforce Knowledge
+            through its API
+          </li>
         </ul>
 
-        <h3>SoftwareSeni (2015-2016) - Contract</h3>
+        <h3>SoftwareSeni (2015-2016) - Frontend & WordPress Developer</h3>
         <p>
-          Contract work at a web development studio in Yogyakarta serving
-          clients in Australia and Indonesia:
+          Built frontend interfaces and WordPress solutions for client projects:
         </p>
         <ul>
           <li>
-            <strong>WordPress Developer (2016):</strong> theme and plugin development,
-            WooCommerce, payment and API integration
+            <strong>WordPress Developer (2016):</strong> themes, plugins, WooCommerce
+            features and payment integrations
           </li>
           <li>
-            <strong>Frontend Developer (2015-2016):</strong> building interfaces with
-            HTML, CSS and JavaScript, working closely with designers, researchers
-            and product managers
+            <strong>Front End Developer (2015-2016):</strong> HTML, CSS and JavaScript
+            interfaces built with design and product teams
+          </li>
+        </ul>
+
+        <h3>Earlier Experience</h3>
+        <ul>
+          <li>Front End Web Developer, Local Tobacco (2015)</li>
+          <li>Web Designer, Mata Terbuka Digital Agency (2014-2015)</li>
+          <li>
+            SEO Specialist, Muhammadiyah University of Yogyakarta (2013-2014)
+          </li>
+          <li>
+            Computer Laboratory Assistant, STMIK AMIKOM Yogyakarta (2011-2012)
           </li>
         </ul>
 
         <h2>Technical Expertise</h2>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <h3 class="mb-2 text-lg font-semibold">Frontend Development</h3>
+            <h3 class="mb-2 text-lg font-semibold">Frontend</h3>
             <ul>
-              <li>React.js & Next.js</li>
-              <li>Vue.js & Nuxt.js</li>
-              <li>TypeScript</li>
-              <li>Modern CSS & TailwindCSS</li>
+              <li>TypeScript & JavaScript</li>
+              <li>Vue.js, Nuxt 4 & Nuxt UI</li>
+              <li>React & Next.js</li>
+              <li>Tailwind CSS</li>
             </ul>
           </div>
           <div>
-            <h3 class="mb-2 text-lg font-semibold">Backend Development</h3>
+            <h3 class="mb-2 text-lg font-semibold">Backend</h3>
             <ul>
-              <li>Node.js & Express</li>
-              <li>Golang & Microservices</li>
-              <li>PHP & Laravel</li>
-              <li>REST & gRPC APIs</li>
+              <li>Bun, Elysia, Hono & Better Auth</li>
+              <li>Golang, Node.js & Express.js</li>
+              <li>PHP / Laravel & WordPress</li>
+              <li>REST, GraphQL, gRPC & SOAP</li>
             </ul>
           </div>
           <div>
-            <h3 class="mb-2 text-lg font-semibold">Database & Cache</h3>
+            <h3 class="mb-2 text-lg font-semibold">Data & Background Jobs</h3>
             <ul>
-              <li>PostgreSQL</li>
-              <li>Redis</li>
-              <li>MongoDB</li>
-              <li>Database Design</li>
+              <li>PostgreSQL, MySQL & Drizzle</li>
+              <li>Redis & BullMQ</li>
+              <li>Typesense</li>
+              <li>BigQuery & MongoDB</li>
             </ul>
           </div>
           <div>
-            <h3 class="mb-2 text-lg font-semibold">DevOps & Cloud</h3>
+            <h3 class="mb-2 text-lg font-semibold">
+              Infrastructure & Observability
+            </h3>
             <ul>
               <li>Docker & Kubernetes</li>
-              <li>AWS Services</li>
-              <li>CI/CD Pipelines</li>
-              <li>Infrastructure as Code</li>
+              <li>DigitalOcean & AWS / S3</li>
+              <li>Cloudflare WAF</li>
+              <li>Grafana & Sentry</li>
             </ul>
           </div>
           <div>
-            <h3 class="mb-2 text-lg font-semibold">AI Engineering</h3>
+            <h3 class="mb-2 text-lg font-semibold">Development & Delivery</h3>
             <ul>
-              <li>Custom AI & retrieval pipelines</li>
-              <li>Evaluation, guardrails & monitoring</li>
-              <li>LLM integration in production systems</li>
-              <li>AI-assisted product features</li>
+              <li>Bun workspaces & Turborepo</li>
+              <li>GitHub Actions & CI/CD</li>
+              <li>Vitest</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="mb-2 text-lg font-semibold">AI-Assisted Development</h3>
+            <ul>
+              <li>Claude Code & Codex</li>
+              <li>MCP integration</li>
+              <li>Adversarial code review</li>
             </ul>
           </div>
         </div>

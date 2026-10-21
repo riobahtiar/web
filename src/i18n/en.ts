@@ -17,12 +17,12 @@ export const en = {
     blog: "Browse the blog",
   },
   welcome: {
-    role: "Software Engineer & Tech Consultant",
-    available: "Available for new work",
+    role: "Full Stack Software Engineer",
+    available: "Open to opportunities",
     stackLabel: "Tools I work with",
     title: "Welcome",
     description:
-      "A software engineer and tech consultant specializing in modern web applications, AI systems, and system architecture.",
+      "I build and maintain web applications, modernize existing systems, and integrate services.",
     viewWork: "View Services",
     contactMe: "Contact Me",
     clients: "Happy Clients",

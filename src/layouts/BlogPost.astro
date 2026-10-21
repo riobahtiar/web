@@ -68,25 +68,27 @@ const formattedModifiedDate = formatDate(modified_at, lang);
         <!-- Article Header -->
         <header>
           <div
-            class="text-base-content/70 mb-4 flex items-center gap-3 text-sm"
+            class="text-base-content/70 mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm"
           >
             <a
               href={`/${lang === "en" ? "" : "id/"}blog/${category}`}
-              class="hover:text-primary capitalize transition-colors"
+              class="hover:text-primary whitespace-nowrap capitalize transition-colors"
             >
               {category}
             </a>
-            <span>•</span>
-            <time datetime={created_at.toISOString()}>{formattedDate}</time>
+            <span class="flex items-center gap-3 whitespace-nowrap">
+              <span aria-hidden="true">•</span>
+              <time datetime={created_at.toISOString()}>{formattedDate}</time>
+            </span>
             {
               readingTime && (
-                <>
-                  <span>•</span>
+                <span class="flex items-center gap-3 whitespace-nowrap">
+                  <span aria-hidden="true">•</span>
                   <span class="flex items-center gap-1">
                     <Icon name="tabler:clock" class="h-4 w-4" />
                     {readingTime}
                   </span>
-                </>
+                </span>
               )
             }
           </div>
@@ -96,7 +98,7 @@ const formattedModifiedDate = formatDate(modified_at, lang);
           <p class="lead">{description}</p>
 
           <!-- Author Info -->
-          <div class="not-prose flex items-center gap-4">
+          <div class="not-prose my-8 flex items-center gap-4">
             <img
               src={author.image}
               alt={author.name}

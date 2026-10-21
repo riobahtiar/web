@@ -17,12 +17,12 @@ export const id = {
     blog: "Lihat blog",
   },
   welcome: {
-    role: "Software Engineer & Konsultan Teknologi",
-    available: "Tersedia untuk proyek baru",
+    role: "Full Stack Software Engineer",
+    available: "Terbuka untuk peluang baru",
     stackLabel: "Teknologi yang saya gunakan",
     title: "Selamat Datang",
     description:
-      "Seorang software engineer dan konsultan teknologi yang mengkhususkan diri dalam aplikasi web modern, sistem AI, dan arsitektur sistem.",
+      "Saya membangun dan memelihara aplikasi web, memodernisasi sistem yang sudah ada, dan mengintegrasikan berbagai layanan.",
     viewWork: "Lihat Layanan",
     contactMe: "Hubungi Saya",
     clients: "Klien Kami",
