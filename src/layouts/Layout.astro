@@ -1,4 +1,6 @@
 ---
+import { Font } from "astro:assets";
+
 import "../assets/global.css";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
@@ -9,7 +11,7 @@ import { id } from "../i18n/id";
 
 // Get current language from URL or default to English
 const pathname = Astro.url.pathname;
-const lang = pathname.startsWith("/id/") ? "id" : "en";
+const lang = pathname === "/id" || pathname.startsWith("/id/") ? "id" : "en";
 const i18n = lang === "id" ? id : en;
 
 // Ensure translations are loaded
@@ -29,6 +31,10 @@ const {
     ? new URL(Astro.url.pathname, Astro.site).toString()
     : "",
   showCTA = true, // Control CTA visibility
+  // Blog categories, tags and posts have different slugs per locale, so a
+  // path-derived alternate would point at a URL that 404s or merely redirects.
+  // hreflang must be reciprocal and resolve, so those pages opt out.
+  localized = true,
   showTopBanner = false, // Control Banner visibility
   // Article-specific metadata
   type = "website", // or "article" for blog posts
@@ -39,22 +45,61 @@ const {
   readingTime,
 } = Astro.props;
 
-// Generate alternate language URLs
-const alternateEN = canonicalURL ? canonicalURL.replace("/id/", "/") : "/";
-const alternateID = canonicalURL
-  ? canonicalURL === "/"
-    ? "/id/"
-    : canonicalURL.replace("/", "/id/")
-  : "/id/";
+// Alternate language URLs. These are built from the pathname rather than from
+// canonicalURL, whose leading "https://" would otherwise be the first match for
+// a naive replace().
+const basePath = pathname.replace(/^\/id(?=\/|$)/, "") || "/";
+const localizedPath = (prefix: string) =>
+  basePath === "/" ? `${prefix}/` : `${prefix}${basePath}`;
+
+const toAbsolute = (path: string) =>
+  Astro.site ? new URL(path, Astro.site).toString() : path;
+
+const alternateEN = toAbsolute(localizedPath(""));
+const alternateID = toAbsolute(localizedPath("/id"));
+
+// The language switcher target. Where the two locales do not share a URL the
+// mapped path would 404 (an Indonesian-only post has no English twin), so send
+// visitors to the nearest real page instead of a dead end.
+const otherPrefix = lang === "en" ? "/id" : "";
+const languageUrl = localized
+  ? localizedPath(otherPrefix)
+  : basePath.startsWith("/blog")
+    ? `${otherPrefix}/blog`
+    : `${otherPrefix}/`;
 ---
 
 <!doctype html>
-<html lang={lang} class="transition-colors duration-300" data-theme="light">
+<html lang={lang} data-theme="dark" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
 
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-jetbrains-mono" />
+
+    <script is:inline>
+      // Initialize theme on page load
+      (function () {
+        // Get theme from localStorage or system preference
+        const savedTheme = localStorage.getItem("theme");
+        const systemDarkMode = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const theme = savedTheme || (systemDarkMode ? "dark" : "light");
+
+        // Apply theme
+        document.documentElement.setAttribute("data-theme", theme);
+
+        // Also add dark class for Tailwind dark mode
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    </script>
     <!-- Favicon and Web Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -81,8 +126,13 @@ const alternateID = canonicalURL
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" href={alternateEN} hreflang="en" />
-    <link rel="alternate" href={alternateID} hreflang="id" />
+    {localized && (
+      <>
+        <link rel="alternate" href={alternateEN} hreflang="en" />
+        <link rel="alternate" href={alternateID} hreflang="id" />
+        <link rel="alternate" href={alternateEN} hreflang="x-default" />
+      </>
+    )}
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
@@ -93,26 +143,18 @@ const alternateID = canonicalURL
       property="og:image"
       content={Astro.site ? new URL(image, Astro.site).toString() : image}
     />
-    {
-      type === "article" && publishedTime && (
-        <meta property="article:published_time" content={publishedTime} />
-      )
-    }
-    {
-      type === "article" && modifiedTime && (
-        <meta property="article:modified_time" content={modifiedTime} />
-      )
-    }
-    {
-      type === "article" && author && (
-        <meta property="article:author" content={author} />
-      )
-    }
-    {
-      type === "article" &&
-        tags &&
-        tags.map((tag: string) => <meta property="article:tag" content={tag} />)
-    }
+    {type === "article" && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {type === "article" && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime} />
+    )}
+    {type === "article" && author && (
+      <meta property="article:author" content={author} />
+    )}
+    {type === "article" &&
+      tags &&
+      tags.map((tag: string) => <meta property="article:tag" content={tag} />)}
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -129,43 +171,42 @@ const alternateID = canonicalURL
     <meta name="msapplication-TileColor" content="oklch(0.72 0.25 142.53)" />
 
     <!-- JSON-LD Structured Data -->
-    {
-      type === "article" && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: title,
-            description: description,
-            image: Astro.site ? new URL(image, Astro.site).toString() : image,
-            datePublished: publishedTime,
-            dateModified: modifiedTime || publishedTime,
-            author: {
-              "@type": "Person",
-              name: author || "Rio Bahtiar",
-            },
-            publisher: {
-              "@type": "Person",
-              name: "Rio Bahtiar",
-              url: Astro.site ? Astro.site.toString() : "",
-            },
-            mainEntityOfPage: {
-              "@type": "WebPage",
-              "@id": canonicalURL,
-            },
-            keywords: tags ? tags.join(", ") : "",
-            wordCount: readingTime ? readingTime.split(" ")[0] : undefined,
-            inLanguage: lang,
-          })}
-        />
-      )
-    }
+    {type === "article" && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: title,
+          description: description,
+          image: Astro.site ? new URL(image, Astro.site).toString() : image,
+          datePublished: publishedTime,
+          dateModified: modifiedTime || publishedTime,
+          author: {
+            "@type": "Person",
+            name: author || "Rio Bahtiar",
+          },
+          publisher: {
+            "@type": "Person",
+            name: "Rio Bahtiar",
+            url: Astro.site ? Astro.site.toString() : "",
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": canonicalURL,
+          },
+          keywords: tags ? tags.join(", ") : "",
+          wordCount: readingTime ? readingTime.split(" ")[0] : undefined,
+          inLanguage: lang,
+        })}
+      />
+    )}
 
     <!-- Google Analytics -->
     <script
       type="text/partytown"
-      src="https://www.googletagmanager.com/gtag/js?id=G-H970X85M9S"></script>
+      src="https://www.googletagmanager.com/gtag/js?id=G-H970X85M9S"
+    ></script>
     <script type="text/partytown">
       window.dataLayer = window.dataLayer || [];
       window.gtag = function gtag() {
@@ -175,49 +216,21 @@ const alternateID = canonicalURL
 
       gtag("config", "G-H970X85M9S");
     </script>
-
     <!-- Additional head items -->
     <slot name="head" />
   </head>
   <body>
     {showTopBanner && <Banner lang={lang} />}
-    <Header lang={lang} i18n={i18n} />
-    <slot />
-    {showCTA && <CTA lang={lang} i18n={i18n} />}
+    <Header lang={lang} i18n={i18n} languageUrl={languageUrl} />
+    <div class="frame">
+      <main id="main">
+        <slot />
+      </main>
+      {showCTA && <CTA lang={lang} i18n={i18n} />}
+    </div>
     <Footer lang={lang} i18n={i18n} />
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
-
-<script is:inline>
-  // Initialize theme on page load
-  (function () {
-    // Get theme from localStorage or system preference
-    const savedTheme = localStorage.getItem("theme");
-    const systemDarkMode = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    const theme = savedTheme || (systemDarkMode ? "dark" : "light");
-
-    // Apply theme
-    document.documentElement.setAttribute("data-theme", theme);
-
-    // Also add dark class for Tailwind dark mode
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  })();
-</script>
 
 <script>
   // Banner initialization

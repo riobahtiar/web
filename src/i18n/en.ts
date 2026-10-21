@@ -8,10 +8,21 @@ export const en = {
     blog: "Blog",
     comingSoon: "Coming Soon",
   },
+  notFound: {
+    eyebrow: "Error 404",
+    title: "This page does not exist",
+    description:
+      "The page you are looking for may have been moved, renamed, or never existed.",
+    home: "Back to home",
+    blog: "Browse the blog",
+  },
   welcome: {
+    role: "Full Stack Software Engineer",
+    available: "Open to opportunities",
+    stackLabel: "Tools I work with",
     title: "Welcome",
     description:
-      "A software engineer and tech consultant specializing in modern web applications, system architecture, and digital strategy.",
+      "I build and maintain web applications, modernize existing systems, and integrate services.",
     viewWork: "View Services",
     contactMe: "Contact Me",
     clients: "Happy Clients",
@@ -26,7 +37,7 @@ export const en = {
     title: "Work With Me",
     subtitle: "Professional Services",
     description:
-      "I offer comprehensive consulting and development services to help you build scalable solutions, optimize performance, and grow your digital presence through technical expertise and strategic guidance.",
+      "I offer consulting and development services across web, infrastructure and AI \u2014 helping you build scalable systems, ship AI features that hold up in production, and grow your digital presence.",
     services: {
       consultation: {
         title: "Technical Consultation",
@@ -37,6 +48,11 @@ export const en = {
         title: "Website Development",
         description:
           "Custom website development using modern technologies and best practices, optimized for performance and scalability.",
+      },
+      mobileDevelopment: {
+        title: "Mobile App Development",
+        description:
+          "Cross-platform mobile apps built with Flutter and React Native \u2014 one codebase across iOS and Android, without giving up a native feel.",
       },
       maintenance: {
         title: "Website Maintenance",
@@ -57,6 +73,16 @@ export const en = {
         title: "Platform Migration & Modernization",
         description:
           "Seamlessly migrate your platform to modern technologies, cloud infrastructure, and improve deployment processes.",
+      },
+      aiPipelines: {
+        title: "Custom AI Pipelines",
+        description:
+          "Retrieval, extraction and agent pipelines built around your own data and workflows, designed to be observable and cost-aware rather than a black box.",
+      },
+      aiFeatures: {
+        title: "AI-Assisted Product Features",
+        description:
+          "Add AI where it earns its place in an existing product \u2014 search, summarisation, classification and assistance \u2014 integrated without destabilising what already works.",
       },
     },
     cta: {

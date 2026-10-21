@@ -28,64 +28,62 @@ const heading = lang === "id" ? "Artikel Terkait" : "Related Posts";
   </h2>
 
   <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-    {
-      posts.map((post) => {
-        const slug = post.id.startsWith(post.data.category + "/")
-          ? post.id.substring(post.data.category.length + 1)
-          : post.id;
-        const postUrl = `/${lang === "en" ? "" : "id/"}blog/${post.data.category}/${slug}`;
+    {posts.map((post) => {
+      const slug = post.id.startsWith(post.data.category + "/")
+        ? post.id.substring(post.data.category.length + 1)
+        : post.id;
+      const postUrl = `/${lang === "en" ? "" : "id/"}blog/${post.data.category}/${slug}`;
 
-        return (
-          <article class="card bg-base-200 hover:bg-base-300 group transition-colors">
-            {post.data.image && (
-              <figure class="aspect-video overflow-hidden">
-                <img
-                  src={post.data.image}
-                  alt={post.data.title}
-                  width="400"
-                  height="225"
-                  class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </figure>
-            )}
-            <div class="card-body p-4">
-              <div class="text-base-content/60 mb-2 flex items-center gap-2 text-xs">
-                <span class="badge badge-primary badge-sm">
-                  {post.data.category}
-                </span>
-                <span>•</span>
-                <time datetime={post.data.created_at.toISOString()}>
-                  {formatDate(post.data.created_at, lang)}
-                </time>
-              </div>
-
-              <h3 class="card-title mb-2 text-base">
-                <a
-                  href={postUrl}
-                  class="hover:text-primary line-clamp-2 transition-colors"
-                >
-                  {post.data.title}
-                </a>
-              </h3>
-
-              <p class="text-base-content/70 mb-3 line-clamp-2 text-sm">
-                {post.data.description}
-              </p>
-
-              <div class="flex items-center justify-between text-xs">
-                <span class="text-base-content/60 flex items-center gap-1">
-                  <Icon name="tabler:clock" class="h-3 w-3" />
-                  {post.readingTime}
-                </span>
-                <a href={postUrl} class="link link-primary">
-                  {lang === "id" ? "Baca" : "Read"} →
-                </a>
-              </div>
+      return (
+        <article class="card bg-base-200 hover:bg-base-300 group transition-colors">
+          {post.data.image && (
+            <figure class="aspect-video overflow-hidden">
+              <img
+                src={post.data.image}
+                alt={post.data.title}
+                width="400"
+                height="225"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </figure>
+          )}
+          <div class="card-body p-4">
+            <div class="text-base-content/60 mb-2 flex items-center gap-2 text-xs">
+              <span class="badge badge-primary badge-sm">
+                {post.data.category}
+              </span>
+              <span>•</span>
+              <time datetime={post.data.created_at.toISOString()}>
+                {formatDate(post.data.created_at, lang)}
+              </time>
             </div>
-          </article>
-        );
-      })
-    }
+
+            <h3 class="card-title mb-2 text-base">
+              <a
+                href={postUrl}
+                class="hover:text-primary line-clamp-2 transition-colors"
+              >
+                {post.data.title}
+              </a>
+            </h3>
+
+            <p class="text-base-content/70 mb-3 line-clamp-2 text-sm">
+              {post.data.description}
+            </p>
+
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-base-content/60 flex items-center gap-1">
+                <Icon name="tabler:clock" class="h-3 w-3" />
+                {post.readingTime}
+              </span>
+              <a href={postUrl} class="link link-primary">
+                {lang === "id" ? "Baca" : "Read"} →
+              </a>
+            </div>
+          </div>
+        </article>
+      );
+    })}
   </div>
 </section>
 

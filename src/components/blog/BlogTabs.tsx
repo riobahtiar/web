@@ -1,59 +1,89 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import type { JSX } from "solid-js";
+
+import { For } from "solid-js";
+
+import { CodeBlock } from "@/components/blog/CodeBlock";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Tab {
   label: string;
   value: string;
-  content: React.ReactNode;
+  content: JSX.Element;
+}
+
+interface CodeTab {
+  label: string;
+  /** Defaults to a slug of the label. */
+  value?: string;
+  code: string;
+  language?: string;
+  filename?: string;
 }
 
 interface BlogTabsProps {
   tabs: Tab[];
   defaultValue?: string;
-  className?: string;
+  class?: string;
 }
 
-export function BlogTabs({ tabs, defaultValue, className }: BlogTabsProps) {
-  const defaultTab = defaultValue || tabs[0]?.value;
+export function BlogTabs(props: BlogTabsProps) {
+  const defaultTab = () => props.defaultValue ?? props.tabs[0]?.value;
 
   return (
-    <div className={`my-8 ${className || ""}`}>
-      <Tabs defaultValue={defaultTab} className="w-full">
-        <TabsList className="mb-4 w-full justify-start">
-          {tabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value}>
-              {tab.label}
-            </TabsTrigger>
-          ))}
+    <div class={`my-8 ${props.class ?? ""}`}>
+      <Tabs defaultValue={defaultTab()} class="w-full">
+        <TabsList>
+          <For each={props.tabs}>
+            {(tab) => <TabsTrigger value={tab.value}>{tab.label}</TabsTrigger>}
+          </For>
         </TabsList>
-        {tabs.map((tab) => (
-          <TabsContent
-            key={tab.value}
-            value={tab.value}
-            className="prose prose-sm max-w-none"
-          >
-            {tab.content}
-          </TabsContent>
-        ))}
+        <For each={props.tabs}>
+          {(tab) => (
+            <TabsContent value={tab.value} class="prose prose-sm max-w-none">
+              {tab.content}
+            </TabsContent>
+          )}
+        </For>
       </Tabs>
     </div>
   );
 }
 
-// Simple wrapper for code comparison tabs
-interface CodeTabsProps {
-  children: React.ReactNode;
-  defaultValue?: string;
-}
+/**
+ * Tabbed code samples for MDX.
+ *
+ * Takes the tabs as a prop rather than as children on purpose. Astro renders a
+ * component's slotted children outside the island, so nested <TabsTrigger> /
+ * <TabsContent> could never reach the Tabs context and the group rendered
+ * empty. Serializable props keep the whole group inside one island.
+ */
+export function CodeTabs(props: { tabs: CodeTab[]; defaultValue?: string }) {
+  const valueOf = (tab: CodeTab) =>
+    tab.value ?? tab.label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const defaultTab = () => props.defaultValue ?? valueOf(props.tabs[0]!);
 
-export function CodeTabs({ children, defaultValue }: CodeTabsProps) {
   return (
-    <div className="my-8">
-      <Tabs defaultValue={defaultValue} className="w-full">
-        {children}
+    <div class="my-8">
+      <Tabs defaultValue={defaultTab()} class="w-full">
+        <TabsList>
+          <For each={props.tabs}>
+            {(tab) => (
+              <TabsTrigger value={valueOf(tab)}>{tab.label}</TabsTrigger>
+            )}
+          </For>
+        </TabsList>
+        <For each={props.tabs}>
+          {(tab) => (
+            <TabsContent value={valueOf(tab)}>
+              <CodeBlock
+                code={tab.code}
+                language={tab.language}
+                filename={tab.filename}
+              />
+            </TabsContent>
+          )}
+        </For>
       </Tabs>
     </div>
   );
 }
-
-// Export individual components for flexible usage
-export { TabsList, TabsTrigger, TabsContent };

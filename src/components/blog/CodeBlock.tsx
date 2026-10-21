@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy } from "lucide-solid";
+import { createSignal, For, Show } from "solid-js";
 
 interface CodeBlockProps {
   code: string;
@@ -9,88 +9,62 @@ interface CodeBlockProps {
   showLineNumbers?: boolean;
 }
 
-export function CodeBlock({
-  code,
-  language = "typescript",
-  filename,
-  highlightLines = [],
-  showLineNumbers = false,
-}: CodeBlockProps) {
-  const [copied, setCopied] = useState(false);
+export function CodeBlock(props: CodeBlockProps) {
+  const [copied, setCopied] = createSignal(false);
+
+  const lines = () => props.code.split("\n");
+  const isHighlighted = (n: number) => props.highlightLines?.includes(n);
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(props.code);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
+    } catch (error) {
+      console.error("Failed to copy:", error);
     }
   };
 
-  const lines = code.split("\n");
-
   return (
-    <div className="code-block-wrapper border-base-300 my-4 overflow-hidden rounded-lg border">
-      {/* Header with filename and copy button */}
-      <div className="bg-base-200 border-base-300 flex items-center justify-between border-b px-4 py-2">
-        <div className="flex items-center gap-2">
-          {filename && (
-            <span className="text-base-content/70 font-mono text-sm">
-              {filename}
-            </span>
-          )}
-          {!filename && language && (
-            <span className="text-base-content/60 font-mono text-xs uppercase">
-              {language}
-            </span>
-          )}
-        </div>
+    <div class="border-border my-6 overflow-hidden rounded-xl border">
+      <div class="border-border bg-surface-2 flex items-center justify-between border-b px-4 py-2">
+        <span class="text-subtle-foreground font-mono text-xs">
+          {props.filename ?? props.language ?? "code"}
+        </span>
         <button
+          type="button"
           onClick={copyToClipboard}
-          className="btn btn-ghost btn-xs gap-1"
-          aria-label="Copy code"
+          class="text-muted-foreground hover:text-foreground hover:bg-surface-hover inline-flex h-7 items-center gap-1.5 rounded-md px-2 text-xs transition-colors"
+          aria-label={copied() ? "Copied" : "Copy code"}
         >
-          {copied ? (
-            <>
-              <Check className="h-3 w-3" />
-              <span className="text-xs">Copied!</span>
-            </>
-          ) : (
-            <>
-              <Copy className="h-3 w-3" />
-              <span className="text-xs">Copy</span>
-            </>
-          )}
+          <Show when={copied()} fallback={<Copy class="h-3 w-3" />}>
+            <Check class="text-accent h-3 w-3" />
+          </Show>
+          {copied() ? "Copied" : "Copy"}
         </button>
       </div>
 
-      {/* Code content */}
-      <div className="bg-base-100 relative overflow-x-auto">
-        <pre className="m-0 p-4">
-          <code className="font-mono text-sm">
-            {lines.map((line, index) => {
-              const lineNumber = index + 1;
-              const isHighlighted = highlightLines.includes(lineNumber);
-
-              return (
+      <div class="bg-surface overflow-x-auto">
+        <pre class="m-0 p-4">
+          <code class="font-mono text-[13px] leading-relaxed">
+            <For each={lines()}>
+              {(line, index) => (
                 <div
-                  key={index}
-                  className={`min-h-[1.5rem] ${
-                    isHighlighted
-                      ? "bg-primary/10 border-primary -ml-2 border-l-4 pl-2"
-                      : ""
-                  }`}
+                  class={
+                    isHighlighted(index() + 1)
+                      ? "bg-accent-wash border-accent-solid -ml-4 border-l-2 pl-[calc(1rem-2px)]"
+                      : undefined
+                  }
                 >
-                  {showLineNumbers && (
-                    <span className="text-base-content/40 mr-4 inline-block w-8 text-right select-none">
-                      {lineNumber}
+                  <Show when={props.showLineNumbers}>
+                    <span class="text-subtle-foreground mr-4 inline-block w-8 text-right select-none">
+                      {index() + 1}
                     </span>
-                  )}
+                  </Show>
                   <span>{line || " "}</span>
                 </div>
-              );
-            })}
+              )}
+            </For>
           </code>
         </pre>
       </div>

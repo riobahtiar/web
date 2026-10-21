@@ -1,13 +1,13 @@
 # Astro Rio
 
-Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Astro 6, React 19 islands, Tailwind CSS 4, DaisyUI 5, MDX/Markdoc content, and Cloudflare Workers SSR.
+Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Astro 7, Solid islands, Tailwind CSS 4, DaisyUI 5, MDX content, and Cloudflare Workers SSR.
 
 ## Stack
 
-- Runtime/package manager: Bun 1.3.11, committed `bun.lock`
-- Framework: Astro 6 with `output: "server"`
-- Deployment: Cloudflare Workers via `@astrojs/cloudflare` 13 and `wrangler.jsonc`
-- UI: Astro components, React 19 islands, Radix primitives, shadcn-style components
+- Runtime/package manager: Bun 1.4.3, committed `bun.lock`
+- Framework: Astro 7 with `output: "server"`
+- Deployment: Cloudflare Workers via `@astrojs/cloudflare` 14 and `wrangler.jsonc`
+- UI: Astro components, Solid islands with Kobalte primitives, `lucide-solid` and `astro-icon` icons
 - Styling: Tailwind CSS 4 Vite plugin, DaisyUI 5, shared CSS variables in `src/assets/global.css`
 - Content: Astro content collections in `src/content.config.ts` using `glob()` loaders
 - Media: local static assets served via Cloudflare assets and Astro image service (passthrough at runtime)
@@ -19,7 +19,7 @@ Check [package.json](./package.json) for exact dependency versions.
 
 Prerequisites:
 
-- Bun 1.3.11 or newer
+- Bun 1.4.0 or newer
 - Node.js 22.x or newer for tooling compatibility
 - Cloudflare account for deploys
 
@@ -50,7 +50,7 @@ Open `http://localhost:4321`.
 .
 ├── src/
 │   ├── assets/              # Global CSS and source assets
-│   ├── components/          # Astro and React components
+│   ├── components/          # Astro and Solid components
 │   ├── content/             # Blog MDX files only
 │   │   ├── blog-en/
 │   │   └── blog-id/
@@ -94,7 +94,7 @@ draft: false
 ---
 ```
 
-Astro 6 content entries use `entry.id`; do not rely on legacy `entry.slug`. Render entries with `render(entry)` from `astro:content`.
+Astro 7 content entries use `entry.id`; do not rely on legacy `entry.slug`. Render entries with `render(entry)` from `astro:content`.
 
 See [BLOG.md](./BLOG.md) for writing guidance and [ASSETS.md](./ASSETS.md) for image conventions.
 
@@ -126,7 +126,7 @@ Core rules for agents:
 ## References Checked
 
 - Astro content loader docs: https://docs.astro.build/en/reference/content-loader-reference/
-- Astro 6 upgrade docs: https://docs.astro.build/en/guides/upgrade-to/v6/
+- Astro 7 upgrade docs: https://docs.astro.build/en/guides/upgrade-to/v7/
 - Astro Cloudflare adapter docs: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
 - Cloudflare Wrangler config docs: https://developers.cloudflare.com/workers/wrangler/configuration/
 - Bun lockfile docs: https://bun.sh/docs/pm/lockfile

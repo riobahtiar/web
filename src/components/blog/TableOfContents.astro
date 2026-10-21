@@ -22,34 +22,28 @@ if (filteredHeadings.length === 0) {
 const title = lang === "id" ? "Daftar Isi" : "Table of Contents";
 ---
 
-<aside
-  class="toc-wrapper sticky top-24 hidden max-h-[calc(100vh-8rem)] overflow-auto lg:block"
->
+<aside class="toc-wrapper sticky top-24 hidden max-h-[calc(100vh-8rem)] overflow-auto lg:block">
   <div class="bg-base-200 rounded-lg p-4">
-    <h3
-      class="text-base-content mb-4 flex items-center gap-2 text-sm font-bold"
-    >
+    <h3 class="text-base-content mb-4 flex items-center gap-2 text-sm font-bold">
       <Icon name="tabler:list" class="text-primary h-4 w-4" />
       {title}
     </h3>
 
     <nav class="toc-nav">
       <ul class="space-y-2 text-sm">
-        {
-          filteredHeadings.map((heading) => (
-            <li
-              class={`toc-item ${heading.depth === 3 ? "ml-4" : ""}`}
-              data-heading-id={heading.slug}
+        {filteredHeadings.map((heading) => (
+          <li
+            class={`toc-item ${heading.depth === 3 ? "ml-4" : ""}`}
+            data-heading-id={heading.slug}
+          >
+            <a
+              href={`#${heading.slug}`}
+              class="toc-link hover:bg-base-300 hover:text-primary text-base-content/70 block rounded px-2 py-1 transition-colors"
             >
-              <a
-                href={`#${heading.slug}`}
-                class="toc-link hover:bg-base-300 hover:text-primary text-base-content/70 block rounded px-2 py-1 transition-colors"
-              >
-                {heading.text}
-              </a>
-            </li>
-          ))
-        }
+              {heading.text}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   </div>

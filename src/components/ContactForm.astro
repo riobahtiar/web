@@ -75,17 +75,13 @@ const { contact } = i18n;
   <div class="mb-16 grid grid-cols-1 gap-8 lg:grid-cols-3">
     <!-- Contact Form -->
     <div class="lg:col-span-2">
-      <div
-        class="card bg-base-100 border-base-200 border shadow-lg transition-all duration-300 hover:shadow-xl"
-      >
+      <div class="card bg-base-100 border-base-200 border shadow-lg transition-all duration-300 hover:shadow-xl">
         <div class="card-body p-8">
           <h2 class="card-title mb-6 text-2xl">{contact.formTitle}</h2>
 
           <!-- Success Message (Hidden by default) -->
           <div id="success-message" class="hidden">
-            <div
-              class="flex flex-col items-center justify-center py-8 text-center"
-            >
+            <div class="flex flex-col items-center justify-center py-8 text-center">
               <div class="bg-success/20 mb-4 rounded-full p-4">
                 <Icon name="tabler:check" class="text-success h-12 w-12" />
               </div>
@@ -99,9 +95,7 @@ const { contact } = i18n;
 
           <!-- Error Message (Hidden by default) -->
           <div id="error-message" class="hidden">
-            <div
-              class="flex flex-col items-center justify-center py-8 text-center"
-            >
+            <div class="flex flex-col items-center justify-center py-8 text-center">
               <div class="bg-error/20 mb-4 rounded-full p-4">
                 <Icon
                   name="tabler:alert-triangle"
@@ -122,9 +116,9 @@ const { contact } = i18n;
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text font-medium"
-                    >{contact.form.name} <span class="text-error">*</span></span
-                  >
+                  <span class="label-text font-medium">
+                    {contact.form.name} <span class="text-error">*</span>
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -136,10 +130,10 @@ const { contact } = i18n;
               </div>
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text font-medium"
-                    >{contact.form.email}
-                    <span class="text-error">*</span></span
-                  >
+                  <span class="label-text font-medium">
+                    {contact.form.email}
+                    <span class="text-error">*</span>
+                  </span>
                 </label>
                 <input
                   type="email"
@@ -155,9 +149,9 @@ const { contact } = i18n;
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text font-medium"
-                    >{contact.form.phone}</span
-                  >
+                  <span class="label-text font-medium">
+                    {contact.form.phone}
+                  </span>
                 </label>
                 <input
                   type="tel"
@@ -168,9 +162,9 @@ const { contact } = i18n;
               </div>
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text font-medium"
-                    >{contact.form.company}</span
-                  >
+                  <span class="label-text font-medium">
+                    {contact.form.company}
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -185,38 +179,43 @@ const { contact } = i18n;
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text font-medium"
-                    >{contact.form.inquiryType}
-                    <span class="text-error">*</span></span
-                  >
+                  <span class="label-text font-medium">
+                    {contact.form.inquiryType}
+                    <span class="text-error">*</span>
+                  </span>
                 </label>
                 <select
                   name="inquiryType"
                   required
                   class="select select-bordered focus:border-primary focus:ring-primary/20 w-full focus:ring-2"
                 >
-                  <option value="" disabled selected>Select an option</option>
-                  <option value="general">{contact.inquiryTypes.general}</option
-                  >
-                  <option value="project">{contact.inquiryTypes.project}</option
-                  >
-                  <option value="consultation"
-                    >{contact.inquiryTypes.consultation}</option
-                  >
-                  <option value="collaboration"
-                    >{contact.inquiryTypes.collaboration}</option
-                  >
-                  <option value="support">{contact.inquiryTypes.support}</option
-                  >
+                  <option value="" disabled selected>
+                    Select an option
+                  </option>
+                  <option value="general">
+                    {contact.inquiryTypes.general}
+                  </option>
+                  <option value="project">
+                    {contact.inquiryTypes.project}
+                  </option>
+                  <option value="consultation">
+                    {contact.inquiryTypes.consultation}
+                  </option>
+                  <option value="collaboration">
+                    {contact.inquiryTypes.collaboration}
+                  </option>
+                  <option value="support">
+                    {contact.inquiryTypes.support}
+                  </option>
                   <option value="other">{contact.inquiryTypes.other}</option>
                 </select>
               </div>
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text font-medium"
-                    >{contact.form.subject}
-                    <span class="text-error">*</span></span
-                  >
+                  <span class="label-text font-medium">
+                    {contact.form.subject}
+                    <span class="text-error">*</span>
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -231,10 +230,10 @@ const { contact } = i18n;
             <!-- Message -->
             <div class="form-control w-full">
               <label class="label">
-                <span class="label-text font-medium"
-                  >{contact.form.message}
-                  <span class="text-error">*</span></span
-                >
+                <span class="label-text font-medium">
+                  {contact.form.message}
+                  <span class="text-error">*</span>
+                </span>
               </label>
               <textarea
                 name="message"
@@ -264,9 +263,9 @@ const { contact } = i18n;
                     name="newsletterConsent"
                     class="checkbox checkbox-primary"
                   />
-                  <span class="label-text"
-                    >{contact.form.newsletterConsent}</span
-                  >
+                  <span class="label-text">
+                    {contact.form.newsletterConsent}
+                  </span>
                 </label>
               </div>
             </div>
@@ -291,9 +290,7 @@ const { contact } = i18n;
 
     <!-- Contact Information -->
     <div class="lg:col-span-1">
-      <div
-        class="card bg-base-100 border-base-200 h-full border shadow-lg transition-all duration-300 hover:shadow-xl"
-      >
+      <div class="card bg-base-100 border-base-200 h-full border shadow-lg transition-all duration-300 hover:shadow-xl">
         <div class="card-body p-8">
           <h2 class="card-title mb-6 text-2xl">{contact.contactInfo.title}</h2>
 
@@ -307,8 +304,10 @@ const { contact } = i18n;
                 <h3 class="text-lg font-medium">{contact.contactInfo.email}</h3>
                 <a
                   href="mailto:hello@rio.my.id"
-                  class="link link-hover link-primary">hello@rio.my.id</a
+                  class="link link-hover link-primary"
                 >
+                  hello@rio.my.id
+                </a>
               </div>
             </div>
 
@@ -361,17 +360,15 @@ const { contact } = i18n;
   <div class="mx-auto max-w-4xl">
     <h2 class="mb-8 text-center text-3xl font-bold">{contact.faq.title}</h2>
     <div class="space-y-4">
-      {
-        contact.faq.questions.map((faq, index) => (
-          <div class="collapse-plus bg-base-100 border-base-200 rounded-box collapse border">
-            <input type="radio" name="faq-accordion" checked={index === 0} />
-            <div class="collapse-title text-lg font-medium">{faq.question}</div>
-            <div class="collapse-content">
-              <p>{faq.answer}</p>
-            </div>
+      {contact.faq.questions.map((faq, index) => (
+        <div class="collapse-plus bg-base-100 border-base-200 rounded-box collapse border">
+          <input type="radio" name="faq-accordion" checked={index === 0} />
+          <div class="collapse-title text-lg font-medium">{faq.question}</div>
+          <div class="collapse-content">
+            <p>{faq.answer}</p>
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
   </div>
 </div>

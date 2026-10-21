@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getPostSlug, getPublishedPosts } from "@/utils/posts";
 import Layout from "../../../layouts/Layout.astro";
 import { formatDate } from "../../../utils/date";
 import { getReadingTimeI18n } from "../../../utils/readingTime";
@@ -8,14 +8,12 @@ import { getReadingTimeI18n } from "../../../utils/readingTime";
 const { tag } = Astro.params;
 
 if (!tag) {
-  return Astro.redirect("/404");
+  return new Response(null, { status: 404 });
 }
 
 // Get all English blog posts with this tag
-const allPosts = await getCollection("blog-en");
-const filteredPosts = allPosts
-  .filter((post) => post.data.tags.includes(tag))
-  .sort((a, b) => b.data.created_at.getTime() - a.data.created_at.getTime());
+const allPosts = await getPublishedPosts("blog-en");
+const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
 
 if (filteredPosts.length === 0) {
   return Astro.redirect("/blog");
@@ -31,13 +29,20 @@ const pageTitle = `Posts tagged "${tag}"`;
 const pageDescription = `Browse all blog posts tagged with "${tag}". ${filteredPosts.length} ${filteredPosts.length === 1 ? "post" : "posts"} found.`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} lang="en">
-  <main class="container mx-auto max-w-6xl px-4 py-12">
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  lang="en"
+  localized={false}
+>
+  <div class="px-6 py-16 sm:px-10">
     <!-- Page Header -->
     <header class="mb-12">
       <nav class="breadcrumbs mb-4 text-sm">
         <ul>
-          <li><a href="/blog">Blog</a></li>
+          <li>
+            <a href="/blog">Blog</a>
+          </li>
           <li>Tag: {tag}</li>
         </ul>
       </nav>
@@ -45,90 +50,86 @@ const pageDescription = `Browse all blog posts tagged with "${tag}". ${filteredP
         Posts tagged <span class="text-primary">#{tag}</span>
       </h1>
       <p class="text-base-content/70">
-        {filteredPosts.length}
-        {filteredPosts.length === 1 ? "post" : "posts"} found
+        {filteredPosts.length} {filteredPosts.length === 1 ? "post" : "posts"}{" "}
+        found
       </p>
     </header>
 
     <!-- Posts Grid -->
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {
-        postsWithReadingTime.map((post) => {
-          const slug = post.id.startsWith(post.data.category + "/")
-            ? post.id.substring(post.data.category.length + 1)
-            : post.id;
+      {postsWithReadingTime.map((post) => {
+        const slug = getPostSlug(post);
 
-          return (
-            <article class="card bg-base-200 shadow-lg transition-shadow hover:shadow-xl">
-              {post.data.image && (
-                <figure class="aspect-video">
-                  <img
-                    src={post.data.image}
-                    alt={post.data.title}
-                    width="400"
-                    height="225"
-                    class="h-full w-full object-cover"
-                  />
-                </figure>
-              )}
-              <div class="card-body">
-                <div class="text-base-content/60 mb-2 flex items-center gap-2 text-sm">
-                  <a
-                    href={`/blog/${post.data.category}`}
-                    class="badge badge-primary badge-sm"
-                  >
-                    {post.data.category}
-                  </a>
-                  <span>•</span>
-                  <time datetime={post.data.created_at.toISOString()}>
-                    {formatDate(post.data.created_at, "en")}
-                  </time>
-                  {post.readingTime && (
-                    <>
-                      <span>•</span>
-                      <span>{post.readingTime}</span>
-                    </>
-                  )}
-                </div>
-
-                <h2 class="card-title mb-2 text-xl">
-                  <a
-                    href={`/blog/${post.data.category}/${slug}`}
-                    class="hover:text-primary transition-colors"
-                  >
-                    {post.data.title}
-                  </a>
-                </h2>
-
-                <p class="text-base-content/80 mb-4 line-clamp-3 text-sm">
-                  {post.data.description}
-                </p>
-
-                <div class="card-actions items-center justify-between">
-                  <div class="flex flex-wrap gap-1">
-                    {post.data.tags.slice(0, 3).map((t) => (
-                      <a
-                        href={`/blog/tag/${t}`}
-                        class={`badge badge-sm ${t === tag ? "badge-primary" : "badge-ghost"}`}
-                      >
-                        #{t}
-                      </a>
-                    ))}
-                  </div>
-                  <a
-                    href={`/blog/${post.data.category}/${slug}`}
-                    class="btn btn-sm btn-ghost"
-                  >
-                    Read More →
-                  </a>
-                </div>
+        return (
+          <article class="card bg-base-200 shadow-lg transition-shadow hover:shadow-xl">
+            {post.data.image && (
+              <figure class="aspect-video">
+                <img
+                  src={post.data.image}
+                  alt={post.data.title}
+                  width="400"
+                  height="225"
+                  class="h-full w-full object-cover"
+                />
+              </figure>
+            )}
+            <div class="card-body">
+              <div class="text-base-content/60 mb-2 flex items-center gap-2 text-sm">
+                <a
+                  href={`/blog/${post.data.category}`}
+                  class="badge badge-primary badge-sm"
+                >
+                  {post.data.category}
+                </a>
+                <span>•</span>
+                <time datetime={post.data.created_at.toISOString()}>
+                  {formatDate(post.data.created_at, "en")}
+                </time>
+                {post.readingTime && (
+                  <>
+                    <span>•</span>
+                    <span>{post.readingTime}</span>
+                  </>
+                )}
               </div>
-            </article>
-          );
-        })
-      }
+
+              <h2 class="card-title mb-2 text-xl">
+                <a
+                  href={`/blog/${post.data.category}/${slug}`}
+                  class="hover:text-primary transition-colors"
+                >
+                  {post.data.title}
+                </a>
+              </h2>
+
+              <p class="text-base-content/80 mb-4 line-clamp-3 text-sm">
+                {post.data.description}
+              </p>
+
+              <div class="card-actions items-center justify-between">
+                <div class="flex flex-wrap gap-1">
+                  {post.data.tags.slice(0, 3).map((t) => (
+                    <a
+                      href={`/blog/tag/${t}`}
+                      class={`badge badge-sm ${t === tag ? "badge-primary" : "badge-ghost"}`}
+                    >
+                      #{t}
+                    </a>
+                  ))}
+                </div>
+                <a
+                  href={`/blog/${post.data.category}/${slug}`}
+                  class="btn btn-sm btn-ghost"
+                >
+                  Read More →
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
     </div>
-  </main>
+  </div>
 </Layout>
 
 <style>

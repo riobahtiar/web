@@ -58,18 +58,14 @@ const defaultTitles = {
       <Icon name={typeConfig.icon} class="h-5 w-5" />
     </div>
     <div class="flex-1">
-      {
-        title && (
-          <p class={`mb-1 font-semibold ${typeConfig.titleClass}`}>{title}</p>
-        )
-      }
-      {
-        !title && (
-          <p class={`mb-1 font-semibold ${typeConfig.titleClass}`}>
-            {defaultTitles[type]}
-          </p>
-        )
-      }
+      {title && (
+        <p class={`mb-1 font-semibold ${typeConfig.titleClass}`}>{title}</p>
+      )}
+      {!title && (
+        <p class={`mb-1 font-semibold ${typeConfig.titleClass}`}>
+          {defaultTitles[type]}
+        </p>
+      )}
       <div class="prose prose-sm text-base-content/90 max-w-none">
         <slot />
       </div>

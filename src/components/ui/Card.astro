@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"div"> {
+  /** Lift the surface and accent the border on hover. */
+  interactive?: boolean;
+  class?: string;
+}
+
+const { interactive = false, class: className, ...rest } = Astro.props;
+---
+
+<div
+  class={cn(
+    "border-border bg-surface rounded-xl border",
+    interactive &&
+      "hover:border-border-strong hover:bg-surface-hover transition-colors duration-200",
+    className,
+  )}
+  {...rest}
+>
+  <slot />
+</div>

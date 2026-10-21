@@ -1,17 +1,17 @@
 # Deployment Guide
 
-This project deploys an Astro 6 SSR application to Cloudflare Workers with Wrangler JSONC configuration.
+This project deploys an Astro 7 SSR application to Cloudflare Workers with Wrangler JSONC configuration.
 
 ## Prerequisites
 
-- Bun 1.3.11 or newer
+- Bun 1.4.0 or newer
 - Node.js 22.x or newer
 - Cloudflare account
 - Wrangler access through the local dependency
 
 ## Configuration Files
 
-- [astro.config.mjs](./astro.config.mjs): Astro integrations, SSR mode, Cloudflare adapter, React edge alias, Tailwind Vite plugin
+- [astro.config.mjs](./astro.config.mjs): Astro integrations (including Solid), SSR mode, Cloudflare adapter, Tailwind Vite plugin
 - [wrangler.jsonc](./wrangler.jsonc): Worker entrypoint, assets binding, KV binding, compatibility flags, observability
 - [package.json](./package.json): Bun scripts and dependency versions
 - [bun.lock](./bun.lock): reproducible dependency lockfile
@@ -149,9 +149,12 @@ bun install --frozen-lockfile
 
 Create or bind the KV namespace and update `wrangler.jsonc`.
 
-### React SSR fails on Workers
+### An island renders empty
 
-Confirm `astro.config.mjs` still aliases production `react-dom/server` to `react-dom/server.edge`.
+Islands use Solid, which needs no server alias on Workers. If a tab group or
+other island renders empty, check that its data is passed as serializable
+props rather than slotted children: Astro renders slotted children outside the
+island, so they cannot reach its context.
 
 ### Asset serving fails
 
@@ -171,6 +174,6 @@ Confirm collections are defined in `src/content.config.ts`, use `glob()` loaders
 ## References
 
 - Astro Cloudflare adapter: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
-- Astro 6 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v6/
+- Astro 7 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v7/
 - Cloudflare Wrangler configuration: https://developers.cloudflare.com/workers/wrangler/configuration/
 - Bun install and lockfile: https://bun.com/docs/cli/install

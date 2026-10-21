@@ -6,12 +6,12 @@ This file is the canonical operating guide for AI assistants and developers. `AG
 
 `astro-rio` is a production portfolio and bilingual blog.
 
-- Astro 6 SSR app deployed to Cloudflare Workers
+- Astro 7 SSR app deployed to Cloudflare Workers
 - Bun-first project with committed `bun.lock`
-- React 19 islands for interactive UI
-- Tailwind CSS 4 plus DaisyUI 5 and shadcn-style React components
+- Solid islands for interactive UI
+- Tailwind CSS 4, with Kobalte for accessible Solid primitives
 - Astro content collections in `src/content.config.ts`
-- MDX and Markdoc enabled
+- MDX enabled
 - Local image workflow served via Cloudflare assets and Astro's image service (passthrough at runtime)
 - English default routes and Indonesian `/id/*` routes
 
@@ -43,6 +43,33 @@ bun run preview
 bun run deploy
 bun run cf-typegen
 ```
+
+### Dev server
+
+Astro 7 runs `astro dev` as a **background daemon** that outlives the terminal.
+Manage it with `astro dev status`, `astro dev logs`, and `astro dev stop`;
+errors after startup go to the log, not the terminal you launched from.
+
+Every astro command defaults to the same Vite cache at `node_modules/.vite`.
+Rewriting it while a dev server is live invalidates module URLs that have
+already been served, and the Cloudflare workerd module runner keeps requesting
+the old hash, so the server 500s on **every** request and never recovers:
+
+```
+The file does not exist at ".../node_modules/.vite/deps_ssr/<mod>.js?v=<hash>"
+```
+
+`astro.config.mjs` sets `vite.cacheDir` so only `dev` uses that directory and
+every other command works in `node_modules/.vite-cli`. Running `build`,
+`typecheck` or `format:check` alongside a live dev server is therefore safe —
+that is verified behaviour, not an assumption. Do not remove that setting.
+
+What still breaks a running server: deleting `node_modules/.vite` by hand, or
+starting a second dev server against the same project. Recover with
+`bun run dev:clean`, which stops the daemon before clearing the cache.
+
+`bun run build` writes to `dist/`, so stop any `wrangler dev` serving that
+directory first or the build fails on a locked file.
 
 Recommended fast validation while developing:
 
@@ -94,7 +121,7 @@ const { Content, headings } = await render(post);
 
 Do not add `getStaticPaths()` to SSR dynamic routes unless the route is intentionally changed to prerendered output and docs are updated.
 
-### Astro 6 Content Collections
+### Astro 7 Content Collections
 
 - Collection config belongs in `src/content.config.ts`.
 - Use `glob()` from `astro/loaders`.
@@ -103,36 +130,37 @@ Do not add `getStaticPaths()` to SSR dynamic routes unless the route is intentio
 - Use `render(entry)` from `astro:content`; do not use `entry.render()`.
 - `entry.body` may be undefined, so reading-time helpers should receive `entry.body ?? ""`.
 
+### Astro 7 Rendering Constraints
+
+- `compressHTML` defaults to `"jsx"`. Whitespace that spans a newline
+  _between two expressions or elements_ is deleted, not collapsed. Write
+  `{count}{" "}` when a space must survive; prose that merely wraps is fine.
+- The Rust compiler rejects unclosed tags and no longer auto-corrects invalid
+  HTML nesting. Both are build errors, not warnings.
+- Markdown and MDX are rendered by Sätteri, Astro's native pipeline. There are
+  no remark/rehype plugins in this project, and `@astrojs/markdown-remark` is
+  not installed. Adding a unified plugin means installing that package and
+  setting `markdown.processor` explicitly.
+- `markdown.shikiConfig` still applies under Sätteri.
+
 ### Cloudflare Workers
 
 - Cloudflare config belongs in `wrangler.jsonc`.
 - `main` should remain `@astrojs/cloudflare/entrypoints/server`.
-- Keep `compatibility_flags: ["nodejs_compat_v2"]` while React 19 server rendering and current dependencies need Node compatibility.
+- Keep `compatibility_flags: ["nodejs_compat_v2"]` while current dependencies need Node compatibility.
 - The Cloudflare adapter image mode is `imageService: { build: "compile", runtime: "passthrough" }`.
 - Static assets are configured through the `assets` block in `wrangler.jsonc`.
 - Use `bun run cf-typegen` after binding changes.
 
-### React on Cloudflare
-
-Keep the production Vite alias:
-
-```js
-resolve: {
-  alias: import.meta.env.PROD
-    ? { "react-dom/server": "react-dom/server.edge" }
-    : undefined,
-}
-```
-
-This avoids server-rendering paths that require `MessageChannel` from `node:worker_threads`.
-
 ## Code Style
 
 - TypeScript strict mode is enabled via `astro/tsconfigs/strict`.
+- TypeScript stays on 6.x. `@astrojs/check` peers on `^5.0.0 || ^6.0.0`, so
+  TypeScript 7 would break `bun run typecheck`.
 - Use `import type` for type-only imports.
 - Prefer `unknown` and precise types over `any`.
 - Use path alias imports for internal modules when practical: `@/components`, `@/utils`, `@/lib`.
-- Keep Astro components in `PascalCase.astro`, React components in `PascalCase.tsx`, utilities in `camelCase.ts`, content in `kebab-case.mdx`.
+- Keep Astro components in `PascalCase.astro`, Solid components in `PascalCase.tsx`, utilities in `camelCase.ts`, content in `kebab-case.mdx`.
 - Keep comments rare and only explain non-obvious behavior or platform constraints.
 
 Import order:
@@ -148,11 +176,39 @@ import { cn } from "@/lib/utils";
 
 ## Styling Rules
 
-- Tailwind CSS 4 is configured in CSS through `@import`, `@plugin`, and `@theme`, not through a traditional Tailwind config.
-- Shared tokens live in `src/assets/global.css`.
-- DaisyUI themes are disabled and mapped through CSS variables.
-- shadcn-style components use `components.json` aliases.
-- Preserve the existing visual system unless the task explicitly asks for a redesign.
+- Tailwind CSS 4 is configured in CSS through `@import`, `@plugin`, `@theme`
+  and `@utility`, not through a traditional Tailwind config.
+- All design tokens live in `src/assets/global.css`. Use the semantic classes
+  (`bg-background`, `bg-surface`, `text-foreground`, `text-muted-foreground`,
+  `border-border`, `text-accent`) rather than raw Tailwind palette colors.
+- Two accent roles, and they are not interchangeable:
+  - `--accent` is for text and lines, retuned per theme so it always passes AA.
+    In light mode it is deliberately darker than the brand mint.
+  - `--accent-solid` is for fills and keeps the brand mint in both themes.
+    Text on it must be `--accent-on-solid`.
+- Dark is the primary theme. `<html>` ships `data-theme="dark" class="dark"`,
+  and the inline script in `Layout.astro` resolves the real theme in `<head>`
+  before first paint. Never move that script out of the head.
+- Theme-dependent visuals should key off `[data-theme]` in CSS rather than a
+  script, so they are correct on the very first frame.
+- Structure comes from the hairline grid, not shadows: `.frame` bounds the
+  content column with vertical rules, and `Section` draws the divider between
+  sections. Cards are defined by a 1px border, not elevation.
+- `.eyebrow` is the small uppercase mono label used above headings.
+- Fonts are self-hosted through Astro's `fonts` config (Inter, JetBrains Mono).
+  Adding a family requires both an entry in `astro.config.mjs` **and** a
+  `<Font cssVariable="..." />` in the `Layout.astro` head, or the CSS variable
+  is undefined and the stack silently falls back to system fonts.
+- Do not add remote image CDNs for logos or icons; use `astro-icon` or local
+  assets.
+- Primitives live in `src/components/ui/` (`Button`, `Card`, `Badge`,
+  `Section`). Prefer them over ad-hoc markup. Solid islands are only for
+  genuine interactivity, so static pages stay island-free.
+- DaisyUI is being retired. It is still installed and bridged onto the tokens
+  purely so unconverted pages keep rendering; do not write new DaisyUI markup
+  (`btn`, `card`, `badge`, `navbar`, `base-*`).
+- Preserve the existing visual system unless the task explicitly asks for a
+  redesign.
 
 ## Internationalization
 
@@ -188,6 +244,84 @@ draft: false
 
 `image` is optional in the schema but strongly recommended for social previews.
 
+## Islands and Solid
+
+Interactive islands use Solid (`@astrojs/solid-js`), with Kobalte for
+accessible primitives — it is Solid's equivalent of Radix. Icons come from
+`lucide-solid`. There are currently no islands on any rendered page:
+`BlogSearch` is a plain `.astro` component whose list is server-rendered and
+filtered by toggling `hidden` over `data-haystack` attributes.
+
+Keep it that way unless an island genuinely earns its place. Astro
+server-renders islands, so a framework in the SSR path is a real cost, and
+every prop passed to an island is serialized into the HTML — dropping the old
+React `BlogSearch` took `/blog` from 268KB to 31KB.
+
+**Pass island data as serializable props, never as slotted children.** Astro
+renders a component's children outside the island, so nested primitives cannot
+reach their parent's context: `<CodeTabs>` with slotted `<TabsTrigger>` /
+`<TabsContent>` rendered completely empty. `CodeTabs` and `BlogTabs` therefore
+take a `tabs` array, which keeps the whole group inside one island. The types
+enforce this.
+
+Solid components live in `.tsx` files and need `jsxImportSource: "solid-js"`
+with `jsx: "preserve"` in `tsconfig.json`. Solid has no hook dispatcher, so
+none of the duplicate-React SSR hazards apply.
+
+## Icons
+
+Icons come from `astro-icon`, which inlines them as SVG at build time.
+
+- `simple-icons` for brand and product marks. It is monochrome and inherits
+  `currentColor`, so a logo row stays on the site's palette in both themes.
+- `tabler` for UI glyphs.
+- `src/icons/*.svg` for anything Iconify lacks, referenced by bare filename
+  (`<Icon name="typesense" />`). Keep local marks monochrome with
+  `fill="currentColor"` so they match.
+
+A logo drawn for large sizes may not survive at 18px, so open the source at
+full size before converting it, then check the result at its rendered size.
+Transforming one blind is how the Elysia mark below went wrong. Three cases so far:
+
+- **Typesense** is a constellation whose connectors are `stroke-width="0.12"`.
+  Those fall under a device pixel and vanish, leaving unconnected specks, so
+  the local copy thickens them.
+- **Elysia** is a curled fox on a dark disc. Mapping its greys to
+  `currentColor` opacities inverted the design: the disc became the solid
+  shape and the fox, being near-white, dropped out, leaving a featureless
+  circle. The local copy drops the disc and renders the fox paths as one
+  silhouette. When a mark is artwork _on_ a shape, the subject is the icon,
+  not the backdrop.
+- **WorkOS** was only in the coloured `logos` set, so the local copy is that
+  geometry recoloured to `currentColor`.
+
+Icons are inlined per use and the marquee renders its list twice, so a heavy
+mark costs double. Keep local marks lean: the homepage carries 56 inlined icons
+at ~27KB gzipped.
+
+## Blog Data Access
+
+Read posts through `@/utils/posts`, never `getCollection` directly:
+
+- `getPublishedPosts(collection)` filters drafts and sorts newest-first. Drafts
+  stay visible under `astro dev` and are dropped from production builds, so any
+  new listing, feed, or detail route must go through it.
+- `getPostSlug(post)` strips the leading `<category>/` the glob loader keeps in
+  `entry.id`.
+- `getCategoryCounts(posts)` builds the sidebar counts.
+- `paginatePosts(posts, page, baseUrl)` slices a page and builds prev/next URLs.
+
+Blog route shape, per locale (`/blog` and `/id/blog`):
+
+- `index.astro` — page 1, canonical
+- `page/[page].astro` — pages 2+; page 1 and out-of-range redirect to the index
+- `[category].astro` — one category; unknown categories redirect to the index
+- `[category]/[slug].astro` — a post
+- `tag/[tag].astro` — one tag
+
+Do not add a `[...page].astro` rest route under `blog/`: it collides with
+`[category].astro`, which silently wins and renders page numbers as categories.
+
 ## Image Workflow
 
 - Static assets live under `public/` (e.g. `public/smc.jpg` for the OG/cover image) and are served as-is by Cloudflare assets.
@@ -212,7 +346,7 @@ Prefer major-version descriptions in prose and exact versions only where they co
 
 - Read this file first and treat it as project-local policy.
 - Prefer `rg` and `rg --files` for exploration.
-- Use official docs when checking modern Astro, Cloudflare, Bun, React, or Tailwind behavior.
+- Use official docs when checking modern Astro, Cloudflare, Bun, Solid, or Tailwind behavior.
 - Keep changes small and focused unless the user asks for a broad modernization.
 - If docs and code disagree, make the code the source of truth and update docs.
 - If a migration creates CI breakage, fix the workflow instead of documenting a broken state.
@@ -236,7 +370,7 @@ bun run build
 ## Reference Links
 
 - Astro content loaders: https://docs.astro.build/en/reference/content-loader-reference/
-- Astro 6 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v6/
+- Astro 7 upgrade guide: https://docs.astro.build/en/guides/upgrade-to/v7/
 - Astro Cloudflare adapter: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
 - Cloudflare Wrangler config: https://developers.cloudflare.com/workers/wrangler/configuration/
 - Bun lockfile: https://bun.sh/docs/pm/lockfile
