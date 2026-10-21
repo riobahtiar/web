@@ -173,30 +173,22 @@ import ImageGrid from "@/components/blog/ImageGrid.astro";
 ### Tabs
 
 ```mdx
-import {
-  CodeTabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/blog/BlogTabs.tsx";
+import { CodeTabs } from "@/components/blog/BlogTabs.tsx";
 
-<CodeTabs defaultValue="bun">
-  <TabsList>
-    <TabsTrigger value="bun">Bun</TabsTrigger>
-    <TabsTrigger value="astro">Astro</TabsTrigger>
-  </TabsList>
-  <TabsContent value="bun">
-
-Run `bun run dev`.
-
-  </TabsContent>
-  <TabsContent value="astro">
-
-Run `astro dev`.
-
-  </TabsContent>
-</CodeTabs>
+<CodeTabs
+  client:load
+  tabs={[
+    { label: "Bun", language: "bash", code: "bun run dev" },
+    { label: "Astro", language: "bash", code: "astro dev" },
+  ]}
+/>
 ```
+
+Pass the tabs as the `tabs` array, not as slotted `<TabsTrigger>` /
+`<TabsContent>` children. Astro renders slotted children outside the island,
+so they cannot reach the tabs context and the group renders empty. Each tab's
+`value` defaults to a slug of its label; set `defaultValue` to open a tab
+other than the first.
 
 ### YouTube
 

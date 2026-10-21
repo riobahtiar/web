@@ -1,13 +1,13 @@
 # Astro Rio
 
-Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Astro 7, React 19 islands, Tailwind CSS 4, DaisyUI 5, MDX content, and Cloudflare Workers SSR.
+Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Astro 7, Solid islands, Tailwind CSS 4, DaisyUI 5, MDX content, and Cloudflare Workers SSR.
 
 ## Stack
 
 - Runtime/package manager: Bun 1.4.3, committed `bun.lock`
 - Framework: Astro 7 with `output: "server"`
-- Deployment: Cloudflare Workers via `@astrojs/cloudflare` 13 and `wrangler.jsonc`
-- UI: Astro components, React 19 islands, Radix primitives, shadcn-style components
+- Deployment: Cloudflare Workers via `@astrojs/cloudflare` 14 and `wrangler.jsonc`
+- UI: Astro components, Solid islands with Kobalte primitives, `lucide-solid` and `astro-icon` icons
 - Styling: Tailwind CSS 4 Vite plugin, DaisyUI 5, shared CSS variables in `src/assets/global.css`
 - Content: Astro content collections in `src/content.config.ts` using `glob()` loaders
 - Media: local static assets served via Cloudflare assets and Astro image service (passthrough at runtime)
@@ -50,7 +50,7 @@ Open `http://localhost:4321`.
 .
 ├── src/
 │   ├── assets/              # Global CSS and source assets
-│   ├── components/          # Astro and React components
+│   ├── components/          # Astro and Solid components
 │   ├── content/             # Blog MDX files only
 │   │   ├── blog-en/
 │   │   └── blog-id/

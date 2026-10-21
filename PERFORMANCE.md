@@ -1,12 +1,12 @@
 # Performance Notes
 
-Current stack: Astro 7 SSR on Cloudflare Workers, React 19 islands, Tailwind CSS 4, and Cloudflare static asset serving.
+Current stack: Astro 7 SSR on Cloudflare Workers, Solid islands, Tailwind CSS 4, and Cloudflare static asset serving.
 
 ## Current Optimizations
 
 - Astro SSR runs at the Cloudflare edge.
 - Static assets are served through the `ASSETS` binding configured in `wrangler.jsonc`.
-- React server rendering uses `react-dom/server.edge` in production.
+- No rendered page ships an island today. `BlogSearch` is a server-rendered `.astro` component filtered by toggling `hidden`, which took `/blog` from 268KB to 31KB when it replaced the React version.
 - Tailwind CSS 4 is compiled through `@tailwindcss/vite`.
 - Shiki code highlighting uses configured light/dark themes with wrapping enabled.
 - The Cloudflare adapter uses `imageService: { build: "compile", runtime: "passthrough" }` to avoid runtime image processing in Workers.
@@ -40,12 +40,6 @@ adapter: cloudflare({
 "compatibility_flags": ["nodejs_compat_v2"]
 ```
 
-```js
-alias: import.meta.env.PROD
-  ? { "react-dom/server": "react-dom/server.edge" }
-  : undefined;
-```
-
 ## Validation
 
 Fast local performance sanity check:
@@ -76,11 +70,11 @@ Manual checks:
 | LCP        | Under 2.5s on representative mobile network       |
 | CLS        | Under 0.1                                         |
 | INP        | Under 200ms                                       |
-| Initial JS | Keep React islands isolated and intentional       |
+| Initial JS | Keep Solid islands isolated and intentional       |
 | Images     | Use appropriately sized, compressed static assets |
 
 ## Improvement Backlog
 
 - Add responsive `sizes` and width variants for any remaining image-heavy components.
-- Audit React islands for unnecessary hydration.
+- Audit Solid islands for unnecessary hydration.
 - Re-run Lighthouse after dependency or adapter upgrades.
