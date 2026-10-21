@@ -98,7 +98,12 @@ bunx wrangler deploy
 
 Production URL:
 
-- https://web.riomyid.workers.dev
+- https://rio.my.id
+
+The Worker is also reachable at `https://web.riomyid.workers.dev` and at a
+per-version preview URL. Those are not production: `src/middleware.ts` 301s
+every non-canonical hostname to `rio.my.id`, because Google had indexed them
+alongside the real site.
 
 ## CI/CD
 

@@ -56,7 +56,7 @@ bun run build
 
 Production Worker:
 
-- https://web.riomyid.workers.dev
+- https://rio.my.id
 
 Cloudflare configuration:
 

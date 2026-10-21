@@ -10,7 +10,7 @@ import solid from "@astrojs/solid-js";
 import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
-  site: "https://web.riomyid.workers.dev",
+  site: "https://rio.my.id",
   output: "server",
 
   vite: {
