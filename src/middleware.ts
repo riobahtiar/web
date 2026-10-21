@@ -8,9 +8,13 @@ const CANONICAL_HOST = "rio.my.id";
 // next to the real site. A 301 drains them from the index and hands their
 // ranking signals to the canonical host; turning the workers.dev route off
 // instead would strand the indexed URLs with nothing to follow.
+// URL.hostname keeps an IPv6 address in its brackets, so the loopback arrives
+// as "[::1]" rather than "::1"; the bare form is matched too in case a runtime
+// hands it over already unwrapped.
 const isLocalHost = (hostname: string) =>
   hostname === "localhost" ||
   hostname === "127.0.0.1" ||
+  hostname === "[::1]" ||
   hostname === "::1" ||
   hostname.endsWith(".localhost");
 
