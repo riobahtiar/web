@@ -107,7 +107,11 @@ bun run build
 bunx wrangler deploy
 ```
 
-The current Worker target is `https://web.riomyid.workers.dev`.
+Production is `https://rio.my.id`, which is also the `site` value every
+canonical URL, sitemap entry and feed link is built from. The Worker answers on
+`web.riomyid.workers.dev` and on a preview URL per deployment as well;
+`src/middleware.ts` 301s those to the canonical host so search engines index one
+site rather than three.
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) and [.github/CICD_SETUP.md](./.github/CICD_SETUP.md) for full setup.
 
