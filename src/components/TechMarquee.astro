@@ -22,23 +22,21 @@ const items = shuffledStack();
 
   <div class="marquee min-w-0 flex-1" style={`--duration: ${duration}`}>
     <div class="marquee__track">
-      {
-        [false, true].map((isClone) => (
-          <ul
-            class="marquee__group"
-            role={isClone ? "presentation" : "list"}
-            aria-hidden={isClone ? "true" : undefined}
-            aria-label={isClone ? undefined : label}
-          >
-            {items.map((tech) => (
-              <li class="marquee__item">
-                <Icon name={tech.icon} class="h-[18px] w-[18px] shrink-0" />
-                <span>{tech.name}</span>
-              </li>
-            ))}
-          </ul>
-        ))
-      }
+      {[false, true].map((isClone) => (
+        <ul
+          class="marquee__group"
+          role={isClone ? "presentation" : "list"}
+          aria-hidden={isClone ? "true" : undefined}
+          aria-label={isClone ? undefined : label}
+        >
+          {items.map((tech) => (
+            <li class="marquee__item">
+              <Icon name={tech.icon} class="h-[18px] w-[18px] shrink-0" />
+              <span>{tech.name}</span>
+            </li>
+          ))}
+        </ul>
+      ))}
     </div>
   </div>
 </div>

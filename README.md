@@ -4,7 +4,7 @@ Personal portfolio and bilingual blog for Rio Bahtiar. The app is built with Ast
 
 ## Stack
 
-- Runtime/package manager: Bun 1.4.0, committed `bun.lock`
+- Runtime/package manager: Bun 1.4.3, committed `bun.lock`
 - Framework: Astro 7 with `output: "server"`
 - Deployment: Cloudflare Workers via `@astrojs/cloudflare` 13 and `wrangler.jsonc`
 - UI: Astro components, React 19 islands, Radix primitives, shadcn-style components

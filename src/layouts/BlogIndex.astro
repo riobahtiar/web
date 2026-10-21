@@ -78,37 +78,35 @@ const baseUrl = `/${lang === "en" ? "" : "id/"}blog`;
       <!-- Sidebar -->
       <aside class="space-y-8 lg:w-72">
         <!-- Categories -->
-        {
-          categories && (
-            <div class="border-border bg-surface rounded-xl border p-6">
-              <p class="eyebrow">{lang === "en" ? "Categories" : "Kategori"}</p>
-              <ul class="mt-4 space-y-2" role="list">
+        {categories && (
+          <div class="border-border bg-surface rounded-xl border p-6">
+            <p class="eyebrow">{lang === "en" ? "Categories" : "Kategori"}</p>
+            <ul class="mt-4 space-y-2" role="list">
+              <li>
+                <a
+                  href={baseUrl}
+                  class={`hover:text-foreground block text-sm transition-colors ${!currentCategory ? "text-accent" : "text-muted-foreground"}`}
+                >
+                  {lang === "en" ? "All Posts" : "Semua Artikel"}
+                </a>
+              </li>
+              {categories.map((category) => (
                 <li>
                   <a
-                    href={baseUrl}
-                    class={`hover:text-foreground block text-sm transition-colors ${!currentCategory ? "text-accent" : "text-muted-foreground"}`}
+                    href={`${baseUrl}/${category.name}`}
+                    class={`hover:text-foreground block text-sm transition-colors ${currentCategory === category.name ? "text-accent" : "text-muted-foreground"}`}
                   >
-                    {lang === "en" ? "All Posts" : "Semua Artikel"}
+                    {category.name}
+                    <span class="text-subtle-foreground">
+                      {" "}
+                      ({category.count})
+                    </span>
                   </a>
                 </li>
-                {categories.map((category) => (
-                  <li>
-                    <a
-                      href={`${baseUrl}/${category.name}`}
-                      class={`hover:text-foreground block text-sm transition-colors ${currentCategory === category.name ? "text-accent" : "text-muted-foreground"}`}
-                    >
-                      {category.name}
-                      <span class="text-subtle-foreground">
-                        {" "}
-                        ({category.count})
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
+              ))}
+            </ul>
+          </div>
+        )}
       </aside>
     </div>
   </div>

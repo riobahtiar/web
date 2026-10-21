@@ -27,4 +27,6 @@ const classes = cn(
 const Tag = href ? "a" : "span";
 ---
 
-<Tag class={classes} href={href} {...rest}><slot /></Tag>
+<Tag class={classes} href={href} {...rest}>
+  <slot />
+</Tag>

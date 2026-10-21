@@ -100,7 +100,6 @@ const languageUrl = localized
         }
       })();
     </script>
-
     <!-- Favicon and Web Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -127,15 +126,13 @@ const languageUrl = localized
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    {
-      localized && (
-        <>
-          <link rel="alternate" href={alternateEN} hreflang="en" />
-          <link rel="alternate" href={alternateID} hreflang="id" />
-          <link rel="alternate" href={alternateEN} hreflang="x-default" />
-        </>
-      )
-    }
+    {localized && (
+      <>
+        <link rel="alternate" href={alternateEN} hreflang="en" />
+        <link rel="alternate" href={alternateID} hreflang="id" />
+        <link rel="alternate" href={alternateEN} hreflang="x-default" />
+      </>
+    )}
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
@@ -146,26 +143,18 @@ const languageUrl = localized
       property="og:image"
       content={Astro.site ? new URL(image, Astro.site).toString() : image}
     />
-    {
-      type === "article" && publishedTime && (
-        <meta property="article:published_time" content={publishedTime} />
-      )
-    }
-    {
-      type === "article" && modifiedTime && (
-        <meta property="article:modified_time" content={modifiedTime} />
-      )
-    }
-    {
-      type === "article" && author && (
-        <meta property="article:author" content={author} />
-      )
-    }
-    {
-      type === "article" &&
-        tags &&
-        tags.map((tag: string) => <meta property="article:tag" content={tag} />)
-    }
+    {type === "article" && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {type === "article" && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime} />
+    )}
+    {type === "article" && author && (
+      <meta property="article:author" content={author} />
+    )}
+    {type === "article" &&
+      tags &&
+      tags.map((tag: string) => <meta property="article:tag" content={tag} />)}
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -182,43 +171,42 @@ const languageUrl = localized
     <meta name="msapplication-TileColor" content="oklch(0.72 0.25 142.53)" />
 
     <!-- JSON-LD Structured Data -->
-    {
-      type === "article" && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: title,
-            description: description,
-            image: Astro.site ? new URL(image, Astro.site).toString() : image,
-            datePublished: publishedTime,
-            dateModified: modifiedTime || publishedTime,
-            author: {
-              "@type": "Person",
-              name: author || "Rio Bahtiar",
-            },
-            publisher: {
-              "@type": "Person",
-              name: "Rio Bahtiar",
-              url: Astro.site ? Astro.site.toString() : "",
-            },
-            mainEntityOfPage: {
-              "@type": "WebPage",
-              "@id": canonicalURL,
-            },
-            keywords: tags ? tags.join(", ") : "",
-            wordCount: readingTime ? readingTime.split(" ")[0] : undefined,
-            inLanguage: lang,
-          })}
-        />
-      )
-    }
+    {type === "article" && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: title,
+          description: description,
+          image: Astro.site ? new URL(image, Astro.site).toString() : image,
+          datePublished: publishedTime,
+          dateModified: modifiedTime || publishedTime,
+          author: {
+            "@type": "Person",
+            name: author || "Rio Bahtiar",
+          },
+          publisher: {
+            "@type": "Person",
+            name: "Rio Bahtiar",
+            url: Astro.site ? Astro.site.toString() : "",
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": canonicalURL,
+          },
+          keywords: tags ? tags.join(", ") : "",
+          wordCount: readingTime ? readingTime.split(" ")[0] : undefined,
+          inLanguage: lang,
+        })}
+      />
+    )}
 
     <!-- Google Analytics -->
     <script
       type="text/partytown"
-      src="https://www.googletagmanager.com/gtag/js?id=G-H970X85M9S"></script>
+      src="https://www.googletagmanager.com/gtag/js?id=G-H970X85M9S"
+    ></script>
     <script type="text/partytown">
       window.dataLayer = window.dataLayer || [];
       window.gtag = function gtag() {
@@ -228,7 +216,6 @@ const languageUrl = localized
 
       gtag("config", "G-H970X85M9S");
     </script>
-
     <!-- Additional head items -->
     <slot name="head" />
   </head>
@@ -236,7 +223,9 @@ const languageUrl = localized
     {showTopBanner && <Banner lang={lang} />}
     <Header lang={lang} i18n={i18n} languageUrl={languageUrl} />
     <div class="frame">
-      <main id="main"><slot /></main>
+      <main id="main">
+        <slot />
+      </main>
       {showCTA && <CTA lang={lang} i18n={i18n} />}
     </div>
     <Footer lang={lang} i18n={i18n} />

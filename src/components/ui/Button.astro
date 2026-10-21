@@ -51,4 +51,6 @@ const classes = cn(
 const Tag = href ? "a" : "button";
 ---
 
-<Tag class={classes} href={href} {...rest}><slot /></Tag>
+<Tag class={classes} href={href} {...rest}>
+  <slot />
+</Tag>

@@ -55,22 +55,20 @@ const isActive = (path: string) =>
     </a>
 
     <nav class="hidden flex-1 items-center gap-1 lg:flex">
-      {
-        links.map((link) => (
-          <a
-            href={link.href}
-            aria-current={isActive(link.href) ? "page" : undefined}
-            class:list={[
-              "rounded-md px-3 py-1.5 text-sm transition-colors",
-              isActive(link.href)
-                ? "text-foreground bg-surface-2 font-medium"
-                : "text-muted-foreground hover:text-foreground hover:bg-surface-2",
-            ]}
-          >
-            {link.label}
-          </a>
-        ))
-      }
+      {links.map((link) => (
+        <a
+          href={link.href}
+          aria-current={isActive(link.href) ? "page" : undefined}
+          class:list={[
+            "rounded-md px-3 py-1.5 text-sm transition-colors",
+            isActive(link.href)
+              ? "text-foreground bg-surface-2 font-medium"
+              : "text-muted-foreground hover:text-foreground hover:bg-surface-2",
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
 
     <div class="ml-auto flex items-center gap-1 lg:ml-0">
@@ -114,21 +112,19 @@ const isActive = (path: string) =>
     hidden
   >
     <nav class="frame flex flex-col px-6 py-3 sm:px-10">
-      {
-        links.map((link) => (
-          <a
-            href={link.href}
-            class:list={[
-              "rounded-md px-3 py-2.5 text-sm transition-colors",
-              isActive(link.href)
-                ? "text-foreground bg-surface-2 font-medium"
-                : "text-muted-foreground hover:text-foreground hover:bg-surface-2",
-            ]}
-          >
-            {link.label}
-          </a>
-        ))
-      }
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            "rounded-md px-3 py-2.5 text-sm transition-colors",
+            isActive(link.href)
+              ? "text-foreground bg-surface-2 font-medium"
+              : "text-muted-foreground hover:text-foreground hover:bg-surface-2",
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
   </div>
 </header>

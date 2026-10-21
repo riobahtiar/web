@@ -67,9 +67,7 @@ const formattedModifiedDate = formatDate(modified_at, lang);
       <article class="prose prose-lg max-w-none lg:max-w-4xl">
         <!-- Article Header -->
         <header>
-          <div
-            class="text-base-content/70 mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm"
-          >
+          <div class="text-base-content/70 mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
             <a
               href={`/${lang === "en" ? "" : "id/"}blog/${category}`}
               class="hover:text-primary whitespace-nowrap capitalize transition-colors"
@@ -80,17 +78,15 @@ const formattedModifiedDate = formatDate(modified_at, lang);
               <span aria-hidden="true">•</span>
               <time datetime={created_at.toISOString()}>{formattedDate}</time>
             </span>
-            {
-              readingTime && (
-                <span class="flex items-center gap-3 whitespace-nowrap">
-                  <span aria-hidden="true">•</span>
-                  <span class="flex items-center gap-1">
-                    <Icon name="tabler:clock" class="h-4 w-4" />
-                    {readingTime}
-                  </span>
+            {readingTime && (
+              <span class="flex items-center gap-3 whitespace-nowrap">
+                <span aria-hidden="true">•</span>
+                <span class="flex items-center gap-1">
+                  <Icon name="tabler:clock" class="h-4 w-4" />
+                  {readingTime}
                 </span>
-              )
-            }
+              </span>
+            )}
           </div>
 
           <h1>{title}</h1>
@@ -112,19 +108,17 @@ const formattedModifiedDate = formatDate(modified_at, lang);
             </div>
           </div>
 
-          {
-            image && (
-              <div class="not-prose relative aspect-[2/1]">
-                <img
-                  src={image}
-                  alt={title}
-                  class="rounded-xl object-cover"
-                  width="1200"
-                  height="600"
-                />
-              </div>
-            )
-          }
+          {image && (
+            <div class="not-prose relative aspect-[2/1]">
+              <img
+                src={image}
+                alt={title}
+                class="rounded-xl object-cover"
+                width="1200"
+                height="600"
+              />
+            </div>
+          )}
         </header>
 
         <slot />
@@ -132,28 +126,24 @@ const formattedModifiedDate = formatDate(modified_at, lang);
         <!-- Article Footer -->
         <footer class="not-prose border-base-200 mt-12 border-t pt-8">
           <div class="mb-6 flex flex-wrap gap-2">
-            {
-              tags.map((tag) => (
-                <a
-                  href={`/${lang === "en" ? "" : "id/"}blog/tag/${tag}`}
-                  class="bg-base-200 hover:bg-base-300 rounded-full px-3 py-1 text-sm transition-colors"
-                >
-                  #{tag}
-                </a>
-              ))
-            }
+            {tags.map((tag) => (
+              <a
+                href={`/${lang === "en" ? "" : "id/"}blog/tag/${tag}`}
+                class="bg-base-200 hover:bg-base-300 rounded-full px-3 py-1 text-sm transition-colors"
+              >
+                #{tag}
+              </a>
+            ))}
           </div>
 
-          {
-            modified_at > created_at && (
-              <p class="text-sm">
-                {lang === "en" ? "Last updated: " : "Terakhir diperbarui: "}
-                <time datetime={modified_at.toISOString()}>
-                  {formattedModifiedDate}
-                </time>
-              </p>
-            )
-          }
+          {modified_at > created_at && (
+            <p class="text-sm">
+              {lang === "en" ? "Last updated: " : "Terakhir diperbarui: "}
+              <time datetime={modified_at.toISOString()}>
+                {formattedModifiedDate}
+              </time>
+            </p>
+          )}
         </footer>
       </article>
 

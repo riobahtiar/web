@@ -54,41 +54,25 @@ const profileHtml = [
 
 <Section class="relative overflow-hidden py-20 sm:py-28">
   <div class="accent-glow pointer-events-none absolute inset-0 -z-10"></div>
-  <div
-    class="dot-grid pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000,transparent)] opacity-60"
-  >
-  </div>
+  <div class="dot-grid pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000,transparent)] opacity-60"></div>
 
-  <div
-    class="grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16"
-  >
+  <div class="grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16">
     <div class="min-w-0">
-      <span
-        class="border-border bg-surface/60 inline-flex items-center gap-2 rounded-full border px-3 py-1"
-      >
+      <span class="border-border bg-surface/60 inline-flex items-center gap-2 rounded-full border px-3 py-1">
         <span class="relative flex h-1.5 w-1.5">
-          <span
-            class="bg-accent-solid absolute inline-flex h-full w-full animate-ping rounded-full opacity-70"
-          ></span>
-          <span
-            class="bg-accent-solid relative inline-flex h-1.5 w-1.5 rounded-full"
-          ></span>
+          <span class="bg-accent-solid absolute inline-flex h-full w-full animate-ping rounded-full opacity-70"></span>
+          <span class="bg-accent-solid relative inline-flex h-1.5 w-1.5 rounded-full"></span>
         </span>
         <span class="eyebrow">{i18n.welcome.available}</span>
       </span>
 
-      <h1
-        class="mt-6 text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl"
-      >
-        {greeting}{" "}
-        <span class="text-accent">Rio</span>
+      <h1 class="mt-6 text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl">
+        {greeting} <span class="text-accent">Rio</span>
       </h1>
 
       <p class="eyebrow mt-4">{i18n.welcome.role}</p>
 
-      <p
-        class="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed text-pretty"
-      >
+      <p class="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed text-pretty">
         {i18n.welcome.description}
       </p>
 
@@ -103,9 +87,7 @@ const profileHtml = [
     </div>
 
     <div class="relative min-w-0">
-      <div
-        class="border-border bg-surface/80 overflow-hidden rounded-xl border shadow-2xl backdrop-blur-sm"
-      >
+      <div class="border-border bg-surface/80 overflow-hidden rounded-xl border shadow-2xl backdrop-blur-sm">
         <div class="border-rule flex items-center gap-3 border-b px-4 py-2.5">
           <img
             src={meAvatar.src}
@@ -122,8 +104,7 @@ const profileHtml = [
             <span class="bg-accent-solid/60 h-2 w-2 rounded-full"></span>
           </span>
         </div>
-        <pre
-          class="overflow-x-auto px-4 py-4 font-mono text-[11.5px] leading-relaxed whitespace-pre-wrap sm:text-[13px] sm:whitespace-pre"><code set:html={profileHtml} /></pre>
+        <pre class="overflow-x-auto px-4 py-4 font-mono text-[11.5px] leading-relaxed whitespace-pre-wrap sm:text-[13px] sm:whitespace-pre"><code set:html={profileHtml} /></pre>
       </div>
     </div>
   </div>
